@@ -46,7 +46,10 @@ class HelixImporter {
       if (this.useCache) {
         const localPath = path.resolve(this.cache, `${new URL(url).pathname.replace(/\//gm, '')}.html`);
         if (await fs.exists(localPath)) {
-          return fs.readFile(localPath);
+          const html = await fs.readFile(localPath);
+          if (html) {
+            return html.toString().replace(/<!--[\s\S]*?-->/gm, '');
+          }
         }
       }
       const html = await rp({
@@ -63,7 +66,11 @@ class HelixImporter {
         await fs.mkdirs(path.dirname(localPath));
         await fs.writeFile(localPath, html);
       }
-      return html;
+      if (html) {
+        // remove the comments
+        return html.toString().replace(/<!--[\s\S]*?-->/gm, '');
+      }
+      return '';
     } catch (error) {
       this.logger.error(`Request error or timeout for ${url}: ${error.message}`);
       throw new Error(`Cannot get content for ${url}: ${error.message}`);
