@@ -10,19 +10,9 @@
  * governing permissions and limitations under the License.
  */
 
-async function asyncForEach(array, callback) {
-  for (let index = 0; index < array.length; index += 1) {
-    // eslint-disable-next-line no-await-in-loop
-    await callback(array[index], index, array);
-  }
-}
+import { ExplorerParams } from "./Explorer";
 
-async function asyncForKey(object, callback) {
-  // eslint-disable-next-line no-restricted-syntax, guard-for-in
-  for (const key in object) {
-    // eslint-disable-next-line no-await-in-loop
-    await callback(key, object[key], object);
-  }
+export default class PagingExplorerParams implements ExplorerParams {
+  nbMaxPages: number;
+  url: string;
 }
-
-module.exports = { asyncForEach, asyncForKey };

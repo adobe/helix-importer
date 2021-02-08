@@ -1,66 +1,35 @@
 {
-  "name": "@adobe/helix-importer",
-  "version": "1.23.0",
-  "private": true,
-  "description": "Helix - Importer",
-  "main": "src/index.js",
+  "name": "helix-importer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "lint": "./node_modules/.bin/eslint ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/adobe/helix-importer"
-  },
-  "author": "",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/adobe/helix-importer/issues"
-  },
-  "homepage": "https://github.com/adobe/helix-importer#readme",
-  "dependencies": {
-    "@adobe/fastly-native-promises": "1.15.0",
-    "@adobe/helix-onedrive-support": "1.3.1",
-    "cheerio": "1.0.0-rc.3",
-    "fast-csv": "4.1.3",
-    "fs-extra": "9.0.0",
-    "hast-util-to-mdast": "7.1.1",
-    "rehype-parse": "6.0.2",
-    "rehype-remark": "8.0.0",
-    "remark-stringify": "8.0.0",
-    "request": "2.88.2",
-    "request-promise-native": "1.0.8",
-    "sanitize-filename": "1.6.3",
-    "unified": "9.0.0"
+    "compile": "tsc --declaration",
+    "lint": "tslint --project tsconfig.json",
+    "prepublish": "npm run compile",
+    "test": "mocha -r ts-node/register test/**/*.spec.ts"
   },
   "devDependencies": {
-    "@adobe/eslint-config-helix": "1.1.0",
-    "@semantic-release/changelog": "5.0.0",
-    "@semantic-release/exec": "5.0.0",
-    "@semantic-release/git": "9.0.0",
-    "ajv": "6.11.0",
-    "codecov": "3.7.1",
-    "commitizen": "4.0.3",
-    "cz-conventional-changelog": "3.1.0",
-    "eslint": "7.1.0",
-    "eslint-plugin-header": "3.0.0",
-    "eslint-plugin-import": "2.20.1",
-    "jsdoc-to-markdown": "6.0.1",
-    "junit-report-builder": "2.0.0",
-    "lint-staged": "10.0.7",
-    "mocha": "7.0.1",
-    "nyc": "15.0.0",
-    "proxyquire": "2.1.3",
-    "semantic-release": "17.0.4"
+    "@types/node": "14.14.10",
+    "mock-fs": "4.13.0",
+    "tslint": "6.1.3"
   },
-  "lint-staged": {
-    "*.js": "eslint"
-  },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-conventional-changelog"
-    },
-    "ghooks": {
-      "pre-commit": "npx lint-staged"
-    }
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@adobe/helix-documents-support": "git+https://github.com/adobe/helix-documents-support.git",
+    "@types/mocha": "8.0.4",
+    "@types/node-fetch": "2.5.7",
+    "fs-extra": "9.0.1",
+    "jsdom": "16.4.0",
+    "mocha": "8.2.1",
+    "node-fetch": "2.6.1",
+    "rehype-parse": "7.0.1",
+    "rehype-remark": "8.0.0",
+    "remark-stringify": "8.1.1",
+    "sanitize-filename": "1.6.3",
+    "ts-node": "9.0.0",
+    "typescript": "4.1.2",
+    "unified": "9.2.0"
   }
 }

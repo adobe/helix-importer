@@ -10,20 +10,13 @@
  * governing permissions and limitations under the License.
  */
 
-const fastly = require('@adobe/fastly-native-promises');
-const { URL } = require('url');
+import { StorageHandler } from "../storage/StorageHandler";
+import { ImporterParams } from "./Importer";
 
-class FastlyHandler {
-  constructor({ logger, fastlyServiceId, fastlyToken } = {}) {
-    this.logger = logger || console;
-    this.service = fastly(fastlyToken, fastlyServiceId);
-  }
+import { BlobHandler } from '@adobe/helix-documents-support';
 
-  async addDictEntry(sourceurl, year) {
-    const path = new URL(sourceurl).pathname.replace(/\/$/, '');
-
-    return this.service.bulkUpdateDictItems(undefined, 'redirects', { item_key: path, item_value: year, op: 'upsert' });
-  }
+export default class PageImporterParams implements ImporterParams {
+  storageHandler: StorageHandler;
+  blobHandler: BlobHandler;
+  cache?: string;
 }
-
-module.exports = FastlyHandler;

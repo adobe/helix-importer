@@ -10,14 +10,8 @@
  * governing permissions and limitations under the License.
  */
 
-/* eslint-disable class-methods-use-this */
-
-class HelixImporterStorageHandler {
-  put() {}
-
-  get() {}
-
-  exists() {}
+ export interface StorageHandler {
+  put(path: string, content: string): Promise<void>;
+  get(path: string): Promise<string>;
+  exists(path: string): Promise<boolean>;
 }
-
-module.exports = HelixImporterStorageHandler;

@@ -9,38 +9,40 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-const fs = require('fs-extra');
-const path = require('path');
 
-const HelixImporterStorageHandler = require('../generic/HelixImporterStorageHandler');
+import { Logger } from "tslint/lib/runner";
+import { StorageHandler } from "./StorageHandler";
 
-class OneDriveHandler extends HelixImporterStorageHandler {
-  constructor(opts = {}) {
-    super(opts);
-    this.logger = opts.logger || console;
-    this.target = opts.target;
+import fs from 'fs-extra';
+import path from 'path';
+
+export default class FSHandler implements StorageHandler {
+  target: string;
+  logger: Logger;
+
+  constructor(target, logger) {
+    this.logger = logger || console;
+    this.target = target;
   }
 
   async put(filePath, content) {
-    const local = path.resolve(this.target, filePath);
-    this.logger.debug(`Writting file to file system: ${local}`);
+    const local = path.resolve(path.join(this.target, filePath));
+    this.logger.log(`Writting file to file system: ${local}`);
     await fs.mkdirs(path.dirname(local));
     await fs.writeFile(local, content);
   }
 
   async get(filePath) {
     const local = path.resolve(this.target, filePath);
-    this.logger.debug(`Reading file from file system: ${local}`);
+    this.logger.log(`Reading file from file system: ${local}`);
 
     return fs.readFile(local);
   }
 
   async exists(filePath) {
     const local = path.resolve(this.target, filePath);
-    this.logger.debug(`Checking if file from file system exists: ${local}`);
+    this.logger.log(`Checking if file from file system exists: ${local}`);
 
     return fs.exists(local);
   }
 }
-
-module.exports = OneDriveHandler;
