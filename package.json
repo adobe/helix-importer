@@ -8,7 +8,6 @@
     "lint": "tslint --project tsconfig.json",
     "test": "mocha -r ts-node/register test/**/*.spec.ts",
     "build": "tsc --declaration",
-    "tmp": "tsc src/index.d.ts",
     "format": "prettier --write \"src/**/*.ts\"",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",

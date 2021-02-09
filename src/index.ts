@@ -15,20 +15,28 @@ import PagingExplorerParams from './explorer/PagingExplorerParams';
 
 export { Explorer, PagingExplorer, PagingExplorerParams};
 
-export * from './importer/Importer';
-export * from './importer/PageImporter';
-export * from './importer/PageImporterParams';
-export * from './importer/PageImporterResource';
+import Importer from './importer/Importer';
+import PageImporter from './importer/PageImporter';
+import PageImporterParams from './importer/PageImporterParams';
+import PageImporterResource from './importer/PageImporterResource';
 
-export * from './storage/FSHandler';
-export * from './storage/StorageHandler';
+export { Importer, PageImporter, PageImporterParams, PageImporterResource };
 
-export * from './utils/CSV';
-export * from './utils/DOMUtils';
-export * from './utils/FileUtils';
-export * from './utils/Utils';
+import FSHandler from './storage/FSHandler';
+import { StorageHandler } from './storage/StorageHandler';
 
-export * from './wp/WPUtils';
-export * from './wp/explorers/WPAdminAjaxPager';
-export * from './wp/explorers/WPContentPager';
-export * from './wp/explorers/WPPostWrapPager';
+export { FSHandler, StorageHandler };
+
+import CSV from './utils/CSV';
+import DOMUtils from './utils/DOMUtils';
+import FileUtils from './utils/FileUtils';
+import Utils from './utils/Utils';
+
+export { CSV, DOMUtils, FileUtils, Utils };
+
+import WPUtils from './wp/WPUtils';
+import { WPAdminAjaxPager } from './wp/explorers/WPAdminAjaxPager';
+import { WPContentPager } from './wp/explorers/WPContentPager';
+import { WPPostWrapPager } from './wp/explorers/WPPostWrapPager';
+
+export { WPUtils, WPAdminAjaxPager, WPContentPager, WPPostWrapPager };
