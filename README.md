@@ -17,10 +17,7 @@ Here is a basic sample:
 
 ```typescript
 
-import { WPContentPager } from 'wp/explorers/WPContentPager';
-import FSHandler from 'storage/FSHandler';
-
-import CSV from 'utils/CSV';
+import { WPContentPager, FSHandler, CSV } from '@adobe/helix-importer';
 
 async function main() {
   const pager = new WPContentPager({
@@ -48,3 +45,19 @@ The final result is a list of urls that could be found on list of paged results 
 An importer must extends [PageImporter](src/importer/PageImporter.ts) and implement the `fetch` and `process` method. The general idea is that `fetch` receives the url to import and is responsible to return the HTML. `process` receives the corresponding Document in order to filter / rearrange / reshuffle the DOM before it gets processed by the Markdown transformer. `process` computes and defines the list of [PageImporterResource](src/importer/PageImporterResource.ts) (could be more than one), each resource being transformed as a Markdown document.
 
 Goal of the importer is to get rid of the generic DOM elements like the header / footer, the nav... and all elements that are common to all pages in order to get the unique piece(s) of content per page.
+
+You can find a large collection of importer examples in repo: https://github.com/kptdobe/helix-importer-projects
+
+## Installation
+
+```shell
+npm i https://github.com/adobe/helix-importer 
+```
+
+TODO: publish npm module
+
+## Usage
+
+```typescript
+import { ... } from '@adobe/helix-importer';
+```
