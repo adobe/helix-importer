@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Adobe. All rights reserved.
+ * Copyright 2021 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,7 +11,7 @@
  */
 /* tslint:disable: no-console */
 
-import PagingExplorer from '../../product/explorer/PagingExplorer';
+import PagingExplorer from '../../explorer/PagingExplorer';
 
 import fetch from 'node-fetch';
 import { Response } from 'node-fetch';
@@ -41,7 +41,7 @@ export class WPContentPager extends PagingExplorer {
         if (all.findIndex((entry) => entry.url === url) === -1) {
           entries.push({
             date,
-            url
+            url,
           });
         }
       }

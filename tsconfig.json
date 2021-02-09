@@ -4,15 +4,15 @@
     "target": "ES2015",
     "allowJs": true,
     "sourceMap": true,
-    "outDir": "build",
-    "esModuleInterop": true
+    "outDir": "lib",
+    "esModuleInterop": true,
+    "declaration": true
   },
   "exclude": [
     "node_modules",
-    "save"
+    "test"
   ],
   "include": [
-    "src",
-    "test"
+    "src"
   ]
 }

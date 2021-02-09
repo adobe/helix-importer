@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Adobe. All rights reserved.
+ * Copyright 2021 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
- /* tslint:disable: no-console */
+/* tslint:disable: no-console */
 
 import Importer from './Importer';
 import PageImporterParams from './PageImporterParams';
@@ -37,10 +37,10 @@ export default abstract class PageImporter implements Importer {
   useCache: boolean;
 
   constructor(params: PageImporterParams) {
-      this.params = params;
-      this.logger = console;
+    this.params = params;
+    this.logger = console;
 
-      this.useCache = !!params.cache;
+    this.useCache = !!params.cache;
   }
 
   async upload(src) {
@@ -71,7 +71,7 @@ export default abstract class PageImporter implements Importer {
     this.logger.log(`Creating a new MD file: ${directory}/${sanitizedName}.md`);
 
     const processor = unified()
-      .use(parse, { emitParseErrors: true})
+      .use(parse, { emitParseErrors: true })
       .use(rehype2remark, {
         handlers: {
           hlxembed: (h, node) => h(node, 'hlxembed', node.children[0].value),
@@ -123,20 +123,20 @@ export default abstract class PageImporter implements Importer {
     const document = resource.document;
     const assets = [];
     const imgs = document.querySelectorAll('img');
-    imgs.forEach(img => {
+    imgs.forEach((img) => {
       const { src } = img;
       const isEmbed = img.classList.contains('hlx-embed');
       if (!isEmbed && src && src !== '' && (contents.indexOf(src) !== -1 || contents.indexOf(decodeURI(src)) !== -1)) {
         assets.push({
-          url: src
+          url: src,
         });
       }
     });
 
     const as = document.querySelectorAll('a');
-    as.forEach(a => {
+    as.forEach((a) => {
       const { href } = a;
-      if (href && href !== '' && (contents.indexOf(href) !== -1) || contents.indexOf(decodeURI(href)) !== -1) {
+      if ((href && href !== '' && contents.indexOf(href) !== -1) || contents.indexOf(decodeURI(href)) !== -1) {
         try {
           const u = new URL(href, url);
           const ext = path.extname(u.href);
@@ -154,9 +154,9 @@ export default abstract class PageImporter implements Importer {
     });
 
     const vs = document.querySelectorAll('video source');
-    vs.forEach(s => {
+    vs.forEach((s) => {
       const { src } = s;
-      if (src && src !== '' && (contents.indexOf(src) !== -1) || contents.indexOf(decodeURI(src)) !== -1) {
+      if ((src && src !== '' && contents.indexOf(src) !== -1) || contents.indexOf(decodeURI(src)) !== -1) {
         try {
           const u = new URL(src, url);
           const ext = path.extname(u.href);
@@ -164,7 +164,7 @@ export default abstract class PageImporter implements Importer {
             const poster = s.parentNode.getAttribute('poster');
             if (poster) {
               assets.push({
-                url: poster
+                url: poster,
               });
             }
             // upload mp4
@@ -184,7 +184,7 @@ export default abstract class PageImporter implements Importer {
       const u = new URL(decodeURI(asset.url), url);
       let newSrc = await this.upload(u.href);
       if (asset.append) {
-        newSrc = `${newSrc}${asset.append}`
+        newSrc = `${newSrc}${asset.append}`;
       }
       contents = contents
         .replace(new RegExp(`${asset.url.replace('.', '\\.').replace('?', '\\?')}`, 'gm'), newSrc)
@@ -214,11 +214,26 @@ export default abstract class PageImporter implements Importer {
     DOMUtils.reviewHeadings(document);
     DOMUtils.reviewParagraphs(document);
     DOMUtils.escapeSpecialCharacters(document);
-    ['b', 'a', 'big', 'code', 'em', 'i', 'label', 's', 'small', /*'span'*/, 'strong', 'sub', 'sup', 'u', 'var']
-      .forEach((tag) => DOMUtils.reviewInlineElement(document, tag));
+    [
+      'b',
+      'a',
+      'big',
+      'code',
+      'em',
+      'i',
+      'label',
+      's',
+      'small' /*'span'*/,
+      ,
+      'strong',
+      'sub',
+      'sup',
+      'u',
+      'var',
+    ].forEach((tag) => DOMUtils.reviewInlineElement(document, tag));
 
     const imgs = document.querySelectorAll('img');
-    imgs.forEach(img => {
+    imgs.forEach((img) => {
       let src = img.getAttribute('src');
       const ori = src;
       const dataSrc = img.getAttribute('data-src');
@@ -245,8 +260,7 @@ export default abstract class PageImporter implements Importer {
   }
 
   postProcessMD(md: string): string {
-    return md
-      .replace(/\\\\\~/gm, '\\~');
+    return md.replace(/\\\\\~/gm, '\\~');
   }
 
   async download(url: string): Promise<string> {
@@ -264,7 +278,7 @@ export default abstract class PageImporter implements Importer {
     const res = await this.fetch(url);
     if (!res.ok) {
       this.logger.error(`${url}: Invalid response`, res);
-      throw new Error(`${url}: Invalid response - ${res.statusText}`)
+      throw new Error(`${url}: Invalid response - ${res.statusText}`);
     } else {
       const html = await res.text();
 
@@ -282,7 +296,7 @@ export default abstract class PageImporter implements Importer {
     const html = await this.download(url);
 
     if (html) {
-      const { document } = (new JSDOM(DOMUtils.removeNoscripts(html.toString()))).window;
+      const { document } = new JSDOM(DOMUtils.removeNoscripts(html.toString())).window;
       this.preProcess(document);
       return {
         document,
@@ -319,5 +333,10 @@ export default abstract class PageImporter implements Importer {
   }
 
   abstract fetch(url: string): Promise<Response>;
-  abstract process(document: Document, url: string, entryParams?: object, raw?: string): Promise<PageImporterResource[]>;
+  abstract process(
+    document: Document,
+    url: string,
+    entryParams?: object,
+    raw?: string,
+  ): Promise<PageImporterResource[]>;
 }

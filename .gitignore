@@ -8,4 +8,4 @@ logs
 .DS_Store
 test-results.xml
 .env
-build
+lib

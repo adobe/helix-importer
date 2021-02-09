@@ -17,10 +17,10 @@ Here is a basic sample:
 
 ```typescript
 
-import { WPContentPager } from 'src/wp/explorers/WPContentPager';
-import FSHandler from 'src/storage/FSHandler';
+import { WPContentPager } from 'wp/explorers/WPContentPager';
+import FSHandler from 'storage/FSHandler';
 
-import CSV from '../../product/utils/CSV';
+import CSV from 'utils/CSV';
 
 async function main() {
   const pager = new WPContentPager({

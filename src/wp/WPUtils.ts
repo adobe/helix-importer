@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Adobe. All rights reserved.
+ * Copyright 2021 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,20 +11,25 @@
  */
 import { JSDOM, Document } from 'jsdom';
 
-import DOMUtils from '../../product/utils/DOMUtils';
+import DOMUtils from '../utils/DOMUtils';
 
 export default class WPUtils {
   static handleCaptions(document: Document) {
     DOMUtils.replaceByCaptions(document, ['.wp-caption-text', 'figcaption']);
 
     // an h5 following an image / video is a caption
-    document.querySelectorAll('p img, video').forEach(item => {
-      if ((item.parentNode.nextElementSibling && item.parentNode.nextElementSibling.tagName === 'H5') ||
-        (item.nextElementSibling && item.nextElementSibling.tagName === 'H5')) {
-          const elem = item.parentNode.nextElementSibling && item.parentNode.nextElementSibling.tagName === 'H5' ? item.parentNode.nextElementSibling : item.nextElementSibling;
-          const captionText = elem.textContent.trim();
-          elem.parentNode.insertBefore(JSDOM.fragment(`<p><em>${captionText}</em><p>`), elem);
-          elem.remove();
+    document.querySelectorAll('p img, video').forEach((item) => {
+      if (
+        (item.parentNode.nextElementSibling && item.parentNode.nextElementSibling.tagName === 'H5') ||
+        (item.nextElementSibling && item.nextElementSibling.tagName === 'H5')
+      ) {
+        const elem =
+          item.parentNode.nextElementSibling && item.parentNode.nextElementSibling.tagName === 'H5'
+            ? item.parentNode.nextElementSibling
+            : item.nextElementSibling;
+        const captionText = elem.textContent.trim();
+        elem.parentNode.insertBefore(JSDOM.fragment(`<p><em>${captionText}</em><p>`), elem);
+        elem.remove();
       }
     });
   }
@@ -38,7 +43,7 @@ export default class WPUtils {
         // only cover case with 1 child
         const txt = elem.textContent;
         // only treat links
-        if (txt && (txt.indexOf('.') !== -1 || txt.indexOf(':') !== -1 )) {
+        if (txt && (txt.indexOf('.') !== -1 || txt.indexOf(':') !== -1)) {
           elem.innerHTML = '';
           // take out of parent
           parent.parentNode.insertBefore(elem, parent.nextSibling);

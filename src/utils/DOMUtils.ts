@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Adobe. All rights reserved.
+ * Copyright 2021 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -34,14 +34,11 @@ export default class DOMUtils {
       if (tag.nextSibling && tag.nextSibling.textContent === ' ') {
         // next is a space, check next next
         const nextNext = tag.nextSibling.nextSibling;
-          if (
-            nextNext &&
-            nextNext.tagName &&
-            nextNext.tagName.toLowerCase() === tagName) {
-              // same tag
-              tag.nextSibling.remove();
-              tag.innerHTML = `${tag.innerHTML} `;
-            }
+        if (nextNext && nextNext.tagName && nextNext.tagName.toLowerCase() === tagName) {
+          // same tag
+          tag.nextSibling.remove();
+          tag.innerHTML = `${tag.innerHTML} `;
+        }
       }
     }
 
@@ -51,7 +48,7 @@ export default class DOMUtils {
     for (let i = tags.length - 1; i >= 0; i -= 1) {
       const tag = tags[i];
       if (tag.innerHTML === '.' || tag.innerHTML === '. ' || tag.innerHTML === ':' || tag.innerHTML === ': ') {
-          tag.replaceWith(JSDOM.fragment(tag.innerHTML));
+        tag.replaceWith(JSDOM.fragment(tag.innerHTML));
       } else {
         let innerHTML = tag.innerHTML;
         if (tag.previousSibling) {
@@ -59,18 +56,17 @@ export default class DOMUtils {
           if (
             previous.tagName &&
             previous.tagName.toLowerCase() === tagName &&
-            (!previous.href ||
-              previous.href === tag.href
-            )) {
-              if (tag.hasChildNodes()) {
-                [...tag.childNodes].forEach(child => {
-                  previous.append(child);
-                });
-              } else {
-                // previous sibling is an <tag>, merge current one inside the previous one
-                previous.append(innerHTML);
-              }
-              tag.remove();
+            (!previous.href || previous.href === tag.href)
+          ) {
+            if (tag.hasChildNodes()) {
+              [...tag.childNodes].forEach((child) => {
+                previous.append(child);
+              });
+            } else {
+              // previous sibling is an <tag>, merge current one inside the previous one
+              previous.append(innerHTML);
+            }
+            tag.remove();
           }
         } else {
           if (innerHTML) {
@@ -96,19 +92,20 @@ export default class DOMUtils {
     for (let i = tags.length - 1; i >= 0; i -= 1) {
       const tag = tags[i];
       // remove useless paragraphs
-      if ((tag.textContent === '' ||
-        tag.textContent === ' ' ||
-        tag.textContent === '&nbsp;' ||
-        tag.textContent.charCodeAt(0) === 160) &&
-        !tag.querySelector(DOMUtils.EMPTY_TAGS_TO_PRESERVE.join(','))) {
-          tag.remove();
+      if (
+        (tag.textContent === '' ||
+          tag.textContent === ' ' ||
+          tag.textContent === '&nbsp;' ||
+          tag.textContent.charCodeAt(0) === 160) &&
+        !tag.querySelector(DOMUtils.EMPTY_TAGS_TO_PRESERVE.join(','))
+      ) {
+        tag.remove();
       }
     }
   }
 
   static escapeSpecialCharacters(document: Document) {
-    document.body.innerHTML = document.body.innerHTML
-      .replace(/\~/gm, '\\~');
+    document.body.innerHTML = document.body.innerHTML.replace(/\~/gm, '\\~');
   }
 
   static reviewHeadings(document: Document) {
@@ -116,7 +113,7 @@ export default class DOMUtils {
     for (let i = tags.length - 1; i >= 0; i -= 1) {
       const tag = tags[i];
       // remove useless strong tags
-      tag.innerHTML = tag.innerHTML.replace(/\<strong\>|\<\\strong\>/gm,'');
+      tag.innerHTML = tag.innerHTML.replace(/\<strong\>|\<\\strong\>/gm, '');
       if (tag.innerHTML === '') {
         tag.remove();
       }
@@ -131,13 +128,13 @@ export default class DOMUtils {
 
   static removeComments(document: Document) {
     document.body.innerHTML = document.body.innerHTML
-    // remove html comments
+      // remove html comments
       .replace(/<!--(?!>)[\S\s]*?-->/gm, '');
   }
 
   static removeSpans(document: Document) {
     // remove spans
-    document.querySelectorAll('span').forEach(span => {
+    document.querySelectorAll('span').forEach((span) => {
       if (span.textContent === '') {
         span.remove();
       } else {
@@ -152,7 +149,7 @@ export default class DOMUtils {
         const captionText = elem.textContent.trim();
         elem.parentNode.insertBefore(JSDOM.fragment(`<p><em>${captionText}</em></p>`), elem);
         elem.remove();
-      })
+      });
     });
   }
 
@@ -183,7 +180,7 @@ export default class DOMUtils {
 
   static encodeImagesForTable(document) {
     const imgs = document.querySelectorAll('img');
-    imgs.forEach(img => {
+    imgs.forEach((img) => {
       if (img.closest('table')) {
         // if image is in a table
         if (img.title && img.title.indexOf('|') !== -1) {

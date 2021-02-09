@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Adobe. All rights reserved.
+ * Copyright 2021 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -22,15 +22,18 @@ export default abstract class PagingExplorer implements Explorer {
   params: PagingExplorerParams;
 
   constructor(params: PagingExplorerParams) {
-      this.params = params;
+    this.params = params;
   }
 
-  async explore(page = 1, pageCallback?: (entries: any[], index: number, results: any[]) => Promise<void>): Promise<object[]> {
+  async explore(
+    page = 1,
+    pageCallback?: (entries: any[], index: number, results: any[]) => Promise<void>,
+  ): Promise<object[]> {
     const startTime = new Date().getTime();
 
     let results = [];
 
-    while(page <= this.params.nbMaxPages) {
+    while (page <= this.params.nbMaxPages) {
       console.log(`${this.params.url}: Requesting page ${page}/${this.params.nbMaxPages}.`);
 
       const res = await this.fetch(page);
@@ -42,7 +45,7 @@ export default abstract class PagingExplorer implements Explorer {
         const text = await res.text();
 
         if (text) {
-          const { document } = (new JSDOM(text)).window;
+          const { document } = new JSDOM(text).window;
 
           const entries = this.process(document, results);
 
@@ -55,7 +58,6 @@ export default abstract class PagingExplorer implements Explorer {
             console.log(`${this.params.url}: No entries found on page ${page}`);
             break;
           }
-
         } else {
           console.log(`${this.params.url}: No more results`);
           break;
