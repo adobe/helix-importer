@@ -50,7 +50,7 @@ export default class DOMUtils {
       if (tag.innerHTML === '.' || tag.innerHTML === '. ' || tag.innerHTML === ':' || tag.innerHTML === ': ') {
         tag.replaceWith(JSDOM.fragment(tag.innerHTML));
       } else {
-        let innerHTML = tag.innerHTML;
+        const innerHTML = tag.innerHTML;
         if (tag.previousSibling) {
           const previous = tag.previousSibling;
           if (
@@ -68,20 +68,26 @@ export default class DOMUtils {
             }
             tag.remove();
           }
-        } else {
-          if (innerHTML) {
-            if (innerHTML.lastIndexOf(' ') === innerHTML.length - 1) {
-              // move trailing space to a new text node outside of current element
-              innerHTML = tag.innerHTML = innerHTML.slice(0, innerHTML.length - 1);
-              tag.after(JSDOM.fragment('<span> </span>'));
-            }
+        }
+      }
+    }
 
-            if (innerHTML.indexOf(' ') === 0) {
-              // move leading space to a new text node outside of current element
-              tag.innerHTML = innerHTML.slice(1);
-              tag.before(JSDOM.fragment('<span> </span>'));
-            }
-          }
+    tags = [...document.querySelectorAll(tagName)];
+    // extra leading and trailing spaces into a dedicated span
+    for (let i = tags.length - 1; i >= 0; i -= 1) {
+      const tag = tags[i];
+      let innerHTML = tag.innerHTML;
+      if (innerHTML) {
+        if (innerHTML.lastIndexOf(' ') === innerHTML.length - 1) {
+          // move trailing space to a new text node outside of current element
+          innerHTML = tag.innerHTML = innerHTML.slice(0, innerHTML.length - 1);
+          tag.after(JSDOM.fragment('<span> </span>'));
+        }
+
+        if (innerHTML.indexOf(' ') === 0) {
+          // move leading space to a new text node outside of current element
+          tag.innerHTML = innerHTML.slice(1);
+          tag.before(JSDOM.fragment('<span> </span>'));
         }
       }
     }

@@ -25,6 +25,8 @@
             "name": "Mocha Current File",
             "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
             "args": [
+                "-r",
+                "ts-node/register",
                 "--timeout",
                 "999999",
                 "--colors",
