@@ -165,7 +165,7 @@ export default class DOMUtils {
       const dataSrc = iframe.getAttribute('data-src');
       const url = dataSrc ? dataSrc : src;
       if (url) {
-        iframe.after(JSDOM.fragment(`<hlxembed>${url}</hlxembed>`));
+        iframe.after(JSDOM.fragment(`<table><tr><th>Embed</th></tr><tr><td>${url}</td></tr></table>`));
       }
       iframe.remove();
     });
