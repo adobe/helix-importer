@@ -223,14 +223,21 @@ export default abstract class PageImporter implements Importer {
       'i',
       'label',
       's',
-      'small' /*'span'*/,
-      ,
+      'small',
+      /*'span'*/,
       'strong',
       'sub',
       'sup',
       'u',
       'var',
     ].forEach((tag) => DOMUtils.reviewInlineElement(document, tag));
+
+    // u a tag combo is not handled properly by unified js and is discouraged anyway -> remove the u
+    document.querySelectorAll('u a').forEach(a => {
+      const p = a.parentNode;
+      p.before(a);
+      p.remove();
+    });
 
     const imgs = document.querySelectorAll('img');
     imgs.forEach((img) => {
