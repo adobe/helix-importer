@@ -233,7 +233,7 @@ export default abstract class PageImporter implements Importer {
     ].forEach((tag) => DOMUtils.reviewInlineElement(document, tag));
 
     // u a tag combo is not handled properly by unified js and is discouraged anyway -> remove the u
-    document.querySelectorAll('u a').forEach(a => {
+    document.querySelectorAll('u > a').forEach(a => {
       const p = a.parentNode;
       p.before(a);
       p.remove();
