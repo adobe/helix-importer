@@ -159,13 +159,17 @@ export default class DOMUtils {
     });
   }
 
+  static generateEmbed(url) {
+    return JSDOM.fragment(`<table><tr><th>Embed</th></tr><tr><td>${url}</td></tr></table>`)
+  }
+
   static replaceEmbeds(document: Document) {
     document.querySelectorAll('iframe').forEach((iframe) => {
       const src = iframe.getAttribute('src');
       const dataSrc = iframe.getAttribute('data-src');
       const url = dataSrc ? dataSrc : src;
       if (url) {
-        iframe.after(JSDOM.fragment(`<table><tr><th>Embed</th></tr><tr><td>${url}</td></tr></table>`));
+        iframe.after(DOMUtils.generateEmbed(url));
       }
       iframe.remove();
     });
