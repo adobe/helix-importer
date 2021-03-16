@@ -267,7 +267,16 @@ export default abstract class PageImporter implements Importer {
   }
 
   postProcessMD(md: string): string {
-    return md.replace(/\\\\\~/gm, '\\~');
+    let ret = md.replace(/\\\\\~/gm, '\\~');
+    
+    const hlxReplaceTags = ret.match(/hlx_replaceTag\(.*?\)/gm).filter((i, p, s) => s.indexOf(i) === p);
+    hlxReplaceTags.forEach(r => {
+      const by = r.substring(0, r.length -1).split('(')[1];
+      const regex = new RegExp(r.replace('(', '\\(').replace(')', '\\)'), 'gm');
+      ret = ret.replace(regex, `<${by}>`);
+    });
+        
+    return ret;
   }
 
   async download(url: string): Promise<string> {
