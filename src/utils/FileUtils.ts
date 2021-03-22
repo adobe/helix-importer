@@ -19,7 +19,8 @@ export default class FileUtils {
       .toLowerCase()
       .replace(/\./gm, '')
       .replace(/&/gm, '')
-      .replace(/\s/g, '-');
+      .replace(/\s/g, '-')
+      .replace(/-{2,}/g, '-');
   }
 
   static async asyncForEach(array, callback) {
