@@ -129,6 +129,7 @@ export default abstract class PageImporter implements Importer {
       if (!isEmbed && src && src !== '' && (contents.indexOf(src) !== -1 || contents.indexOf(decodeURI(src)) !== -1)) {
         assets.push({
           url: src,
+          append: '#image.png'
         });
       }
     });
