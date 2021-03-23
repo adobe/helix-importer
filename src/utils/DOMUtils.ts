@@ -160,7 +160,7 @@ export default class DOMUtils {
   }
 
   static generateEmbed(url) {
-    return JSDOM.fragment(`<table><tr><th>Embed</th></tr><tr><td>${url}</td></tr></table>`)
+    return JSDOM.fragment(`<table><tr><th>Embed</th></tr><tr><td><a href="${url}">${url}</a></td></tr></table>`)
   }
 
   static replaceEmbeds(document: Document) {
