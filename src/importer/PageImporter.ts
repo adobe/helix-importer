@@ -181,16 +181,18 @@ export default abstract class PageImporter implements Importer {
     });
 
     // upload all assets
-    await Utils.asyncForEach(assets, async (asset) => {
+    const current = this;
+    await Promise.all(assets.map((asset) => {
       const u = new URL(decodeURI(asset.url), url);
-      let newSrc = await this.upload(u.href);
-      if (asset.append) {
-        newSrc = `${newSrc}${asset.append}`;
-      }
-      contents = contents
-        .replace(new RegExp(`${asset.url.replace('.', '\\.').replace('?', '\\?')}`, 'gm'), newSrc)
-        .replace(new RegExp(`${decodeURI(asset.url).replace('.', '\\.')}`, 'gm'), newSrc);
-    });
+      return current.upload(u.href).then(newSrc => {
+        if (asset.append) {
+          newSrc = `${newSrc}${asset.append}`;
+        }
+        contents = contents
+          .replace(new RegExp(`${asset.url.replace('.', '\\.').replace('?', '\\?')}`, 'gm'), newSrc)
+          .replace(new RegExp(`${decodeURI(asset.url).replace('.', '\\.')}`, 'gm'), newSrc);
+      });
+    }));
 
     if (resource.prepend) {
       contents = resource.prepend + contents;
