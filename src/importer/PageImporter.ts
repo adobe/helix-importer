@@ -46,15 +46,22 @@ export default abstract class PageImporter implements Importer {
   async upload(src) {
     let blob;
 
-    try {
-      blob = await this.params.blobHandler.getBlob(src);
-    } catch (error) {
-      // ignore non exiting images, otherwise throw an error
-      if (error.message.indexOf('StatusCodeError: 404') === -1) {
-        this.logger.error(`Cannot upload blob for ${src}: ${error.message}`);
-        throw new Error(`Cannot upload blob for ${src}: ${error.message}`);
+    let retry = 3;
+    do {
+      try {
+        blob = await this.params.blobHandler.getBlob(src);
+        retry = 0;
+      } catch (error) {
+        retry--;
+        if (retry === 0) {
+          // ignore non exiting images, otherwise throw an error
+          if (error.message.indexOf('StatusCodeError: 404') === -1) {
+            this.logger.error(`Cannot upload blob after 3 retries for ${src}: ${error.message}`);
+            throw new Error(`Cannot upload blob after 3 retries for ${src}: ${error.message}`);
+          }
+        }
       }
-    }
+    } while (retry > 0);
 
     if (blob) {
       return blob.uri;
