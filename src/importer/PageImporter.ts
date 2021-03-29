@@ -269,6 +269,13 @@ export default abstract class PageImporter implements Importer {
         // we cannot handle b64 asset for now, remove
         img.remove();
       }
+
+      const alt = img.getAttribute('alt');
+      const title = img.getAttribute('title');
+      if (title  && title === alt) {
+        // a11y: image title has little value if it's the same than the alt text.
+        img.removeAttribute('title');
+      }
     });
   }
 
