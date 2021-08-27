@@ -187,19 +187,31 @@ export default abstract class PageImporter implements Importer {
       }
     });
 
-    // upload all assets
-    const current = this;
-    await Promise.all(assets.map((asset) => {
-      const u = new URL(decodeURI(asset.url), url);
-      return current.upload(u.href).then(newSrc => {
-        if (asset.append) {
-          newSrc = `${newSrc}${asset.append}`;
-        }
-        contents = contents
-          .replace(new RegExp(`${asset.url.replace('.', '\\.').replace('?', '\\?')}`, 'gm'), newSrc)
-          .replace(new RegExp(`${decodeURI(asset.url).replace('.', '\\.')}`, 'gm'), newSrc);
+    const patchSrcInContent = (c, oldSrc, newSrc) => {
+      return contents
+            .replace(new RegExp(`${oldSrc.replace('.', '\\.').replace('?', '\\?')}`, 'gm'), newSrc)
+            .replace(new RegExp(`${decodeURI(oldSrc).replace('.', '\\.')}`, 'gm'), newSrc);
+    }
+
+    if (!this.params.skipAssetsUpload) {
+      // upload all assets
+      const current = this;
+      await Promise.all(assets.map((asset) => {
+        const u = new URL(decodeURI(asset.url), url);
+        return current.upload(u.href).then(newSrc => {
+          if (asset.append) {
+            newSrc = `${newSrc}${asset.append}`;
+          }
+          contents = patchSrcInContent(contents, asset.url, newSrc);
+        });
+      }));
+    } else {
+      // still need to adjust assets url (from relative to absolute)
+      assets.forEach((asset) => {
+        const u = new URL(decodeURI(asset.url), url);
+        contents = patchSrcInContent(contents, asset.url, u.toString());
       });
-    }));
+    }
 
     if (resource.prepend) {
       contents = resource.prepend + contents;
