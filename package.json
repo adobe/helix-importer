@@ -29,6 +29,8 @@
   "license": "ISC",
   "dependencies": {
     "@adobe/helix-documents-support": "git+https://github.com/adobe/helix-documents-support.git",
+    "@adobe/helix-markdown-support": "github:adobe/helix-markdown-support",
+    "@adobe/helix-word2md": "git+https://github.com/adobe/helix-word2md.git",
     "@types/mocha": "8.0.4",
     "@types/node-fetch": "2.5.7",
     "fs-extra": "9.0.1",
@@ -37,6 +39,8 @@
     "node-fetch": "2.6.1",
     "rehype-parse": "7.0.1",
     "rehype-remark": "8.0.0",
+    "remark-gfm": "1.0.0",
+    "remark-parse": "9.0.0",
     "remark-stringify": "8.1.1",
     "sanitize-filename": "1.6.3",
     "ts-node": "9.0.0",

@@ -30,6 +30,10 @@ import rehype2remark from 'rehype-remark';
 import stringify from 'remark-stringify';
 import all from 'hast-util-to-mdast/lib/all';
 import fs from 'fs-extra';
+import remark from 'remark-parse';
+import gfm from 'remark-gfm';
+import { remarkMatter } from '@adobe/helix-markdown-support';
+import mdast2docx from '@adobe/helix-word2md/src/mdast2docx';
 
 export default abstract class PageImporter implements Importer {
   params: PageImporterParams;
@@ -69,6 +73,20 @@ export default abstract class PageImporter implements Importer {
       this.logger.error(`Asset could not be uploaded to blob handler: ${src}`);
     }
     return src;
+  }
+
+  async convertToDocx(file) {
+    const { path: p, content } = file;
+    const docx = p.replace(/\.md$/, '.docx');
+
+    const mdast = unified()
+      .use(remark as any, { position: false })
+      .use(gfm as any)
+      .use(remarkMatter)
+      .parse(content);
+
+    const buffer = await mdast2docx(mdast);
+    await this.params.storageHandler.put(docx, buffer);
   }
 
   async createMarkdownFile(resource: PageImporterResource, url: string) {
@@ -187,19 +205,31 @@ export default abstract class PageImporter implements Importer {
       }
     });
 
-    // upload all assets
-    const current = this;
-    await Promise.all(assets.map((asset) => {
-      const u = new URL(decodeURI(asset.url), url);
-      return current.upload(u.href).then(newSrc => {
-        if (asset.append) {
-          newSrc = `${newSrc}${asset.append}`;
-        }
-        contents = contents
-          .replace(new RegExp(`${asset.url.replace('.', '\\.').replace('?', '\\?')}`, 'gm'), newSrc)
-          .replace(new RegExp(`${decodeURI(asset.url).replace('.', '\\.')}`, 'gm'), newSrc);
+    const patchSrcInContent = (c, oldSrc, newSrc) => {
+      return contents
+            .replace(new RegExp(`${oldSrc.replace('.', '\\.').replace('?', '\\?')}`, 'gm'), newSrc)
+            .replace(new RegExp(`${decodeURI(oldSrc).replace('.', '\\.')}`, 'gm'), newSrc);
+    }
+
+    if (!this.params.skipAssetsUpload) {
+      // upload all assets
+      const current = this;
+      await Promise.all(assets.map((asset) => {
+        const u = new URL(decodeURI(asset.url), url);
+        return current.upload(u.href).then(newSrc => {
+          if (asset.append) {
+            newSrc = `${newSrc}${asset.append}`;
+          }
+          contents = patchSrcInContent(contents, asset.url, newSrc);
+        });
+      }));
+    } else {
+      // still need to adjust assets url (from relative to absolute)
+      assets.forEach((asset) => {
+        const u = new URL(decodeURI(asset.url), url);
+        contents = patchSrcInContent(contents, asset.url, u.toString());
       });
-    }));
+    }
 
     if (resource.prepend) {
       contents = resource.prepend + contents;
@@ -210,7 +240,10 @@ export default abstract class PageImporter implements Importer {
     await this.params.storageHandler.put(p, contents);
     this.logger.log(`MD file created: ${p}`);
 
-    return p;
+    return {
+      path: p,
+      content: contents
+    };
   }
 
   cleanup(document: Document) {
@@ -357,7 +390,14 @@ export default abstract class PageImporter implements Importer {
       await Utils.asyncForEach(entries, async (entry) => {
         const file = await this.createMarkdownFile(entry, url);
         entry.source = url;
-        entry.file = file;
+        entry.file = file.path; // deprecated
+        entry.md = file.path;
+
+        if (!this.params.skipDocxConversion) {
+          const docx = await this.convertToDocx(file);
+          entry.docx = docx;
+        }
+        
         results.push(entry);
       });
     }
