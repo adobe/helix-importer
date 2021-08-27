@@ -19,5 +19,6 @@ export default class PageImporterParams implements ImporterParams {
   storageHandler: StorageHandler;
   blobHandler: BlobHandler;
   cache?: string;
-  skipAssetsUpload?: boolean
+  skipAssetsUpload?: boolean;
+  skipDocxConversion?: boolean;
 }
