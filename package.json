@@ -30,7 +30,7 @@
   "dependencies": {
     "@adobe/helix-documents-support": "3.4.3",
     "@adobe/helix-markdown-support": "2.0.1",
-    "@adobe/helix-word2md": "3.1.1",
+    "@adobe/helix-word2md": "git+https://github.com/adobe/helix-word2md.git",
     "@types/mocha": "8.0.4",
     "@types/node-fetch": "2.5.7",
     "form-data": "4.0.0",
