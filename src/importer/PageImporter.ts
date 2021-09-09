@@ -87,6 +87,7 @@ export default abstract class PageImporter implements Importer {
 
     const buffer = await mdast2docx(mdast);
     await this.params.storageHandler.put(docx, buffer);
+    return docx;
   }
 
   async createMarkdownFile(resource: PageImporterResource, url: string) {
