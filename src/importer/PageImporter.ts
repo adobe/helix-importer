@@ -85,7 +85,7 @@ export default abstract class PageImporter implements Importer {
       .use(remarkMatter)
       .parse(content);
 
-    const buffer = await mdast2docx(mdast);
+    const buffer = await mdast2docx(mdast, this.logger);
     await this.params.storageHandler.put(docx, buffer);
     return docx;
   }
