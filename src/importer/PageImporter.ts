@@ -42,7 +42,7 @@ export default abstract class PageImporter implements Importer {
 
   constructor(params: PageImporterParams) {
     this.params = params;
-    this.logger = console;
+    this.logger = params.logger || console;
 
     this.useCache = !!params.cache;
   }
