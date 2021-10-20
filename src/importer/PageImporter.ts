@@ -75,10 +75,7 @@ export default abstract class PageImporter implements Importer {
     return src;
   }
 
-  async convertToDocx(file) {
-    const { path: p, content } = file;
-    const docx = p.replace(/\.md$/, '.docx');
-
+  async convertToDocx(docxPath, content) {
     const mdast = unified()
       .use(remark as any, { position: false })
       .use(gfm as any)
@@ -86,15 +83,14 @@ export default abstract class PageImporter implements Importer {
       .parse(content);
 
     const buffer = await mdast2docx(mdast, this.logger);
-    await this.params.storageHandler.put(docx, buffer);
-    return docx;
+    return this.params.storageHandler.put(docxPath, buffer);
   }
 
-  async createMarkdownFile(resource: PageImporterResource, url: string) {
+  async createMarkdown(resource: PageImporterResource, url: string) {
     const name = resource.name;
     const directory = resource.directory;
     const sanitizedName = FileUtils.sanitizeFilename(name);
-    this.logger.log(`Creating a new MD file: ${directory}/${sanitizedName}.md`);
+    this.logger.log(`Computing Markdonw for ${directory}/${sanitizedName}`);
 
     const processor = unified()
       .use(parse, { emitParseErrors: true })
@@ -142,7 +138,6 @@ export default abstract class PageImporter implements Importer {
       });
 
     const file = await processor.process(resource.document.innerHTML);
-    const p = `${directory}/${sanitizedName}.md`;
     let contents = file.contents.toString();
 
     // process image links
@@ -238,11 +233,8 @@ export default abstract class PageImporter implements Importer {
 
     contents = this.postProcessMD(contents);
 
-    await this.params.storageHandler.put(p, contents);
-    this.logger.log(`MD file created: ${p}`);
-
     return {
-      path: p,
+      path: `${directory}/${sanitizedName}`,
       content: contents
     };
   }
@@ -389,14 +381,22 @@ export default abstract class PageImporter implements Importer {
       this.postProcess(document);
 
       await Utils.asyncForEach(entries, async (entry) => {
-        const file = await this.createMarkdownFile(entry, url);
+        const res = await this.createMarkdown(entry, url);
         entry.source = url;
-        entry.file = file.path; // deprecated
-        entry.md = file.path;
+        entry.markdown = res.content;
+
+        if (!this.params.skipMDFileCreation) {
+          const mdPath =  `${res.path}.md`;
+          await this.params.storageHandler.put(mdPath, res.content);
+          this.logger.log(`MD file created: ${mdPath}`);
+
+          entry.md = mdPath;
+        }
 
         if (!this.params.skipDocxConversion) {
-          const docx = await this.convertToDocx(file);
-          entry.docx = docx;
+          const docxPath = `${res.path}.docx`;
+          await this.convertToDocx(docxPath, res.content);
+          entry.docx = docxPath;
         }
         
         results.push(entry);

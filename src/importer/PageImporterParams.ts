@@ -21,5 +21,6 @@ export default class PageImporterParams implements ImporterParams {
   cache?: string;
   skipAssetsUpload?: boolean;
   skipDocxConversion?: boolean;
+  skipMDFileCreation?: boolean;
   logger?: any;
 }
