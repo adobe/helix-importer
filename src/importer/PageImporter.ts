@@ -26,6 +26,7 @@ import { JSDOM, Document } from 'jsdom';
 import path from 'path';
 import unified from 'unified';
 import parse from 'rehype-parse';
+import toHtml from 'hast-util-to-html'
 import rehype2remark from 'rehype-remark';
 import stringify from 'remark-stringify';
 import all from 'hast-util-to-mdast/lib/all';
@@ -98,6 +99,7 @@ export default abstract class PageImporter implements Importer {
         handlers: {
           hlxembed: (h, node) => h(node, 'hlxembed', node.children[0].value),
           u: (h, node) => h(node, 'u', all(h, node)),
+          table: (h, node) => h(node, 'table', toHtml(node)),
         },
       })
       .use(stringify, {
@@ -113,6 +115,11 @@ export default abstract class PageImporter implements Importer {
         // use custom tag and rendering because text is always encoded by default
         // we need the raw url
         processor.Compiler.prototype.visitors.hlxembed = (node) => node.value;
+      })
+      .use(() => {
+        processor.Compiler.prototype.visitors.table = (node) => {
+          return node.value;
+        }
       })
       .use(() => {
         processor.Compiler.prototype.visitors.u = (node) => {
