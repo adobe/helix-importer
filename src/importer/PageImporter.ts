@@ -292,7 +292,7 @@ export default abstract class PageImporter implements Importer {
         img.setAttribute('src', dataSrc);
       }
 
-      if (dataSrc && src.indexOf('data:') === 0) {
+      if (dataSrc && src && src.indexOf('data:') === 0) {
         // b64 img, try replace with dataSrc
         img.setAttribute('src', dataSrc);
       }
