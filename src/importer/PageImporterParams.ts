@@ -13,13 +13,9 @@
 import { StorageHandler } from '../storage/StorageHandler';
 import { ImporterParams } from './Importer';
 
-import { BlobHandler } from '@adobe/helix-documents-support';
-
 export default class PageImporterParams implements ImporterParams {
   storageHandler: StorageHandler;
-  blobHandler: BlobHandler;
   cache?: string;
-  skipAssetsUpload?: boolean;
   skipDocxConversion?: boolean;
   skipMDFileCreation?: boolean;
   logger?: any;

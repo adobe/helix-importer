@@ -29,12 +29,12 @@ import parse from 'rehype-parse';
 import toHtml from 'hast-util-to-html'
 import rehype2remark from 'rehype-remark';
 import stringify from 'remark-stringify';
-import all from 'hast-util-to-mdast/lib/all';
+import all from 'hast-util-to-mdast/lib/all.js';
 import fs from 'fs-extra';
 import remark from 'remark-parse';
 import gfm from 'remark-gfm';
 import { remarkMatter } from '@adobe/helix-markdown-support';
-import mdast2docx from '@adobe/helix-word2md/src/mdast2docx';
+import { toDocx } from '@adobe/helix-md2docx';
 
 export default abstract class PageImporter implements Importer {
   params: PageImporterParams;
@@ -48,34 +48,6 @@ export default abstract class PageImporter implements Importer {
     this.useCache = !!params.cache;
   }
 
-  async upload(src) {
-    let blob;
-
-    let retry = 3;
-    do {
-      try {
-        blob = await this.params.blobHandler.getBlob(src);
-        retry = 0;
-      } catch (error) {
-        retry--;
-        if (retry === 0) {
-          // ignore non exiting images, otherwise throw an error
-          if (error.message.indexOf('StatusCodeError: 404') === -1) {
-            this.logger.error(`Cannot upload blob after 3 retries for ${src}: ${error.message}`);
-            throw new Error(`Cannot upload blob after 3 retries for ${src}: ${error.message}`);
-          }
-        }
-      }
-    } while (retry > 0);
-
-    if (blob) {
-      return blob.uri;
-    } else {
-      this.logger.error(`Asset could not be uploaded to blob handler: ${src}`);
-    }
-    return src;
-  }
-
   async convertToDocx(docxPath, content) {
     const mdast = unified()
       .use(remark as any, { position: false })
@@ -83,7 +55,7 @@ export default abstract class PageImporter implements Importer {
       .use(remarkMatter)
       .parse(content);
 
-    const buffer = await mdast2docx(mdast, this.logger);
+    const buffer = await toDocx(mdast, this.logger);
     return this.params.storageHandler.put(docxPath, buffer);
   }
 
@@ -214,25 +186,11 @@ export default abstract class PageImporter implements Importer {
             .replace(new RegExp(`${decodeURI(oldSrc).replace('.', '\\.')}`, 'gm'), newSrc);
     }
 
-    if (!this.params.skipAssetsUpload) {
-      // upload all assets
-      const current = this;
-      await Promise.all(assets.map((asset) => {
-        const u = new URL(decodeURI(asset.url), url);
-        return current.upload(u.href).then(newSrc => {
-          if (asset.append) {
-            newSrc = `${newSrc}${asset.append}`;
-          }
-          contents = patchSrcInContent(contents, asset.url, newSrc);
-        });
-      }));
-    } else {
-      // still need to adjust assets url (from relative to absolute)
-      assets.forEach((asset) => {
-        const u = new URL(decodeURI(asset.url), url);
-        contents = patchSrcInContent(contents, asset.url, u.toString());
-      });
-    }
+    // adjust assets url (from relative to absolute)
+    assets.forEach((asset) => {
+      const u = new URL(decodeURI(asset.url), url);
+      contents = patchSrcInContent(contents, asset.url, u.toString());
+    });
 
     if (resource.prepend) {
       contents = resource.prepend + contents;

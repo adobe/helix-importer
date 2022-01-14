@@ -4,10 +4,11 @@
   "description": "Helix importer tools",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "type": "module",
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "test": "mocha -r ts-node/register test/**/*.spec.ts",
-    "build": "tsc --declaration",
+    "build": "ttsc --declaration",
     "format": "prettier --write \"src/**/*.ts\"",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
@@ -20,17 +21,18 @@
   ],
   "devDependencies": {
     "@types/node": "14.14.10",
+    "@zoltu/typescript-transformer-append-js-extension": "^1.0.1",
     "mock-fs": "4.13.0",
     "prettier": "2.2.1",
     "tslint": "6.1.3",
-    "tslint-config-prettier": "1.18.0"
+    "tslint-config-prettier": "1.18.0",
+    "ttypescript": "^1.5.13"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@adobe/helix-documents-support": "3.4.3",
     "@adobe/helix-markdown-support": "2.0.1",
-    "@adobe/helix-word2md": "git+https://github.com/adobe/helix-word2md.git",
+    "@adobe/helix-md2docx": "1.0.0",
     "@types/mocha": "8.0.4",
     "@types/node-fetch": "2.5.7",
     "form-data": "4.0.0",
