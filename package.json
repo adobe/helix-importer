@@ -26,6 +26,7 @@
   "dependencies": {
     "@adobe/helix-markdown-support": "2.0.1",
     "@adobe/helix-md2docx": "file:../helix-md2docx",
+    "@kptdobe/helix-md2docx": "git+https://github.com/kptdobe/helix-md2docx.git",
     "form-data": "4.0.0",
     "fs-extra": "9.0.1",
     "hast-util-to-html": "^8.0.3",
