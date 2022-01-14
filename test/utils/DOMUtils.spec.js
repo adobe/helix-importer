@@ -10,15 +10,17 @@
  * governing permissions and limitations under the License.
  */
 
-import DOMUtils from '../../src/utils/DOMUtils';
+/* eslint-disable no-shadow */
 
 import { strictEqual } from 'assert';
-import { describe, it } from "mocha";
+import { describe, it } from 'mocha';
 
 import { JSDOM } from 'jsdom';
 
+import DOMUtils from '../../src/utils/DOMUtils.js';
+
 describe('DOMUtils#reviewInlineElement tests', () => {
-  const test = (input: string, tag: string, expected: string) => {
+  const test = (input, tag, expected) => {
     const { document } = (new JSDOM(input)).window;
     DOMUtils.reviewInlineElement(document, tag);
     strictEqual(document.body.innerHTML, expected);
@@ -45,7 +47,7 @@ describe('DOMUtils#reviewInlineElement tests', () => {
   });
 
   it('reviewInlineElement cleans up &nbsp;', () => {
-    test('<p><strong>So</strong><strong>me</strong><strong> – </strong><strong>complicated&nbsp;</strong><strong>setup&nbsp;</strong><strong>found&nbsp;</strong><strong>on&nbsp;</strong><strong>real site.</strong></p>', 'strong', '<p><strong>Some – complicated setup found on real site.</strong></p>');
+    test('<p><strong>So</strong><strong>me</strong><strong> - </strong><strong>complicated&nbsp;</strong><strong>setup&nbsp;</strong><strong>found&nbsp;</strong><strong>on&nbsp;</strong><strong>real site.</strong></p>', 'strong', '<p><strong>Some – complicated setup found on real site.</strong></p>');
   });
 
   it('reviewInlineElement nested tags', () => {
@@ -73,11 +75,11 @@ describe('DOMUtils#reviewInlineElement tests', () => {
 });
 
 describe('DOMUtils#reviewParagraphs tests', () => {
-  const test = (input: string, expected: string) => {
+  const test = (input, expected) => {
     const { document } = (new JSDOM(input)).window;
     DOMUtils.reviewParagraphs(document);
     strictEqual(document.body.innerHTML, expected);
-  }
+  };
 
   it('reviewParagraphs remove useless paragraphs', () => {
     test('<p><strong><em>&nbsp;</em></strong></p><p>usefull</p>', '<p>usefull</p>');
@@ -96,7 +98,7 @@ describe('DOMUtils#reviewParagraphs tests', () => {
 });
 
 describe('DOMUtils#reviewHeadings tests', () => {
-  const test = (input: string, expected: string) => {
+  const test = (input, expected) => {
     const { document } = (new JSDOM(input)).window;
     DOMUtils.reviewHeadings(document);
     strictEqual(document.body.innerHTML, expected);
@@ -124,7 +126,7 @@ describe('DOMUtils#reviewHeadings tests', () => {
 });
 
 describe('DOMUtils#escapeSpecialCharacters tests', () => {
-  const test = (input: string, expected: string) => {
+  const test = (input, expected) => {
     const { document } = (new JSDOM(input)).window;
     DOMUtils.escapeSpecialCharacters(document);
     strictEqual(document.body.innerHTML, expected);
@@ -136,7 +138,7 @@ describe('DOMUtils#escapeSpecialCharacters tests', () => {
 });
 
 describe('DOMUtils#remove tests', () => {
-  const test = (input: string, selectors, expected: string) => {
+  const test = (input, selectors, expected) => {
     const { document } = (new JSDOM(input)).window;
     DOMUtils.remove(document, selectors);
     strictEqual(document.body.innerHTML, expected);
@@ -152,7 +154,7 @@ describe('DOMUtils#remove tests', () => {
 });
 
 describe('DOMUtils#removeCommments tests', () => {
-  const test = (input: string, expected: string) => {
+  const test = (input, expected) => {
     const { document } = (new JSDOM(input)).window;
     DOMUtils.removeComments(document);
     strictEqual(document.body.innerHTML, expected);
@@ -170,12 +172,11 @@ describe('DOMUtils#removeCommments tests', () => {
   });
 
   describe('DOMUtils#removeSpans tests', () => {
-    // tslint:disable-next-line: no-shadowed-variable
-    const test = (input: string, expected: string) => {
+    const test = (input, expected) => {
       const { document } = (new JSDOM(input)).window;
       DOMUtils.removeSpans(document);
       strictEqual(document.body.innerHTML, expected);
-    }
+    };
 
     it('remove spans', () => {
       // do nothing
@@ -190,10 +191,9 @@ describe('DOMUtils#removeCommments tests', () => {
   });
 
   describe('DOMUtils#removeNoscripts tests', () => {
-    // tslint:disable-next-line: no-shadowed-variable
-    const test = (input: string, expected: string) => {
+    const test = (input, expected) => {
       strictEqual(DOMUtils.removeNoscripts(input), expected);
-    }
+    };
 
     it('remove no scripts', () => {
       // do nothing
@@ -202,17 +202,16 @@ describe('DOMUtils#removeCommments tests', () => {
       // remove noscript
       test('<body>Do A<noscript>Do Z</noscript></body>', '<body>Do A</body>');
       test('<body>Do A<noscript>Do Z</noscript> but also do B<noscript>and X</noscript></body>', '<body>Do A but also do B</body>');
-      test('<body>Do A<noscript>Do Z\n Do X</noscript> but also do B<noscript>and W \ and Y</noscript></body>', '<body>Do A but also do B</body>');
+      test('<body>Do A<noscript>Do Z\n Do X</noscript> but also do B<noscript>and W \n and Y</noscript></body>', '<body>Do A but also do B</body>');
     });
   });
 
   describe('DOMUtils#replaceByCaptions tests', () => {
-    // tslint:disable-next-line: no-shadowed-variable
-    const test = (input: string, selectors: string[], expected: string) => {
+    const test = (input, selectors, expected) => {
       const { document } = (new JSDOM(input)).window;
-      DOMUtils.replaceByCaptions(document, selectors)
+      DOMUtils.replaceByCaptions(document, selectors);
       strictEqual(document.body.innerHTML, expected);
-    }
+    };
 
     it('replace by captions', () => {
       // do nothing
@@ -224,12 +223,11 @@ describe('DOMUtils#removeCommments tests', () => {
   });
 
   describe('DOMUtils#replaceEmbeds', () => {
-    // tslint:disable-next-line: no-shadowed-variable
-    const test = (input: string, expected: string) => {
+    const test = (input, expected) => {
       const { document } = (new JSDOM(input)).window;
-      DOMUtils.replaceEmbeds(document)
+      DOMUtils.replaceEmbeds(document);
       strictEqual(document.body.innerHTML, expected);
-    }
+    };
 
     it('replace embeds', () => {
       // do nothing
@@ -237,9 +235,9 @@ describe('DOMUtils#removeCommments tests', () => {
     });
 
     it('replace embeds deals with iframes', () => {
-      test('<p>Some content</p><iframe src="https://www.youtube.com/xyz"></iframe>', '<p>Some content</p><hlxembed>https://www.youtube.com/xyz</hlxembed>');
-      test('<p>Some content</p><iframe data-src="https://www.youtube.com/xyz"></iframe>', '<p>Some content</p><hlxembed>https://www.youtube.com/xyz</hlxembed>');
-      test('<p>Some content</p><iframe data-src="https://www.youtube.com/data-src" src="https://www.youtube.com/src"></iframe>', '<p>Some content</p><hlxembed>https://www.youtube.com/data-src</hlxembed>');
+      test('<p>Some content</p><iframe src="https://www.youtube.com/xyz"></iframe>', '<p>Some content</p><table><tbody><tr><th>Embed</th></tr><tr><td><a href="https://www.youtube.com/xyz">https://www.youtube.com/xyz</a></td></tr></tbody></table>');
+      test('<p>Some content</p><iframe data-src="https://www.youtube.com/xyz"></iframe>', '<p>Some content</p><table><tbody><tr><th>Embed</th></tr><tr><td><a href="https://www.youtube.com/xyz">https://www.youtube.com/xyz</a></td></tr></tbody></table>');
+      test('<p>Some content</p><iframe data-src="https://www.youtube.com/data-src" src="https://www.youtube.com/src"></iframe>', '<p>Some content</p><table><tbody><tr><th>Embed</th></tr><tr><td><a href="https://www.youtube.com/data-src">https://www.youtube.com/data-src</a></td></tr></tbody></table>');
     });
 
     it('replace embeds deals video tag / content blocks', () => {
@@ -252,12 +250,11 @@ describe('DOMUtils#removeCommments tests', () => {
   });
 
   describe('DOMUtils#encodeImagesForTable', () => {
-    // tslint:disable-next-line: no-shadowed-variable
-    const test = (input: string, expected: string) => {
+    const test = (input, expected) => {
       const { document } = (new JSDOM(input)).window;
-      DOMUtils.encodeImagesForTable(document)
+      DOMUtils.encodeImagesForTable(document);
       strictEqual(document.body.innerHTML, expected);
-    }
+    };
 
     it('encode images for table', () => {
       // do nothing

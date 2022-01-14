@@ -1,18 +1,28 @@
-/* tslint:disable: max-classes-per-file */
+/*
+ * Copyright 2020 Adobe. All rights reserved.
+ * This file is licensed to you under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License. You may obtain a copy
+ * of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 
-import PagingExplorer from "../../src/explorer/PagingExplorer";
-import PagingExplorerParams from "../../src/explorer/PagingExplorerParams";
+/* eslint-disable max-classes-per-file, class-methods-use-this */
 
 import { deepStrictEqual, strictEqual } from 'assert';
-import { describe, it } from "mocha";
+import { describe, it } from 'mocha';
 
 import { Response } from 'node-fetch';
-import { Document } from 'jsdom';
+
+import PagingExplorer from '../../src/explorer/PagingExplorer.js';
 
 describe('PagingExplorer tests', () => {
-  const params: PagingExplorerParams = {
+  const params = {
     url: 'testdest',
-    nbMaxPages: 3
+    nbMaxPages: 3,
   };
 
   it('fetch and process are called 3 times if end not reached', async () => {
@@ -20,18 +30,18 @@ describe('PagingExplorer tests', () => {
     let processCalled = 0;
 
     class Test extends PagingExplorer {
-      async fetch(_page: number): Promise<Response> {
-        fetchCalled++;
+      async fetch() {
+        fetchCalled += 1;
         return new Response('test');
       }
 
-      process(_document: Document): object[] {
-        processCalled++;
+      process() {
+        processCalled += 1;
         return [{
-          a: 1
+          a: 1,
         }];
       }
-    };
+    }
 
     const se = new Test(params);
     await se.explore();
@@ -45,21 +55,21 @@ describe('PagingExplorer tests', () => {
     let processCalled = 0;
 
     class Test extends PagingExplorer {
-      async fetch(_page: number): Promise<Response> {
-        fetchCalled++;
+      async fetch() {
+        fetchCalled += 1;
         if (fetchCalled > 1) {
           return new Response('reached the end', { status: 404 });
         }
         return new Response('test');
       }
 
-      process(_document: Document): object[] {
-        processCalled++;
+      process() {
+        processCalled += 1;
         return [{
-          a: 1
+          a: 1,
         }];
       }
-    };
+    }
 
     const se = new Test(params);
     await se.explore();
@@ -71,54 +81,55 @@ describe('PagingExplorer tests', () => {
   it('explore returns the expected result set', async () => {
     let processCalled = 0;
     class Test extends PagingExplorer {
-      async fetch(_page: number): Promise<Response> {
+      async fetch() {
         return new Response('test');
       }
 
-      process(_document: Document): object[] {
+      process() {
+        processCalled += 1;
         return [{
-          a: ++processCalled,
+          a: processCalled,
         }];
       }
-    };
+    }
 
     const se = new Test(params);
     const results = await se.explore();
 
-    deepStrictEqual(results, [{a: 1}, {a: 2}, {a: 3}], 'result is correct');
+    deepStrictEqual(results, [{ a: 1 }, { a: 2 }, { a: 3 }], 'result is correct');
   });
 
   it('explore returns the expected result set when number of pages is not the max one', async () => {
     let fetchCalled = 0;
     let processCalled = 0;
     class Test extends PagingExplorer {
-      async fetch(_page: number): Promise<Response> {
-        fetchCalled++;
+      async fetch() {
+        fetchCalled += 1;
         if (fetchCalled > 2) {
           return new Response('reached the end', { status: 404 });
         }
         return new Response('test');
       }
 
-      process(_document: Document): object[] {
-        processCalled++;
+      process() {
+        processCalled += 1;
         return [{
           a: processCalled,
         }];
       }
-    };
+    }
 
     const se = new Test(params);
     const results = await se.explore();
 
-    deepStrictEqual(results, [{a: 1}, {a: 2}], 'result is correct');
+    deepStrictEqual(results, [{ a: 1 }, { a: 2 }], 'result is correct');
   });
 
   it('explore, fetch and process can be used to retrieve multipage results', async () => {
     let fetchCalled = 0;
     class Test extends PagingExplorer {
-      async fetch(_page: number): Promise<Response> {
-        fetchCalled++;
+      async fetch() {
+        fetchCalled += 1;
         if (fetchCalled > 2) {
           return new Response('reached the end', { status: 404 });
         }
@@ -131,16 +142,16 @@ describe('PagingExplorer tests', () => {
         </html>`);
       }
 
-      process(document: Document): object[] {
+      process(document) {
         const entries = [];
         document.querySelectorAll('a').forEach((el) => {
           entries.push({
-            link: el.getAttribute('href')
+            link: el.getAttribute('href'),
           });
         });
         return entries;
       }
-    };
+    }
 
     const se = new Test(params);
     const results = await se.explore();
@@ -151,15 +162,15 @@ describe('PagingExplorer tests', () => {
       { link: 'c1.html' },
       { link: 'a2.html' },
       { link: 'b2.html' },
-      { link: 'c2.html' }
+      { link: 'c2.html' },
     ], 'result is correct');
   });
 
   it('process receives the entry set from previous pages', async () => {
     let fetchCalled = 0;
     class Test extends PagingExplorer {
-      async fetch(_page: number): Promise<Response> {
-        fetchCalled++;
+      async fetch() {
+        fetchCalled += 1;
         return new Response(`<html>
           <body>
             <a href="a${fetchCalled}.html">a${fetchCalled}</a>
@@ -169,28 +180,26 @@ describe('PagingExplorer tests', () => {
         </html>`);
       }
 
-      process(document: Document, all: any): object[] {
+      process(document, all) {
         const testResult = [];
-        for(let i=1; i < fetchCalled; i++) {
-          testResult.push({ link: `a${i}.html` })
-          testResult.push({ link: `b${i}.html` })
-          testResult.push({ link: `c${i}.html` })
+        for (let i = 1; i < fetchCalled; i += 1) {
+          testResult.push({ link: `a${i}.html` });
+          testResult.push({ link: `b${i}.html` });
+          testResult.push({ link: `c${i}.html` });
         }
         deepStrictEqual(all, testResult, 'all entries argument contains previous entries from previous pages');
 
         const entries = [];
         document.querySelectorAll('a').forEach((el) => {
           entries.push({
-            link: el.getAttribute('href')
+            link: el.getAttribute('href'),
           });
         });
         return entries;
       }
-    };
+    }
 
     const se = new Test(params);
     await se.explore();
   });
-
 });
-

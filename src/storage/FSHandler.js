@@ -10,15 +10,13 @@
  * governing permissions and limitations under the License.
  */
 
-import { Logger } from 'tslint/lib/runner';
-import { StorageHandler } from './StorageHandler';
-
 import fs from 'fs-extra';
 import path from 'path';
 
-export default class FSHandler implements StorageHandler {
-  target: string;
-  logger: Logger;
+export default class FSHandler {
+  target;
+
+  logger;
 
   constructor(target, logger) {
     this.logger = logger || console;

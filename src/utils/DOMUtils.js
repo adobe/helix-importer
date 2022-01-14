@@ -10,12 +10,12 @@
  * governing permissions and limitations under the License.
  */
 
-import { JSDOM, Document } from 'jsdom';
+import { JSDOM } from 'jsdom';
 
 export default class DOMUtils {
   static EMPTY_TAGS_TO_PRESERVE = ['img', 'video', 'iframe', 'div', 'picture'];
 
-  static reviewInlineElement(document: Document, tagName: string) {
+  static reviewInlineElement(document, tagName) {
     let tags = [...document.querySelectorAll(tagName)];
     // first pass, remove empty nodes
     for (let i = tags.length - 1; i >= 0; i -= 1) {
@@ -23,7 +23,7 @@ export default class DOMUtils {
       if (tag.textContent === '' && !tag.querySelector(DOMUtils.EMPTY_TAGS_TO_PRESERVE.join(','))) {
         tag.remove();
       } else {
-        tag.innerHTML = tag.innerHTML.replace(/\&nbsp;/gm, ' ');
+        tag.innerHTML = tag.innerHTML.replace(/&nbsp;/gm, ' ');
       }
     }
 
@@ -50,13 +50,13 @@ export default class DOMUtils {
       if (tag.innerHTML === '.' || tag.innerHTML === '. ' || tag.innerHTML === ':' || tag.innerHTML === ': ') {
         tag.replaceWith(JSDOM.fragment(tag.innerHTML));
       } else {
-        const innerHTML = tag.innerHTML;
+        const { innerHTML } = tag;
         if (tag.previousSibling) {
           const previous = tag.previousSibling;
           if (
-            previous.tagName &&
-            previous.tagName.toLowerCase() === tagName &&
-            (!previous.href || previous.href === tag.href)
+            previous.tagName
+            && previous.tagName.toLowerCase() === tagName
+            && (!previous.href || previous.href === tag.href)
           ) {
             if (tag.hasChildNodes()) {
               [...tag.childNodes].forEach((child) => {
@@ -76,11 +76,12 @@ export default class DOMUtils {
     // extra leading and trailing spaces into a dedicated span
     for (let i = tags.length - 1; i >= 0; i -= 1) {
       const tag = tags[i];
-      let innerHTML = tag.innerHTML;
+      let { innerHTML } = tag;
       if (innerHTML) {
         if (innerHTML.lastIndexOf(' ') === innerHTML.length - 1) {
           // move trailing space to a new text node outside of current element
-          innerHTML = tag.innerHTML = innerHTML.slice(0, innerHTML.length - 1);
+          tag.innerHTML = innerHTML.slice(0, innerHTML.length - 1);
+          ({ innerHTML } = tag);
           tag.after(JSDOM.fragment('<span> </span>'));
         }
 
@@ -93,52 +94,54 @@ export default class DOMUtils {
     }
   }
 
-  static reviewParagraphs(document: Document) {
+  static reviewParagraphs(document) {
     const tags = [...document.querySelectorAll('p')];
     for (let i = tags.length - 1; i >= 0; i -= 1) {
       const tag = tags[i];
       // remove useless paragraphs
       if (
-        (tag.textContent === '' ||
-          tag.textContent === ' ' ||
-          tag.textContent === '&nbsp;' ||
-          tag.textContent.charCodeAt(0) === 160) &&
-        !tag.querySelector(DOMUtils.EMPTY_TAGS_TO_PRESERVE.join(','))
+        (tag.textContent === ''
+          || tag.textContent === ' '
+          || tag.textContent === '&nbsp;'
+          || tag.textContent.charCodeAt(0) === 160)
+        && !tag.querySelector(DOMUtils.EMPTY_TAGS_TO_PRESERVE.join(','))
       ) {
         tag.remove();
       }
     }
   }
 
-  static escapeSpecialCharacters(document: Document) {
-    document.body.innerHTML = document.body.innerHTML.replace(/\~/gm, '\\~');
+  static escapeSpecialCharacters(document) {
+    // eslint-disable-next-line no-param-reassign
+    document.body.innerHTML = document.body.innerHTML.replace(/~/gm, '\\~');
   }
 
-  static reviewHeadings(document: Document) {
+  static reviewHeadings(document) {
     const tags = [...document.querySelectorAll('h1, h2, h3, h4, h5, h6')];
     for (let i = tags.length - 1; i >= 0; i -= 1) {
       const tag = tags[i];
       // remove useless strong tags
-      tag.innerHTML = tag.innerHTML.replace(/\<strong\>|\<\\strong\>/gm, '');
+      tag.innerHTML = tag.innerHTML.replace(/<strong>|<\\strong>/gm, '');
       if (tag.innerHTML === '') {
         tag.remove();
       }
     }
   }
 
-  static remove(document: Document, selectors: string[]) {
+  static remove(document, selectors) {
     selectors.forEach((s) => {
       document.querySelectorAll(s).forEach((n) => n.remove());
     });
   }
 
-  static removeComments(document: Document) {
+  static removeComments(document) {
+    // eslint-disable-next-line no-param-reassign
     document.body.innerHTML = document.body.innerHTML
       // remove html comments
       .replace(/<!--(?!>)[\S\s]*?-->/gm, '');
   }
 
-  static removeSpans(document: Document) {
+  static removeSpans(document) {
     // remove spans
     document.querySelectorAll('span').forEach((span) => {
       if (span.textContent === '') {
@@ -149,7 +152,7 @@ export default class DOMUtils {
     });
   }
 
-  static replaceByCaptions(document: Document, selectors: string[]) {
+  static replaceByCaptions(document, selectors) {
     selectors.forEach((selector) => {
       document.querySelectorAll(selector).forEach((elem) => {
         const captionText = elem.textContent.trim();
@@ -160,14 +163,14 @@ export default class DOMUtils {
   }
 
   static generateEmbed(url) {
-    return JSDOM.fragment(`<table><tr><th>Embed</th></tr><tr><td><a href="${url}">${url}</a></td></tr></table>`)
+    return JSDOM.fragment(`<table><tr><th>Embed</th></tr><tr><td><a href="${url}">${url}</a></td></tr></table>`);
   }
 
-  static replaceEmbeds(document: Document) {
+  static replaceEmbeds(document) {
     document.querySelectorAll('iframe').forEach((iframe) => {
       const src = iframe.getAttribute('src');
       const dataSrc = iframe.getAttribute('data-src');
-      const url = dataSrc ? dataSrc : src;
+      const url = dataSrc || src;
       if (url) {
         iframe.after(DOMUtils.generateEmbed(url));
       }
@@ -184,7 +187,7 @@ export default class DOMUtils {
     });
   }
 
-  static removeNoscripts(html: string) {
+  static removeNoscripts(html) {
     return html.replace(/<noscript>((.|\n)*?)<\/noscript>/gm, '');
   }
 
@@ -195,6 +198,7 @@ export default class DOMUtils {
         // if image is in a table
         if (img.title && img.title.indexOf('|') !== -1) {
           // pipes in title do not get encoded
+          // eslint-disable-next-line no-param-reassign
           img.title = img.title.replace(/\|/gm, '\\|');
         }
       }

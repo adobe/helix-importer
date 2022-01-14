@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Adobe. All rights reserved.
+ * Copyright 2019 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -10,22 +10,21 @@
  * governing permissions and limitations under the License.
  */
 
-import { ImporterResource } from './Importer';
-
-import { Document } from 'jsdom';
-
-export default class PageImporterResource implements ImporterResource {
-  document: Document;
-  name: string;
-  directory: string;
-  prepend: string;
-  extra: any[];
-
-  constructor(name: string, directory: string, document: Document, prepend: string, extra?: any) {
-    this.name = name;
-    this.directory = directory;
-    this.document = document;
-    this.prepend = prepend;
-    this.extra = extra;
-  }
-}
+module.exports = {
+  root: true,
+  extends: '@adobe/helix',
+  env: {
+    node: true,
+    es6: true,
+  },
+  parserOptions: {
+    sourceType: 'module',
+    ecmaVersion: 'latest',
+  },
+  rules: {
+    'import/extensions': 0,
+  },
+  globals: {
+    __rootdir: true,
+  },
+};

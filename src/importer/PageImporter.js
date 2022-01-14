@@ -10,38 +10,34 @@
  * governing permissions and limitations under the License.
  */
 
-/* tslint:disable: no-console */
+/* eslint-disable class-methods-use-this */
 
-import Importer from './Importer';
-import PageImporterParams from './PageImporterParams';
-import PageImporterResource from './PageImporterResource';
-
-import FileUtils from '../utils/FileUtils';
-import DOMUtils from '../utils/DOMUtils';
-import Utils from '../utils/Utils';
-
-import { Response } from 'node-fetch';
-import { JSDOM, Document } from 'jsdom';
+import { JSDOM } from 'jsdom';
 
 import path from 'path';
 import unified from 'unified';
 import parse from 'rehype-parse';
-import toHtml from 'hast-util-to-html'
+import { toHtml } from 'hast-util-to-html';
 import rehype2remark from 'rehype-remark';
 import stringify from 'remark-stringify';
-import all from 'hast-util-to-mdast/lib/all.js';
+import { all } from 'hast-util-to-mdast/lib/all.js';
 import fs from 'fs-extra';
 import remark from 'remark-parse';
 import gfm from 'remark-gfm';
 import { remarkMatter } from '@adobe/helix-markdown-support';
-import { toDocx } from '@adobe/helix-md2docx';
+import toDocx from '@adobe/helix-md2docx';
+import Utils from '../utils/Utils.js';
+import DOMUtils from '../utils/DOMUtils.js';
+import FileUtils from '../utils/FileUtils.js';
 
-export default abstract class PageImporter implements Importer {
-  params: PageImporterParams;
-  logger: any;
-  useCache: boolean;
+export default class PageImporter {
+  params;
 
-  constructor(params: PageImporterParams) {
+  logger;
+
+  useCache;
+
+  constructor(params) {
     this.params = params;
     this.logger = params.logger || console;
 
@@ -50,8 +46,8 @@ export default abstract class PageImporter implements Importer {
 
   async convertToDocx(docxPath, content) {
     const mdast = unified()
-      .use(remark as any, { position: false })
-      .use(gfm as any)
+      .use(remark, { position: false })
+      .use(gfm)
       .use(remarkMatter)
       .parse(content);
 
@@ -59,9 +55,9 @@ export default abstract class PageImporter implements Importer {
     return this.params.storageHandler.put(docxPath, buffer);
   }
 
-  async createMarkdown(resource: PageImporterResource, url: string) {
-    const name = resource.name;
-    const directory = resource.directory;
+  async createMarkdown(resource, url) {
+    const { name } = resource;
+    const { directory } = resource;
     const sanitizedName = FileUtils.sanitizeFilename(name);
     this.logger.log(`Computing Markdonw for ${directory}/${sanitizedName}`);
 
@@ -89,9 +85,7 @@ export default abstract class PageImporter implements Importer {
         processor.Compiler.prototype.visitors.hlxembed = (node) => node.value;
       })
       .use(() => {
-        processor.Compiler.prototype.visitors.table = (node) => {
-          return node.value;
-        }
+        processor.Compiler.prototype.visitors.table = (node) => node.value;
       })
       .use(() => {
         processor.Compiler.prototype.visitors.u = (node) => {
@@ -120,7 +114,7 @@ export default abstract class PageImporter implements Importer {
     let contents = file.contents.toString();
 
     // process image links
-    const document = resource.document;
+    const { document } = resource;
     const assets = [];
     const imgs = document.querySelectorAll('img');
     imgs.forEach((img) => {
@@ -129,7 +123,7 @@ export default abstract class PageImporter implements Importer {
       if (!isEmbed && src && src !== '' && (contents.indexOf(src) !== -1 || contents.indexOf(decodeURI(src)) !== -1)) {
         assets.push({
           url: src,
-          append: '#image.png'
+          append: '#image.png',
         });
       }
     });
@@ -180,11 +174,9 @@ export default abstract class PageImporter implements Importer {
       }
     });
 
-    const patchSrcInContent = (c, oldSrc, newSrc) => {
-      return contents
-            .replace(new RegExp(`${oldSrc.replace('.', '\\.').replace('?', '\\?')}`, 'gm'), newSrc)
-            .replace(new RegExp(`${decodeURI(oldSrc).replace('.', '\\.')}`, 'gm'), newSrc);
-    }
+    const patchSrcInContent = (c, oldSrc, newSrc) => contents
+      .replace(new RegExp(`${oldSrc.replace('.', '\\.').replace('?', '\\?')}`, 'gm'), newSrc)
+      .replace(new RegExp(`${decodeURI(oldSrc).replace('.', '\\.')}`, 'gm'), newSrc);
 
     // adjust assets url (from relative to absolute)
     assets.forEach((asset) => {
@@ -200,17 +192,17 @@ export default abstract class PageImporter implements Importer {
 
     return {
       path: `${directory}/${sanitizedName}`,
-      content: contents
+      content: contents,
     };
   }
 
-  cleanup(document: Document) {
+  cleanup(document) {
     DOMUtils.remove(document, ['script', 'hr']);
     DOMUtils.removeComments(document);
     DOMUtils.removeSpans(document);
   }
 
-  preProcess(document: Document) {
+  preProcess(document) {
     this.cleanup(document);
     DOMUtils.reviewHeadings(document);
     DOMUtils.reviewParagraphs(document);
@@ -224,8 +216,7 @@ export default abstract class PageImporter implements Importer {
       'i',
       'label',
       's',
-      'small',
-      /*'span'*/,
+      'small', /* , 'span' */
       'strong',
       'sub',
       'sup',
@@ -234,7 +225,7 @@ export default abstract class PageImporter implements Importer {
     ].forEach((tag) => DOMUtils.reviewInlineElement(document, tag));
 
     // u a tag combo is not handled properly by unified js and is discouraged anyway -> remove the u
-    document.querySelectorAll('u > a').forEach(a => {
+    document.querySelectorAll('u > a').forEach((a) => {
       const p = a.parentNode;
       p.before(a);
       p.remove();
@@ -243,7 +234,6 @@ export default abstract class PageImporter implements Importer {
     const imgs = document.querySelectorAll('img');
     imgs.forEach((img) => {
       let src = img.getAttribute('src');
-      const ori = src;
       const dataSrc = img.getAttribute('data-src');
       if (!src && dataSrc) {
         // lazy loading case
@@ -263,37 +253,35 @@ export default abstract class PageImporter implements Importer {
 
       const alt = img.getAttribute('alt');
       const title = img.getAttribute('title');
-      if (title  && title === alt) {
+      if (title && title === alt) {
         // a11y: image title has little value if it's the same than the alt text.
         img.removeAttribute('title');
       }
     });
   }
 
-  postProcess(document: Document) {
+  postProcess(document) {
     DOMUtils.encodeImagesForTable(document);
   }
 
-  postProcessMD(md: string): string {
-    let ret = md.replace(/\\\\\~/gm, '\\~');
-    
+  postProcessMD(md) {
+    let ret = md.replace(/\\\\~/gm, '\\~');
+
     const match = ret.match(/hlx_replaceTag\(.*?\)/gm);
     if (match) {
       const hlxReplaceTags = match.filter((i, p, s) => s.indexOf(i) === p);
-      hlxReplaceTags.forEach(r => {
-        const by = r.substring(0, r.length -1).split('(')[1];
+      hlxReplaceTags.forEach((r) => {
+        const by = r.substring(0, r.length - 1).split('(')[1];
         const regex = new RegExp(r.replace('(', '\\(').replace(')', '\\)'), 'gm');
         ret = ret.replace(regex, `<${by}>`);
       });
     }
-        
+
     return ret;
   }
 
-  async download(url: string): Promise<string> {
-    const getLocalCacheName = (p) => {
-      return path.resolve(p, `${new URL(url).pathname.replace(/^\/+|\/+$/g, '').replace(/\//gm, '_')}.html`);
-    };
+  async download(url) {
+    const getLocalCacheName = (p) => path.resolve(p, `${new URL(url).pathname.replace(/^\/+|\/+$/g, '').replace(/\//gm, '_')}.html`);
 
     if (this.useCache) {
       const localPath = getLocalCacheName(this.params.cache);
@@ -319,7 +307,7 @@ export default abstract class PageImporter implements Importer {
     }
   }
 
-  async get(url: string): Promise<any> {
+  async get(url) {
     const html = await this.download(url);
 
     if (html) {
@@ -334,7 +322,7 @@ export default abstract class PageImporter implements Importer {
     return null;
   }
 
-  async import(url: string, entryParams?: object) {
+  async import(url, entryParams) {
     const startTime = new Date().getTime();
 
     const { document, html } = await this.get(url);
@@ -347,23 +335,27 @@ export default abstract class PageImporter implements Importer {
 
       await Utils.asyncForEach(entries, async (entry) => {
         const res = await this.createMarkdown(entry, url);
+        // eslint-disable-next-line no-param-reassign
         entry.source = url;
+        // eslint-disable-next-line no-param-reassign
         entry.markdown = res.content;
 
         if (!this.params.skipMDFileCreation) {
-          const mdPath =  `${res.path}.md`;
+          const mdPath = `${res.path}.md`;
           await this.params.storageHandler.put(mdPath, res.content);
           this.logger.log(`MD file created: ${mdPath}`);
 
+          // eslint-disable-next-line no-param-reassign
           entry.md = mdPath;
         }
 
         if (!this.params.skipDocxConversion) {
           const docxPath = `${res.path}.docx`;
           await this.convertToDocx(docxPath, res.content);
+          // eslint-disable-next-line no-param-reassign
           entry.docx = docxPath;
         }
-        
+
         results.push(entry);
       });
     }
@@ -374,11 +366,7 @@ export default abstract class PageImporter implements Importer {
     return results;
   }
 
-  abstract fetch(url: string): Promise<Response>;
-  abstract process(
-    document: Document,
-    url: string,
-    entryParams?: object,
-    raw?: string,
-  ): Promise<PageImporterResource[]>;
+  fetch() {}
+
+  process() {}
 }

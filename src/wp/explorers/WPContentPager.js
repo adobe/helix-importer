@@ -9,23 +9,20 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-/* tslint:disable: no-console */
-
-import PagingExplorer from '../../explorer/PagingExplorer';
 
 import fetch from 'node-fetch';
-import { Response } from 'node-fetch';
-import { Document } from 'jsdom';
+import PagingExplorer from '../../explorer/PagingExplorer.js';
 
 const API = 'page/';
 
-export class WPContentPager extends PagingExplorer {
-  async fetch(page: number): Promise<Response> {
+export default class WPContentPager extends PagingExplorer {
+  async fetch(page) {
     const api = `${this.params.url}${API}${page}`;
     return fetch(api);
   }
 
-  process(document: Document, all: any[]): object[] {
+  // eslint-disable-next-line class-methods-use-this
+  process(document, all) {
     const entries = [];
     document.querySelectorAll('main .content .entry, main .entries .entry, article .entries .entry').forEach((el) => {
       const link = el.querySelector('h2 a');

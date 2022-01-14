@@ -10,22 +10,8 @@
  * governing permissions and limitations under the License.
  */
 
-import sanitize from 'sanitize-filename';
+export default class PagingExplorerParams {
+  nbMaxPages;
 
-export default class FileUtils {
-  static sanitizeFilename(name) {
-    return sanitize(decodeURIComponent(name))
-      .trim()
-      .toLowerCase()
-      .replace(/\./gm, '')
-      .replace(/&/gm, '')
-      .replace(/\s/g, '-')
-      .replace(/-{2,}/g, '-');
-  }
-
-  static async asyncForEach(array, callback) {
-    for (let index = 0; index < array.length; index += 1) {
-      await callback(array[index], index, array);
-    }
-  }
+  url;
 }

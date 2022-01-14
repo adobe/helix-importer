@@ -11,21 +11,25 @@
  */
 
 import os from 'os';
+
 export default class CSV {
   /**
-   * Minimalisatic CVS conversion of an array of objects: first object keys determine the CVS headers.
+   * Minimalisatic CVS conversion of an array of objects:
+   * first object keys determine the CVS headers.
    * Note: delimiter character is not supported in values
    * @param {object[]} entries List of object
    * @param {string} delimiter CSV delimiter
    * @param {boolean} skipHeaders True to skip the headers
    * @returns {string} CSV string
    */
-  static toCSV(entries: object[], delimiter = ';', skipHeaders = false): string {
+  static toCSV(entries, delimiter = ';', skipHeaders = false) {
     let ret = '';
     if (entries && entries.length > 0) {
       // headers
       const headers = [];
+      // eslint-disable-next-line no-restricted-syntax
       for (const name in entries[0]) {
+        // eslint-disable-next-line no-prototype-builtins
         if (entries[0].hasOwnProperty(name)) {
           headers.push(name);
           if (!skipHeaders) {
@@ -54,7 +58,7 @@ export default class CSV {
    * @param {string} delimiter Delimiter string
    * @returns {object[]} An array of object for which each CSV column is a property
    */
-  static toArray(csv: string, delimiter = ';') {
+  static toArray(csv, delimiter = ';') {
     const rows = csv.split(os.EOL);
 
     if (rows[rows.length - 1] === '') {

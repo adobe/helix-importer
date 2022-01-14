@@ -10,10 +10,22 @@
  * governing permissions and limitations under the License.
  */
 
-export default class Utils {
-  static async asyncForEach(array, callback) {
-    for (let index = 0; index < array.length; index += 1) {
-      await callback(array[index], index, array);
-    }
+export default class PageImporterResource {
+  document;
+
+  name;
+
+  directory;
+
+  prepend;
+
+  extra;
+
+  constructor(name, directory, document, prepend, extra) {
+    this.name = name;
+    this.directory = directory;
+    this.document = document;
+    this.prepend = prepend;
+    this.extra = extra;
   }
 }

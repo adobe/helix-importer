@@ -10,19 +10,21 @@
  * governing permissions and limitations under the License.
  */
 
-import FSHandler from '../../src/storage/FSHandler'
+/* global beforeEach, afterEach */
 
 import mockfs from 'mock-fs';
 
 import { strictEqual, ok } from 'assert';
-import { describe, it } from "mocha";
+import { describe, it } from 'mocha';
+
+import FSHandler from '../../src/storage/FSHandler.js';
 
 describe('FSHandler tests', () => {
   beforeEach(() => {
     mockfs({
       'tmp/path/to/fake/dir': {
         'some-file.txt': 'file content here',
-      }
+      },
     });
   });
 

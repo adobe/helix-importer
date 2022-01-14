@@ -9,29 +9,34 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-/* tslint:disable: no-console */
 
-import PagingExplorer from '../../explorer/PagingExplorer';
-
+import FormData from 'form-data';
 import fetch from 'node-fetch';
-import { Response } from 'node-fetch';
-import { Document } from 'jsdom';
+import PagingExplorer from '../../explorer/PagingExplorer.js';
 
-const API = 'page/';
+const API = 'wp-admin/admin-ajax.php';
 
-export class WPPostWrapPager extends PagingExplorer {
-  async fetch(page: number): Promise<Response> {
-    const api = `${this.params.url}${API}${page}`;
-    return fetch(api);
+export default class WPAdminAjaxPager extends PagingExplorer {
+  async fetch(page) {
+    const api = `${this.params.url}${API}`;
+    const form = new FormData();
+    form.append('action', 'cardsFilter');
+    form.append('filterBy', 'latest');
+    form.append('paged', `${page}`);
+    return fetch(api, {
+      method: 'POST',
+      body: form,
+    });
   }
 
-  process(document: Document, all: any[]): object[] {
+  // eslint-disable-next-line class-methods-use-this
+  process(document, all) {
     const entries = [];
-    document.querySelectorAll('.post-meta-wrap').forEach((el) => {
-      const link = el.querySelector('.post-item > a');
+    document.querySelectorAll('.card-item').forEach((el) => {
+      const link = el.querySelector('h4 a');
       const url = link.getAttribute('href');
 
-      const entryDate = el.querySelector('.post-date');
+      const entryDate = el.querySelector('.date');
       const date = entryDate.textContent.trim();
 
       if (all.findIndex((entry) => entry.url === url) === -1) {

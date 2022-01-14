@@ -10,8 +10,11 @@
  * governing permissions and limitations under the License.
  */
 
-export interface StorageHandler {
-  put(path: string, content: string): Promise<void>;
-  get(path: string): Promise<string>;
-  exists(path: string): Promise<boolean>;
+export default class Utils {
+  static async asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      await callback(array[index], index, array);
+    }
+  }
 }

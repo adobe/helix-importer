@@ -9,24 +9,23 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-import { JSDOM, Document } from 'jsdom';
+import { JSDOM } from 'jsdom';
 
-import DOMUtils from '../utils/DOMUtils';
+import DOMUtils from '../utils/DOMUtils.js';
 
 export default class WPUtils {
-  static handleCaptions(document: Document) {
+  static handleCaptions(document) {
     DOMUtils.replaceByCaptions(document, ['.wp-caption-text', 'figcaption']);
 
     // an h5 following an image / video is a caption
     document.querySelectorAll('p img, video').forEach((item) => {
       if (
-        (item.parentNode.nextElementSibling && item.parentNode.nextElementSibling.tagName === 'H5') ||
-        (item.nextElementSibling && item.nextElementSibling.tagName === 'H5')
+        (item.parentNode.nextElementSibling && item.parentNode.nextElementSibling.tagName === 'H5')
+        || (item.nextElementSibling && item.nextElementSibling.tagName === 'H5')
       ) {
-        const elem =
-          item.parentNode.nextElementSibling && item.parentNode.nextElementSibling.tagName === 'H5'
-            ? item.parentNode.nextElementSibling
-            : item.nextElementSibling;
+        const elem = item.parentNode.nextElementSibling && item.parentNode.nextElementSibling.tagName === 'H5'
+          ? item.parentNode.nextElementSibling
+          : item.nextElementSibling;
         const captionText = elem.textContent.trim();
         elem.parentNode.insertBefore(JSDOM.fragment(`<p><em>${captionText}</em><p>`), elem);
         elem.remove();
@@ -34,7 +33,7 @@ export default class WPUtils {
     });
   }
 
-  static genericDOMCleanup(document: Document) {
+  static genericDOMCleanup(document) {
     // extract "emphasis" from links
     // see https://github.com/adobe/helix-pipeline/issues/895
     document.querySelectorAll('a strong').forEach((elem) => {
@@ -44,6 +43,7 @@ export default class WPUtils {
         const txt = elem.textContent;
         // only treat links
         if (txt && (txt.indexOf('.') !== -1 || txt.indexOf(':') !== -1)) {
+          // eslint-disable-next-line no-param-reassign
           elem.innerHTML = '';
           // take out of parent
           parent.parentNode.insertBefore(elem, parent.nextSibling);
@@ -61,6 +61,7 @@ export default class WPUtils {
 
     // heading could be full of tags
     document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((h) => {
+      // eslint-disable-next-line no-param-reassign
       h.innerHTML = h.textContent;
     });
   }

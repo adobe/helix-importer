@@ -10,12 +10,12 @@
  * governing permissions and limitations under the License.
  */
 
-import CSV from '../../src/utils/CSV';
-
 import { strictEqual, deepStrictEqual } from 'assert';
-import { describe, it } from "mocha";
+import { describe, it } from 'mocha';
 
 import os from 'os';
+
+import CSV from '../../src/utils/CSV.js';
 
 describe('CSV tests', () => {
   it('CSV#toCSV empty', () => {

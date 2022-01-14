@@ -9,26 +9,22 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+/* eslint-disable class-methods-use-this */
 
-/* tslint:disable: no-console */
+import { JSDOM } from 'jsdom';
 
-import Explorer from './Explorer';
+export default class PagingExplorer {
+  params;
 
-import { Response } from 'node-fetch';
-import { JSDOM, Document } from 'jsdom';
-import PagingExplorerParams from './PagingExplorerParams';
-
-export default abstract class PagingExplorer implements Explorer {
-  params: PagingExplorerParams;
-
-  constructor(params: PagingExplorerParams) {
+  constructor(params) {
     this.params = params;
   }
 
   async explore(
+    // eslint-disable-next-line default-param-last
     page = 1,
-    pageCallback?: (entries: any[], index: number, results: any[]) => Promise<void>,
-  ): Promise<object[]> {
+    pageCallback,
+  ) {
     const startTime = new Date().getTime();
 
     let results = [];
@@ -36,12 +32,14 @@ export default abstract class PagingExplorer implements Explorer {
     while (page <= this.params.nbMaxPages) {
       console.log(`${this.params.url}: Requesting page ${page}/${this.params.nbMaxPages}.`);
 
+      // eslint-disable-next-line no-await-in-loop
       const res = await this.fetch(page);
 
       if (!res.ok) {
         console.log(`${this.params.url}: Invalid response, considering no more results`);
         break;
       } else {
+        // eslint-disable-next-line no-await-in-loop
         const text = await res.text();
 
         if (text) {
@@ -52,6 +50,7 @@ export default abstract class PagingExplorer implements Explorer {
           if (entries && entries.length > 0) {
             results = results.concat(entries);
             if (pageCallback) {
+              // eslint-disable-next-line no-await-in-loop
               await pageCallback(entries, page, results);
             }
           } else {
@@ -63,6 +62,7 @@ export default abstract class PagingExplorer implements Explorer {
           break;
         }
 
+        // eslint-disable-next-line no-param-reassign
         page += 1;
       }
     }
@@ -75,6 +75,7 @@ export default abstract class PagingExplorer implements Explorer {
     return results;
   }
 
-  abstract fetch(page: number): Promise<Response>;
-  abstract process(document: Document, entries: object[]): object[];
+  fetch() {}
+
+  process() {}
 }

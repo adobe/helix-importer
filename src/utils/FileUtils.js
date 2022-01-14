@@ -10,18 +10,16 @@
  * governing permissions and limitations under the License.
  */
 
-import { Response } from 'node-fetch';
-import { Document } from 'jsdom';
+import sanitize from 'sanitize-filename';
 
-export default interface Explorer {
-  explore(
-    page?: number,
-    pageCallback?: (entries: any[], index: number, results: any[]) => Promise<void>,
-  ): Promise<object[]>;
-  fetch(page: number): Promise<Response>;
-  process(document: Document, entries: object[]): object[];
-}
-
-export interface ExplorerParams {
-  url: string;
+export default class FileUtils {
+  static sanitizeFilename(name) {
+    return sanitize(decodeURIComponent(name))
+      .trim()
+      .toLowerCase()
+      .replace(/\./gm, '')
+      .replace(/&/gm, '')
+      .replace(/\s/g, '-')
+      .replace(/-{2,}/g, '-');
+  }
 }
