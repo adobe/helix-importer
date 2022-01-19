@@ -47,7 +47,7 @@ describe('DOMUtils#reviewInlineElement tests', () => {
   });
 
   it('reviewInlineElement cleans up &nbsp;', () => {
-    test('<p><strong>So</strong><strong>me</strong><strong> - </strong><strong>complicated&nbsp;</strong><strong>setup&nbsp;</strong><strong>found&nbsp;</strong><strong>on&nbsp;</strong><strong>real site.</strong></p>', 'strong', '<p><strong>Some – complicated setup found on real site.</strong></p>');
+    test('<p><strong>So</strong><strong>me</strong><strong> - </strong><strong>complicated&nbsp;</strong><strong>setup&nbsp;</strong><strong>found&nbsp;</strong><strong>on&nbsp;</strong><strong>real site.</strong></p>', 'strong', '<p><strong>Some - complicated setup found on real site.</strong></p>');
   });
 
   it('reviewInlineElement nested tags', () => {
