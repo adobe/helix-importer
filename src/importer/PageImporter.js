@@ -22,10 +22,7 @@ import rehype2remark from 'rehype-remark';
 import stringify from 'remark-stringify';
 import { all } from 'hast-util-to-mdast/lib/all.js';
 import fs from 'fs-extra';
-import remark from 'remark-parse';
-import gfm from 'remark-gfm';
-import { remarkMatter } from '@adobe/helix-markdown-support';
-import toDocx from '@adobe/helix-md2docx';
+import { md2docx } from '@adobe/helix-md2docx';
 import Utils from '../utils/Utils.js';
 import DOMUtils from '../utils/DOMUtils.js';
 import FileUtils from '../utils/FileUtils.js';
@@ -45,13 +42,7 @@ export default class PageImporter {
   }
 
   async convertToDocx(docxPath, content) {
-    const mdast = unified()
-      .use(remark, { position: false })
-      .use(gfm)
-      .use(remarkMatter)
-      .parse(content);
-
-    const buffer = await toDocx(mdast, this.logger);
+    const buffer = await md2docx(content, this.logger);
     return this.params.storageHandler.put(docxPath, buffer);
   }
 
@@ -333,31 +324,33 @@ export default class PageImporter {
 
       this.postProcess(document);
 
-      await Utils.asyncForEach(entries, async (entry) => {
-        const res = await this.createMarkdown(entry, url);
-        // eslint-disable-next-line no-param-reassign
-        entry.source = url;
-        // eslint-disable-next-line no-param-reassign
-        entry.markdown = res.content;
-
-        if (!this.params.skipMDFileCreation) {
-          const mdPath = `${res.path}.md`;
-          await this.params.storageHandler.put(mdPath, res.content);
-          this.logger.log(`MD file created: ${mdPath}`);
-
+      if (entries) {
+        await Utils.asyncForEach(entries, async (entry) => {
+          const res = await this.createMarkdown(entry, url);
           // eslint-disable-next-line no-param-reassign
-          entry.md = mdPath;
-        }
-
-        if (!this.params.skipDocxConversion) {
-          const docxPath = `${res.path}.docx`;
-          await this.convertToDocx(docxPath, res.content);
+          entry.source = url;
           // eslint-disable-next-line no-param-reassign
-          entry.docx = docxPath;
-        }
+          entry.markdown = res.content;
 
-        results.push(entry);
-      });
+          if (!this.params.skipMDFileCreation) {
+            const mdPath = `${res.path}.md`;
+            await this.params.storageHandler.put(mdPath, res.content);
+            this.logger.log(`MD file created: ${mdPath}`);
+
+            // eslint-disable-next-line no-param-reassign
+            entry.md = mdPath;
+          }
+
+          if (!this.params.skipDocxConversion) {
+            const docxPath = `${res.path}.docx`;
+            await this.convertToDocx(docxPath, res.content);
+            // eslint-disable-next-line no-param-reassign
+            entry.docx = docxPath;
+          }
+
+          results.push(entry);
+        });
+      }
     }
 
     this.logger.log('');
