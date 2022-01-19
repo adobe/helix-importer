@@ -1,7 +1,7 @@
 {
   "name": "@adobe/helix-importer",
   "version": "1.0.0",
-  "description": "Helix importer tools",
+  "description": "Helix Importer tool: create md / docx from html",
   "main": "src/index.js",
   "type": "module",
   "repository": {
@@ -11,10 +11,7 @@
   "scripts": {
     "lint": "eslint .",
     "test": "mocha test/**/*.spec.js",
-    "format": "prettier --write \"src/**/*.js\"",
-    "preversion": "npm run lint",
-    "version": "npm run format && git add -A src",
-    "postversion": "git push && git push --tags"
+    "semantic-release": "semantic-release"
   },
   "devDependencies": {
     "@adobe/eslint-config-helix": "1.3.2",
@@ -24,11 +21,10 @@
     "eslint-plugin-header": "3.1.1",
     "eslint-plugin-import": "2.25.4",
     "mocha": "^9.1.3",
-    "mock-fs": "4.13.0",
-    "prettier": "2.2.1"
+    "mock-fs": "4.13.0"
   },
   "author": "",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "dependencies": {
     "@adobe/helix-md2docx": "1.1.0",
     "form-data": "4.0.0",
