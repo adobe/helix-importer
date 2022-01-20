@@ -170,101 +170,191 @@ describe('DOMUtils#removeCommments tests', () => {
     test('<p><!-- useless comment \n multiline \n multiline --></p>', '<p></p>');
     test('<!-- useless comment --><p>The content stays</p><!-- another useless comment with \n line break -->', '<p>The content stays</p>');
   });
+});
 
-  describe('DOMUtils#removeSpans tests', () => {
-    const test = (input, expected) => {
-      const { document } = (new JSDOM(input)).window;
-      DOMUtils.removeSpans(document);
-      strictEqual(document.body.innerHTML, expected);
-    };
+describe('DOMUtils#removeSpans tests', () => {
+  const test = (input, expected) => {
+    const { document } = (new JSDOM(input)).window;
+    DOMUtils.removeSpans(document);
+    strictEqual(document.body.innerHTML, expected);
+  };
 
-    it('remove spans', () => {
-      // do nothing
-      test('<p></p>', '<p></p>');
+  it('remove spans', () => {
+    // do nothing
+    test('<p></p>', '<p></p>');
 
-      // remove spans
-      test('<p><span></span></p>', '<p></p>');
-      test('<p><span>Content should remain</span> the same</p>', '<p>Content should remain the same</p>');
-      test('<p>Spacing<span> should</span> remain the same</p>', '<p>Spacing should remain the same</p>');
-      test('<p>Spacing<span> should</span> remain the <span>same even</span> with<span> multiple spans</span></p>', '<p>Spacing should remain the same even with multiple spans</p>');
-    });
+    // remove spans
+    test('<p><span></span></p>', '<p></p>');
+    test('<p><span>Content should remain</span> the same</p>', '<p>Content should remain the same</p>');
+    test('<p>Spacing<span> should</span> remain the same</p>', '<p>Spacing should remain the same</p>');
+    test('<p>Spacing<span> should</span> remain the <span>same even</span> with<span> multiple spans</span></p>', '<p>Spacing should remain the same even with multiple spans</p>');
+  });
+});
+
+describe('DOMUtils#removeNoscripts tests', () => {
+  const test = (input, expected) => {
+    strictEqual(DOMUtils.removeNoscripts(input), expected);
+  };
+
+  it('remove no scripts', () => {
+    // do nothing
+    test('<p>Some content</p>', '<p>Some content</p>');
+
+    // remove noscript
+    test('<body>Do A<noscript>Do Z</noscript></body>', '<body>Do A</body>');
+    test('<body>Do A<noscript>Do Z</noscript> but also do B<noscript>and X</noscript></body>', '<body>Do A but also do B</body>');
+    test('<body>Do A<noscript>Do Z\n Do X</noscript> but also do B<noscript>and W \n and Y</noscript></body>', '<body>Do A but also do B</body>');
+  });
+});
+
+describe('DOMUtils#replaceByCaptions tests', () => {
+  const test = (input, selectors, expected) => {
+    const { document } = (new JSDOM(input)).window;
+    DOMUtils.replaceByCaptions(document, selectors);
+    strictEqual(document.body.innerHTML, expected);
+  };
+
+  it('replace by captions', () => {
+    // do nothing
+    test('<p>Some content</p>', ['i'], '<p>Some content</p>');
+
+    test('<p>Some content</p><img src="image.png"><figcaption>Copyright to author.</figcaption><p>Some more content</p>', ['figcaption'], '<p>Some content</p><img src="image.png"><p><em>Copyright to author.</em></p><p>Some more content</p>');
+    test('<p>Some content</p><img src="image.png"><figcaption>Copyright to author.</figcaption><div class="custom-caption">Another copyright to author.</div><p>Some more content</p>', ['figcaption', '.custom-caption'], '<p>Some content</p><img src="image.png"><p><em>Copyright to author.</em></p><p><em>Another copyright to author.</em></p><p>Some more content</p>');
+  });
+});
+
+describe('DOMUtils#replaceEmbeds', () => {
+  const test = (input, expected) => {
+    const { document } = (new JSDOM(input)).window;
+    DOMUtils.replaceEmbeds(document);
+    strictEqual(document.body.innerHTML, expected);
+  };
+
+  it('replace embeds', () => {
+    // do nothing
+    test('<p>Some content</p>', '<p>Some content</p>');
   });
 
-  describe('DOMUtils#removeNoscripts tests', () => {
-    const test = (input, expected) => {
-      strictEqual(DOMUtils.removeNoscripts(input), expected);
-    };
-
-    it('remove no scripts', () => {
-      // do nothing
-      test('<p>Some content</p>', '<p>Some content</p>');
-
-      // remove noscript
-      test('<body>Do A<noscript>Do Z</noscript></body>', '<body>Do A</body>');
-      test('<body>Do A<noscript>Do Z</noscript> but also do B<noscript>and X</noscript></body>', '<body>Do A but also do B</body>');
-      test('<body>Do A<noscript>Do Z\n Do X</noscript> but also do B<noscript>and W \n and Y</noscript></body>', '<body>Do A but also do B</body>');
-    });
+  it('replace embeds deals with iframes', () => {
+    test('<p>Some content</p><iframe src="https://www.youtube.com/xyz"></iframe>', '<p>Some content</p><table><tbody><tr><th>Embed</th></tr><tr><td><a href="https://www.youtube.com/xyz">https://www.youtube.com/xyz</a></td></tr></tbody></table>');
+    test('<p>Some content</p><iframe data-src="https://www.youtube.com/xyz"></iframe>', '<p>Some content</p><table><tbody><tr><th>Embed</th></tr><tr><td><a href="https://www.youtube.com/xyz">https://www.youtube.com/xyz</a></td></tr></tbody></table>');
+    test('<p>Some content</p><iframe data-src="https://www.youtube.com/data-src" src="https://www.youtube.com/src"></iframe>', '<p>Some content</p><table><tbody><tr><th>Embed</th></tr><tr><td><a href="https://www.youtube.com/data-src">https://www.youtube.com/data-src</a></td></tr></tbody></table>');
   });
 
-  describe('DOMUtils#replaceByCaptions tests', () => {
-    const test = (input, selectors, expected) => {
-      const { document } = (new JSDOM(input)).window;
-      DOMUtils.replaceByCaptions(document, selectors);
-      strictEqual(document.body.innerHTML, expected);
-    };
+  it('replace embeds deals video tag / content blocks', () => {
+    // Video block
+    test('<p>Some content</p><video src="https://www.server.com/video.mp4"></video>', '<p>Some content</p><table><tbody><tr><th>Video</th></tr><tr><td><video src="https://www.server.com/video.mp4"></video></td></tr></tbody></table>');
 
-    it('replace by captions', () => {
-      // do nothing
-      test('<p>Some content</p>', ['i'], '<p>Some content</p>');
+    // Animation block
+    test('<p>Some content</p><video src="https://www.server.com/video.mp4" autoplay="true"></video>', '<p>Some content</p><table><tbody><tr><th>Animation</th></tr><tr><td><video src="https://www.server.com/video.mp4" autoplay="true"></video></td></tr></tbody></table>');
+  });
+});
 
-      test('<p>Some content</p><img src="image.png"><figcaption>Copyright to author.</figcaption><p>Some more content</p>', ['figcaption'], '<p>Some content</p><img src="image.png"><p><em>Copyright to author.</em></p><p>Some more content</p>');
-      test('<p>Some content</p><img src="image.png"><figcaption>Copyright to author.</figcaption><div class="custom-caption">Another copyright to author.</div><p>Some more content</p>', ['figcaption', '.custom-caption'], '<p>Some content</p><img src="image.png"><p><em>Copyright to author.</em></p><p><em>Another copyright to author.</em></p><p>Some more content</p>');
-    });
+describe('DOMUtils#encodeImagesForTable', () => {
+  const test = (input, expected) => {
+    const { document } = (new JSDOM(input)).window;
+    DOMUtils.encodeImagesForTable(document);
+    strictEqual(document.body.innerHTML, expected);
+  };
+
+  it('encode images for table', () => {
+    // do nothing
+    test('<p>Some content</p>', '<p>Some content</p>');
+
+    // encode pipe if image is in table
+    test('<p>Some content</p><table><tr><td><img src="https://www.server.com/image.jpg" title="Some title | which contains a pipe"></td></tr></table>', '<p>Some content</p><table><tbody><tr><td><img src="https://www.server.com/image.jpg" title="Some title \\| which contains a pipe"></td></tr></tbody></table>');
+
+    // don't encode pipe if image is not in a table
+    test('<p>Some content</p><img src="https://www.server.com/image.jpg" title="Some title | which contains a pipe">', '<p>Some content</p><img src="https://www.server.com/image.jpg" title="Some title | which contains a pipe">');
+  });
+});
+
+describe('DOM#createTable tests', () => {
+  const test = (data, expected) => {
+    const { document } = (new JSDOM()).window;
+    const table = DOMUtils.createTable(data, document);
+    strictEqual(table.outerHTML, expected);
+  };
+
+  it('createTable - basic tables', () => {
+    test(
+      [[]],
+      '<table><tr></tr></table>',
+    );
+    test(
+      [['header']],
+      '<table><tr><th>header</th></tr></table>',
+    );
+    test(
+      [['header'], ['cell']],
+      '<table><tr><th>header</th></tr><tr><td>cell</td></tr></table>',
+    );
+    test(
+      [['header1', 'header2'], ['cell11', 'cell12'], ['cell21', 'cell22']],
+      '<table><tr><th>header1</th><th>header2</th></tr><tr><td>cell11</td><td>cell12</td></tr><tr><td>cell21</td><td>cell22</td></tr></table>',
+    );
+    // TODO deal with colspan ?
+    test(
+      [['header1'], ['cell11', 'cell12'], ['cell21', 'cell22']],
+      '<table><tr><th>header1</th></tr><tr><td>cell11</td><td>cell12</td></tr><tr><td>cell21</td><td>cell22</td></tr></table>',
+    );
   });
 
-  describe('DOMUtils#replaceEmbeds', () => {
-    const test = (input, expected) => {
-      const { document } = (new JSDOM(input)).window;
-      DOMUtils.replaceEmbeds(document);
-      strictEqual(document.body.innerHTML, expected);
-    };
+  it('createTable - deals with Elements', () => {
+    const { document } = (new JSDOM()).window;
 
-    it('replace embeds', () => {
-      // do nothing
-      test('<p>Some content</p>', '<p>Some content</p>');
-    });
+    const img = document.createElement('img');
+    img.src = 'https://www.sample.com/image.jpeg';
 
-    it('replace embeds deals with iframes', () => {
-      test('<p>Some content</p><iframe src="https://www.youtube.com/xyz"></iframe>', '<p>Some content</p><table><tbody><tr><th>Embed</th></tr><tr><td><a href="https://www.youtube.com/xyz">https://www.youtube.com/xyz</a></td></tr></tbody></table>');
-      test('<p>Some content</p><iframe data-src="https://www.youtube.com/xyz"></iframe>', '<p>Some content</p><table><tbody><tr><th>Embed</th></tr><tr><td><a href="https://www.youtube.com/xyz">https://www.youtube.com/xyz</a></td></tr></tbody></table>');
-      test('<p>Some content</p><iframe data-src="https://www.youtube.com/data-src" src="https://www.youtube.com/src"></iframe>', '<p>Some content</p><table><tbody><tr><th>Embed</th></tr><tr><td><a href="https://www.youtube.com/data-src">https://www.youtube.com/data-src</a></td></tr></tbody></table>');
-    });
+    const a = document.createElement('a');
+    a.href = 'https://www.sample.com/';
 
-    it('replace embeds deals video tag / content blocks', () => {
-      // Video block
-      test('<p>Some content</p><video src="https://www.server.com/video.mp4"></video>', '<p>Some content</p><table><tbody><tr><th>Video</th></tr><tr><td><video src="https://www.server.com/video.mp4"></video></td></tr></tbody></table>');
+    test(
+      [['header'], [img]],
+      '<table><tr><th>header</th></tr><tr><td><img src="https://www.sample.com/image.jpeg"></td></tr></table>',
+    );
+    test(
+      [['header'], [img, a, 'some text']],
+      '<table><tr><th>header</th></tr><tr><td><img src="https://www.sample.com/image.jpeg"></td><td><a href="https://www.sample.com/"></a></td><td>some text</td></tr></table>',
+    );
+    test(
+      [['header'], [[img, a, 'some text']]],
+      '<table><tr><th>header</th></tr><tr><td><img src="https://www.sample.com/image.jpeg"><a href="https://www.sample.com/"></a>some text</td></tr></table>',
+    );
+  });
+});
 
-      // Animation block
-      test('<p>Some content</p><video src="https://www.server.com/video.mp4" autoplay="true"></video>', '<p>Some content</p><table><tbody><tr><th>Animation</th></tr><tr><td><video src="https://www.server.com/video.mp4" autoplay="true"></video></td></tr></tbody></table>');
-    });
+describe('DOMUtils#replaceBackgroundByImg', () => {
+  const createElement = (tag, attrs, styles, innerHTML) => {
+    const { document } = (new JSDOM()).window;
+    const element = document.createElement(tag);
+    // eslint-disable-next-line no-restricted-syntax, guard-for-in
+    for (const a in attrs) {
+      element.setAttribute(a, attrs[a]);
+    }
+    // eslint-disable-next-line no-restricted-syntax, guard-for-in
+    for (const p in styles) {
+      element.style[p] = styles[p];
+    }
+    element.innerHTML = innerHTML;
+    return element;
+  };
+
+  const test = (element, expected) => {
+    const { document } = (new JSDOM()).window;
+    const ret = DOMUtils.replaceBackgroundByImg(element, document);
+    strictEqual(ret.outerHTML, expected);
+  };
+
+  it('no background-image style', () => {
+    test(createElement('p', {}, {}, 'Some content'), '<p>Some content</p>');
+
+    test(createElement('img', { src: 'https://www.server.com/image.jpg', title: 'Some title' }, {}, ''), '<img src="https://www.server.com/image.jpg" title="Some title">');
   });
 
-  describe('DOMUtils#encodeImagesForTable', () => {
-    const test = (input, expected) => {
-      const { document } = (new JSDOM(input)).window;
-      DOMUtils.encodeImagesForTable(document);
-      strictEqual(document.body.innerHTML, expected);
-    };
-
-    it('encode images for table', () => {
-      // do nothing
-      test('<p>Some content</p>', '<p>Some content</p>');
-
-      // encode pipe if image is in table
-      test('<p>Some content</p><table><tr><td><img src="https://www.server.com/image.jpg" title="Some title | which contains a pipe"></td></tr></table>', '<p>Some content</p><table><tbody><tr><td><img src="https://www.server.com/image.jpg" title="Some title \\| which contains a pipe"></td></tr></tbody></table>');
-
-      // don't encode pipe if image is not in a table
-      test('<p>Some content</p><img src="https://www.server.com/image.jpg" title="Some title | which contains a pipe">', '<p>Some content</p><img src="https://www.server.com/image.jpg" title="Some title | which contains a pipe">');
-    });
+  it('with background-image style', () => {
+    test(createElement('p', {}, { 'background-image': 'url(https://www.server.com/image.jpg)' }, 'Some content'), '<img src="https://www.server.com/image.jpg">');
+    test(createElement('p', { class: 'class-is-lost' }, { 'background-image': 'url("https://www.server.com/image.jpg")' }, 'Some content'), '<img src="https://www.server.com/image.jpg">');
+    test(createElement('div', { class: 'class-is-lost' }, { 'background-image': 'url("https://www.server.com/image.jpg")' }, '<div><div>Some divs</div><div>More divs</div></div>'), '<img src="https://www.server.com/image.jpg">');
   });
 });

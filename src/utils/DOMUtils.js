@@ -162,6 +162,31 @@ export default class DOMUtils {
     });
   }
 
+  static createTable(data, document) {
+    const table = document.createElement('table');
+
+    data.forEach((row, index) => {
+      const tr = document.createElement('tr');
+
+      row.forEach((cell) => {
+        const t = document.createElement(index === 0 ? 'th' : 'td');
+        if (typeof cell === 'string') {
+          t.innerHTML = cell;
+        } else if (Array.isArray(cell)) {
+          cell.forEach((c) => {
+            t.append(c);
+          });
+        } else {
+          t.append(cell);
+        }
+        tr.appendChild(t);
+      });
+      table.appendChild(tr);
+    });
+
+    return table;
+  }
+
   static generateEmbed(url) {
     return JSDOM.fragment(`<table><tr><th>Embed</th></tr><tr><td><a href="${url}">${url}</a></td></tr></table>`);
   }
@@ -203,5 +228,17 @@ export default class DOMUtils {
         }
       }
     });
+  }
+
+  static replaceBackgroundByImg(element, document) {
+    const url = element?.style?.['background-image'];
+    if (url) {
+      const src = url.replace(/url\(/gm, '').replace(/'/gm, '').replace(/\)/gm, '');
+      const img = document.createElement('img');
+      img.src = src;
+      element.replaceWith(img);
+      return img;
+    }
+    return element;
   }
 }
