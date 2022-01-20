@@ -111,7 +111,7 @@ describe('Blocks#convertBlocksToTables tests', () => {
   });
 });
 
-describe.only('Blocks#getMetadataBlock tests', () => {
+describe('Blocks#getMetadataBlock tests', () => {
   const test = (metadata, expected) => {
     const { document } = (new JSDOM()).window;
     const table = Blocks.getMetadataBlock(document, metadata);
