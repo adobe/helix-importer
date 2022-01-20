@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/adobe/helix-importer/compare/v1.1.0...v1.2.0) (2022-01-20)
+
+
+### Features
+
+* export new Blocks helper ([#7](https://github.com/adobe/helix-importer/issues/7)) ([0d7bfa7](https://github.com/adobe/helix-importer/commit/0d7bfa7bd7a98a6fb19f6aec6f8e29be0549e53e))
+
 # [1.1.0](https://github.com/adobe/helix-importer/compare/v1.0.0...v1.1.0) (2022-01-20)
 
 
