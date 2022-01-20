@@ -268,3 +268,93 @@ describe('DOMUtils#encodeImagesForTable', () => {
     test('<p>Some content</p><img src="https://www.server.com/image.jpg" title="Some title | which contains a pipe">', '<p>Some content</p><img src="https://www.server.com/image.jpg" title="Some title | which contains a pipe">');
   });
 });
+
+describe('DOM#createTable tests', () => {
+  const test = (data, expected) => {
+    const { document } = (new JSDOM()).window;
+    const table = DOMUtils.createTable(data, document);
+    strictEqual(table.outerHTML, expected);
+  };
+
+  it('createTable - basic tables', () => {
+    test(
+      [[]],
+      '<table><tr></tr></table>',
+    );
+    test(
+      [['header']],
+      '<table><tr><th>header</th></tr></table>',
+    );
+    test(
+      [['header'], ['cell']],
+      '<table><tr><th>header</th></tr><tr><td>cell</td></tr></table>',
+    );
+    test(
+      [['header1', 'header2'], ['cell11', 'cell12'], ['cell21', 'cell22']],
+      '<table><tr><th>header1</th><th>header2</th></tr><tr><td>cell11</td><td>cell12</td></tr><tr><td>cell21</td><td>cell22</td></tr></table>',
+    );
+    // TODO deal with colspan ?
+    test(
+      [['header1'], ['cell11', 'cell12'], ['cell21', 'cell22']],
+      '<table><tr><th>header1</th></tr><tr><td>cell11</td><td>cell12</td></tr><tr><td>cell21</td><td>cell22</td></tr></table>',
+    );
+  });
+
+  it('createTable - deals with Elements', () => {
+    const { document } = (new JSDOM()).window;
+
+    const img = document.createElement('img');
+    img.src = 'https://www.sample.com/image.jpeg';
+
+    const a = document.createElement('a');
+    a.href = 'https://www.sample.com/';
+
+    test(
+      [['header'], [img]],
+      '<table><tr><th>header</th></tr><tr><td><img src="https://www.sample.com/image.jpeg"></td></tr></table>',
+    );
+    test(
+      [['header'], [img, a, 'some text']],
+      '<table><tr><th>header</th></tr><tr><td><img src="https://www.sample.com/image.jpeg"></td><td><a href="https://www.sample.com/"></a></td><td>some text</td></tr></table>',
+    );
+    test(
+      [['header'], [[img, a, 'some text']]],
+      '<table><tr><th>header</th></tr><tr><td><img src="https://www.sample.com/image.jpeg"><a href="https://www.sample.com/"></a>some text</td></tr></table>',
+    );
+  });
+});
+
+describe('DOMUtils#replaceBackgroundByImg', () => {
+  const createElement = (tag, attrs, styles, innerHTML) => {
+    const { document } = (new JSDOM()).window;
+    const element = document.createElement(tag);
+    // eslint-disable-next-line no-restricted-syntax, guard-for-in
+    for (const a in attrs) {
+      element.setAttribute(a, attrs[a]);
+    }
+    // eslint-disable-next-line no-restricted-syntax, guard-for-in
+    for (const p in styles) {
+      element.style[p] = styles[p];
+    }
+    element.innerHTML = innerHTML;
+    return element;
+  };
+
+  const test = (element, expected) => {
+    const { document } = (new JSDOM()).window;
+    const ret = DOMUtils.replaceBackgroundByImg(element, document);
+    strictEqual(ret.outerHTML, expected);
+  };
+
+  it('no background-image style', () => {
+    test(createElement('p', {}, {}, 'Some content'), '<p>Some content</p>');
+
+    test(createElement('img', { src: 'https://www.server.com/image.jpg', title: 'Some title' }, {}, ''), '<img src="https://www.server.com/image.jpg" title="Some title">');
+  });
+
+  it('with background-image style', () => {
+    test(createElement('p', {}, { 'background-image': 'url(https://www.server.com/image.jpg)' }, 'Some content'), '<img src="https://www.server.com/image.jpg">');
+    test(createElement('p', { class: 'class-is-lost' }, { 'background-image': 'url("https://www.server.com/image.jpg")' }, 'Some content'), '<img src="https://www.server.com/image.jpg">');
+    test(createElement('div', { class: 'class-is-lost' }, { 'background-image': 'url("https://www.server.com/image.jpg")' }, '<div><div>Some divs</div><div>More divs</div></div>'), '<img src="https://www.server.com/image.jpg">');
+  });
+});
