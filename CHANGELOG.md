@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/adobe/helix-importer/compare/v1.0.0...v1.1.0) (2022-01-20)
+
+
+### Features
+
+* backport helpers from project into library ([#5](https://github.com/adobe/helix-importer/issues/5)) ([3c93126](https://github.com/adobe/helix-importer/commit/3c931269be98b1accfcc983d19bb7a5abdb6e36a))
+
 # 1.0.0 (2022-01-19)
 
 
