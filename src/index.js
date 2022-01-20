@@ -18,6 +18,7 @@ import PageImporterResource from './importer/PageImporterResource.js';
 
 import FSHandler from './storage/FSHandler.js';
 
+import Blocks from './utils/Blocks.js';
 import CSV from './utils/CSV.js';
 import DOMUtils from './utils/DOMUtils.js';
 import FileUtils from './utils/FileUtils.js';
@@ -35,6 +36,7 @@ export {
   PageImporterParams,
   PageImporterResource,
   FSHandler,
+  Blocks,
   CSV,
   DOMUtils,
   FileUtils,
