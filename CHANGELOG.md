@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/adobe/helix-importer/compare/v1.2.0...v1.2.1) (2022-01-25)
+
+
+### Bug Fixes
+
+* export MemoryHandler ([#12](https://github.com/adobe/helix-importer/issues/12)) ([3a83a16](https://github.com/adobe/helix-importer/commit/3a83a1620b0eb4752698ee9b994e8b0fd7ce085f))
+
 # [1.2.0](https://github.com/adobe/helix-importer/compare/v1.1.0...v1.2.0) (2022-01-20)
 
 
