@@ -15,7 +15,7 @@
 import { JSDOM } from 'jsdom';
 
 import path from 'path';
-import unified from 'unified';
+import { unified } from 'unified';
 import parse from 'rehype-parse';
 import { toHtml } from 'hast-util-to-html';
 import rehype2remark from 'rehype-remark';
@@ -50,7 +50,7 @@ export default class PageImporter {
     const { name } = resource;
     const { directory } = resource;
     const sanitizedName = FileUtils.sanitizeFilename(name);
-    this.logger.log(`Computing Markdonw for ${directory}/${sanitizedName}`);
+    this.logger.log(`Computing Markdown for ${directory}/${sanitizedName}`);
 
     const processor = unified()
       .use(parse, { emitParseErrors: true })
@@ -73,36 +73,36 @@ export default class PageImporter {
       .use(() => {
         // use custom tag and rendering because text is always encoded by default
         // we need the raw url
-        processor.Compiler.prototype.visitors.hlxembed = (node) => node.value;
+        // processor.Compiler.prototype.visitors.hlxembed = (node) => node.value;
       })
       .use(() => {
-        processor.Compiler.prototype.visitors.table = (node) => node.value;
+        // processor.Compiler.prototype.visitors.table = (node) => node.value;
       })
       .use(() => {
-        processor.Compiler.prototype.visitors.u = (node) => {
-          // u handling: remove the u is the first element is a link
-          if (node.children && node.children.length > 0) {
-            const children = node.children.map((child) => processor.stringify(child));
-            if (node.children[0].type === 'link') {
-              // first element in the <u> is a link: remove the <u> - unsupported case
-              return `${children.join()}`;
-            }
-            return `<u>${children.join()}</u>`;
-          }
-          return '';
-        };
+        // processor.Compiler.prototype.visitors.u = (node) => {
+        //   // u handling: remove the u is the first element is a link
+        //   if (node.children && node.children.length > 0) {
+        //     const children = node.children.map((child) => processor.stringify(child));
+        //     if (node.children[0].type === 'link') {
+        //       // first element in the <u> is a link: remove the <u> - unsupported case
+        //       return `${children.join()}`;
+        //     }
+        //     return `<u>${children.join()}</u>`;
+        //   }
+        //   return '';
+        // };
       })
       .use(() => {
-        const originalEmphasis = processor.Compiler.prototype.visitors.emphasis;
-        processor.Compiler.prototype.visitors.emphasis = (node) => {
-          // @ts-ignore
-          const ori = originalEmphasis.apply(processor.Compiler(), [node]);
-          return ori;
-        };
+        // const originalEmphasis = processor.Compiler.prototype.visitors.emphasis;
+        // processor.Compiler.prototype.visitors.emphasis = (node) => {
+        //   // @ts-ignore
+        //   const ori = originalEmphasis.apply(processor.Compiler(), [node]);
+        //   return ori;
+        // };
       });
 
     const file = await processor.process(resource.document.innerHTML);
-    let contents = file.contents.toString();
+    let contents = String(file);
 
     // process image links
     const { document } = resource;
