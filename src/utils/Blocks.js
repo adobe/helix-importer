@@ -38,13 +38,11 @@ export default class Blocks {
       const value = metadata[key];
       if (value) {
         if (Array.isArray(value)) {
-          let list = '';
           value.forEach((v) => {
-            // p tags in table are stripped out
-            // list must receive special hlx_replaceTag command to be post-processed
-            list += `hlx_replaceTag(p)${v}hlx_replaceTag(/p)`;
+            const p = document.createElement('p');
+            p.innerHTML = v;
+            valueCell.append(p);
           });
-          valueCell.textContent = list;
         } else if (typeof value === 'string') {
           valueCell.textContent = value;
         } else {

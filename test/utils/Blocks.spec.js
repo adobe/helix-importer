@@ -137,6 +137,6 @@ describe('Blocks#getMetadataBlock tests', () => {
   });
 
   it('getMetadataBlock lists', () => {
-    test({ title: 'Some title', Tags: ['Creative', 'Experience Cloud', 'Photography'] }, '<table><tr><th colspan="2">Metadata</th></tr><tr><td>title</td><td>Some title</td></tr><tr><td>Tags</td><td>hlx_replaceTag(p)Creativehlx_replaceTag(/p)hlx_replaceTag(p)Experience Cloudhlx_replaceTag(/p)hlx_replaceTag(p)Photographyhlx_replaceTag(/p)</td></tr></table>');
+    test({ title: 'Some title', Tags: ['Creative', 'Experience Cloud', 'Photography'] }, '<table><tr><th colspan="2">Metadata</th></tr><tr><td>title</td><td>Some title</td></tr><tr><td>Tags</td><td><p>Creative</p><p>Experience Cloud</p><p>Photography</p></td></tr></table>');
   });
 });

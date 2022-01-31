@@ -234,19 +234,7 @@ export default class PageImporter {
   }
 
   postProcessMD(md) {
-    let ret = md.replace(/\\\\~/gm, '\\~');
-
-    const match = ret.match(/hlx_replaceTag\(.*?\)/gm);
-    if (match) {
-      const hlxReplaceTags = match.filter((i, p, s) => s.indexOf(i) === p);
-      hlxReplaceTags.forEach((r) => {
-        const by = r.substring(0, r.length - 1).split('(')[1];
-        const regex = new RegExp(r.replace('(', '\\(').replace(')', '\\)'), 'gm');
-        ret = ret.replace(regex, `<${by}>`);
-      });
-    }
-
-    return ret;
+    return md.replace(/\\\\~/gm, '\\~');
   }
 
   async download(url) {
