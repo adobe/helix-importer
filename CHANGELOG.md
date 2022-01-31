@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/adobe/helix-importer/compare/v1.2.2...v1.3.0) (2022-01-31)
+
+
+### Features
+
+* restore custom handlers ([a051c80](https://github.com/adobe/helix-importer/commit/a051c80e18d23c87b845c6fc023e81f788d5e9fc))
+
 ## [1.2.2](https://github.com/adobe/helix-importer/compare/v1.2.1...v1.2.2) (2022-01-25)
 
 
