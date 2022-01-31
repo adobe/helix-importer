@@ -12,9 +12,12 @@
 
 /* eslint-disable max-classes-per-file, class-methods-use-this */
 
+import path from 'path';
+import fs from 'fs-extra';
 import { strictEqual, ok } from 'assert';
 import { describe, it } from 'mocha';
 import { Response } from 'node-fetch';
+import { dirname } from 'dirname-filename-esm';
 
 import { docx2md } from '@adobe/helix-docx2md';
 
@@ -24,6 +27,9 @@ import MemoryHandler from '../../src/storage/MemoryHandler.js';
 
 import MockMediaHandler from '../mocks/MockMediaHandler.js';
 import NoopLogger from '../mocks/NoopLogger.js';
+
+// eslint-disable-next-line no-underscore-dangle
+const __dirname = dirname(import.meta);
 
 const logger = new NoopLogger();
 
@@ -82,5 +88,60 @@ describe('PageImporter tests - various options', () => {
       mediaHandler: new MockMediaHandler(),
     });
     strictEqual(md, test, 'valid backward conversion');
+  });
+});
+
+describe.only('PageImporter tests - fixtures', () => {
+  const featureTest = async (feature) => {
+    class Test extends PageImporter {
+      async fetch() {
+        const html = await fs.readFile(path.resolve(__dirname, 'fixtures', `${feature}.spec.html`), 'utf-8');
+        return new Response(html);
+      }
+
+      async process(document) {
+        const pir = new PageImporterResource(feature, '', document.documentElement, null, null);
+        return [pir];
+      }
+    }
+
+    const storageHandler = new MemoryHandler(logger);
+    const config = {
+      storageHandler,
+      skipDocxConversion: true,
+      logger,
+    };
+    const se = new Test(config);
+    const results = await se.import(`https://www.sample.com/${feature}`);
+
+    strictEqual(results.length, 1, 'expect one result');
+
+    const md = await storageHandler.get(`/${feature}.md`);
+    const expectedMD = await fs.readFile(path.resolve(__dirname, 'fixtures', `${feature}.spec.md`), 'utf-8');
+    strictEqual(md.trim(), expectedMD.trim(), 'inported md is expected one');
+  };
+
+  it('import - tables', async () => {
+    await featureTest('table');
+  });
+
+  it('import - underlines', async () => {
+    await featureTest('u');
+  });
+
+  it('import - links', async () => {
+    await featureTest('link');
+  });
+
+  it('import - spans', async () => {
+    await featureTest('span');
+  });
+
+  it('import - emphasises', async () => {
+    await featureTest('em');
+  });
+
+  it('import - complex', async () => {
+    await featureTest('complex');
   });
 });
