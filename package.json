@@ -33,6 +33,7 @@
     "@semantic-release/git": "10.0.1",
     "c8": "7.11.0",
     "codecov": "3.8.3",
+    "dirname-filename-esm": "1.1.1",
     "eslint": "8.7.0",
     "eslint-plugin-header": "3.1.1",
     "eslint-plugin-import": "2.25.4",

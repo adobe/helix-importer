@@ -20,7 +20,6 @@ import parse from 'rehype-parse';
 import { toHtml } from 'hast-util-to-html';
 import rehype2remark from 'rehype-remark';
 import stringify from 'remark-stringify';
-import { all } from 'hast-util-to-mdast/lib/all.js';
 import fs from 'fs-extra';
 import { md2docx } from '@adobe/helix-md2docx';
 import Utils from '../utils/Utils.js';
@@ -56,9 +55,18 @@ export default class PageImporter {
       .use(parse, { emitParseErrors: true })
       .use(rehype2remark, {
         handlers: {
-          hlxembed: (h, node) => h(node, 'hlxembed', node.children[0].value),
-          u: (h, node) => h(node, 'u', all(h, node)),
-          table: (h, node) => h(node, 'table', toHtml(node)),
+          hlxembed: (h, node) => {
+            const children = node.children.map((child) => processor.stringify(child).trim());
+            return h(node, 'text', `${children.join()}\n`);
+          },
+          u: (h, node) => {
+            if (node.children && node.children.length > 0) {
+              const children = node.children.map((child) => processor.stringify(child).trim());
+              return h(node, 'html', `<u>${children.join()}</u>`);
+            }
+            return '';
+          },
+          table: (h, node) => h(node, 'html', toHtml(node)),
         },
       })
       .use(stringify, {
@@ -69,36 +77,6 @@ export default class PageImporter {
         rule: '-',
         ruleRepetition: 3,
         ruleSpaces: false,
-      })
-      .use(() => {
-        // use custom tag and rendering because text is always encoded by default
-        // we need the raw url
-        // processor.Compiler.prototype.visitors.hlxembed = (node) => node.value;
-      })
-      .use(() => {
-        // processor.Compiler.prototype.visitors.table = (node) => node.value;
-      })
-      .use(() => {
-        // processor.Compiler.prototype.visitors.u = (node) => {
-        //   // u handling: remove the u is the first element is a link
-        //   if (node.children && node.children.length > 0) {
-        //     const children = node.children.map((child) => processor.stringify(child));
-        //     if (node.children[0].type === 'link') {
-        //       // first element in the <u> is a link: remove the <u> - unsupported case
-        //       return `${children.join()}`;
-        //     }
-        //     return `<u>${children.join()}</u>`;
-        //   }
-        //   return '';
-        // };
-      })
-      .use(() => {
-        // const originalEmphasis = processor.Compiler.prototype.visitors.emphasis;
-        // processor.Compiler.prototype.visitors.emphasis = (node) => {
-        //   // @ts-ignore
-        //   const ori = originalEmphasis.apply(processor.Compiler(), [node]);
-        //   return ori;
-        // };
       });
 
     const file = await processor.process(resource.document.innerHTML);
@@ -256,19 +234,7 @@ export default class PageImporter {
   }
 
   postProcessMD(md) {
-    let ret = md.replace(/\\\\~/gm, '\\~');
-
-    const match = ret.match(/hlx_replaceTag\(.*?\)/gm);
-    if (match) {
-      const hlxReplaceTags = match.filter((i, p, s) => s.indexOf(i) === p);
-      hlxReplaceTags.forEach((r) => {
-        const by = r.substring(0, r.length - 1).split('(')[1];
-        const regex = new RegExp(r.replace('(', '\\(').replace(')', '\\)'), 'gm');
-        ret = ret.replace(regex, `<${by}>`);
-      });
-    }
-
-    return ret;
+    return md.replace(/\\\\~/gm, '\\~');
   }
 
   async download(url) {
