@@ -79,8 +79,6 @@ export default class Blocks {
                 const cellContent = [];
                 Array.from(cell.childNodes).forEach((c) => cellContent.push(c));
                 rowData.push(cellContent);
-              } else {
-                rowData.push(cell);
               }
             });
             data.push(rowData);

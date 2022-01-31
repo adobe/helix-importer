@@ -96,6 +96,7 @@ describe('Blocks#convertBlocksToTables tests', () => {
         <div class="promotion">
           <div>
             <div><a href="https://blog.adobe.com/en/promotions/doc-cloud-education.html">https://blog.adobe.com/en/promotions/doc-cloud-education.html</a></div>
+            <div><span>with content</span></div>
           </div>
         </div>
       </main>`,
@@ -103,7 +104,10 @@ describe('Blocks#convertBlocksToTables tests', () => {
         <div>
           <table>
             <tr><th>Promotion</th></tr>
-            <tr><td><a href="https://blog.adobe.com/en/promotions/doc-cloud-education.html">https://blog.adobe.com/en/promotions/doc-cloud-education.html</a></td></tr>
+            <tr>
+              <td><a href="https://blog.adobe.com/en/promotions/doc-cloud-education.html">https://blog.adobe.com/en/promotions/doc-cloud-education.html</a></td>
+              <td><span>with content</span></td>
+            </tr>
           </table>
         </div>
       </main>`,
