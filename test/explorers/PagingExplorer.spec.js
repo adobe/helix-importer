@@ -202,4 +202,79 @@ describe('PagingExplorer tests', () => {
     const se = new Test(params);
     await se.explore();
   });
+
+  it('explorer params are honored', async () => {
+    const start = 2;
+    let callbackCalled = 0;
+    let processCalled = 0;
+    class Test extends PagingExplorer {
+      async fetch() {
+        return new Response('test');
+      }
+
+      process() {
+        processCalled += 1;
+        return [{
+          a: processCalled + start - 1,
+        }];
+      }
+    }
+
+    const se = new Test(params);
+    const results = await se.explore(2, () => {
+      callbackCalled += 1;
+    });
+
+    strictEqual(callbackCalled, 2, 'callback called twice');
+    deepStrictEqual(results, [{ a: 2 }, { a: 3 }], 'result is correct');
+  });
+
+  it('no text in response', async () => {
+    let processCalled = 0;
+    class Test extends PagingExplorer {
+      async fetch() {
+        if (processCalled < 2) {
+          return new Response('test');
+        }
+        return new Response('');
+      }
+
+      process() {
+        processCalled += 1;
+        return [{
+          a: processCalled,
+        }];
+      }
+    }
+
+    const se = new Test(params);
+    const results = await se.explore();
+
+    deepStrictEqual(results, [{ a: 1 }, { a: 2 }], 'result is correct');
+  });
+
+  it('no entries on page', async () => {
+    let processCalled = 0;
+    class Test extends PagingExplorer {
+      async fetch() {
+        return new Response('test');
+      }
+
+      process() {
+        if (processCalled < 2) {
+          processCalled += 1;
+          return [{
+            a: processCalled,
+          }];
+        } else {
+          return null;
+        }
+      }
+    }
+
+    const se = new Test(params);
+    const results = await se.explore();
+
+    deepStrictEqual(results, [{ a: 1 }, { a: 2 }], 'result is correct');
+  });
 });
