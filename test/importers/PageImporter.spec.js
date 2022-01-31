@@ -91,7 +91,7 @@ describe('PageImporter tests - various options', () => {
   });
 });
 
-describe.only('PageImporter tests - fixtures', () => {
+describe('PageImporter tests - fixtures', () => {
   const featureTest = async (feature) => {
     class Test extends PageImporter {
       async fetch() {
