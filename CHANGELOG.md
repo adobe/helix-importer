@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/adobe/helix-importer/compare/v1.3.0...v1.4.0) (2022-02-02)
+
+
+### Features
+
+* add docxStylesXML param support ([1a10784](https://github.com/adobe/helix-importer/commit/1a1078453f1f5d761cf7f64addc013f8b73dc225))
+
 # [1.3.0](https://github.com/adobe/helix-importer/compare/v1.2.2...v1.3.0) (2022-01-31)
 
 
