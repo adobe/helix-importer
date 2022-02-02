@@ -89,6 +89,32 @@ describe('PageImporter tests - various options', () => {
     });
     strictEqual(md, test, 'valid backward conversion');
   });
+
+  it('import - can provide a custom styles.xml', async () => {
+    const docxStylesXML = await fs.readFile(path.resolve(__dirname, 'fixtures', 'custom-styles.xml'), 'utf-8');
+    const storageHandler = new MemoryHandler(logger);
+    const config = {
+      storageHandler,
+      logger,
+      docxStylesXML,
+    };
+    const se = new Test(config);
+    const results = await se.import('/someurl');
+
+    strictEqual(results.length, 1, 'expect no result');
+
+    ok(await storageHandler.exists('/someurl/somecomputedpath/resource1.md'), 'md has been stored');
+    ok(await storageHandler.exists('/someurl/somecomputedpath/resource1.docx'), 'docx has been stored');
+
+    const md = await storageHandler.get('/someurl/somecomputedpath/resource1.md');
+    strictEqual(md, '# heading1\n\nparagraph\n', 'valid markdown created');
+
+    const docx = await storageHandler.get('/someurl/somecomputedpath/resource1.docx');
+    const test = await docx2md(docx, {
+      mediaHandler: new MockMediaHandler(),
+    });
+    strictEqual(md, test, 'valid backward conversion');
+  });
 });
 
 describe('PageImporter tests - fixtures', () => {
