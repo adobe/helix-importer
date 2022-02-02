@@ -20,4 +20,6 @@ export default class PageImporterParams {
   skipMDFileCreation;
 
   logger;
+
+  docxStylesXML;
 }

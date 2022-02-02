@@ -41,7 +41,7 @@ export default class PageImporter {
   }
 
   async convertToDocx(docxPath, content) {
-    const buffer = await md2docx(content, this.logger);
+    const buffer = await md2docx(content, this.logger, this.params.docxStylesXML);
     return this.params.storageHandler.put(docxPath, buffer);
   }
 
@@ -112,7 +112,7 @@ export default class PageImporter {
             });
           }
         } catch (error) {
-          this.logger.warn(`Invalid link in the page: ${href}`);
+          this.logger.warn(`Invalid link in the page: ${href}`, error);
         }
       }
     });
@@ -138,7 +138,7 @@ export default class PageImporter {
             });
           }
         } catch (error) {
-          this.logger.warn(`Invalid video in the page: ${src}`);
+          this.logger.warn(`Invalid video in the page: ${src}`, error);
         }
       }
     });
