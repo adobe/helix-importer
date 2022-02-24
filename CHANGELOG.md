@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/adobe/helix-importer/compare/v1.5.0...v1.6.0) (2022-02-24)
+
+
+### Features
+
+* trigger release ([43154bc](https://github.com/adobe/helix-importer/commit/43154bc2f093868324f66d431b71eea5083543bb))
+
 # [1.5.0](https://github.com/adobe/helix-importer/compare/v1.4.1...v1.5.0) (2022-02-24)
 
 
