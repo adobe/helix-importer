@@ -15,7 +15,7 @@ import { describe, it } from 'mocha';
 
 import MDUtils from '../../src/utils/MDUtils.js';
 
-describe.only('MDUtils tests', () => {
+describe('MDUtils tests', () => {
   it('MDUtils#replaceSrcInMarkdown do nothing', () => {
     strictEqual(
       MDUtils.replaceSrcInMarkdown('#A title\n![](https://www.sample.com/image.jpg)', 'https://www.sample.com/replace.jpg', 'https://www.sample.com/withimage.jpg'),
