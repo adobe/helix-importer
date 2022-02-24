@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/adobe/helix-importer/compare/v1.4.1...v1.5.0) (2022-02-24)
+
+
+### Features
+
+* helper method to get an image from background image style ([#17](https://github.com/adobe/helix-importer/issues/17)) ([63a384d](https://github.com/adobe/helix-importer/commit/63a384dceb75e6815115ffd1c37c321fc7476ab6))
+
 ## [1.4.1](https://github.com/adobe/helix-importer/compare/v1.4.0...v1.4.1) (2022-02-24)
 
 
