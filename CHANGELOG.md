@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/adobe/helix-importer/compare/v1.4.0...v1.4.1) (2022-02-24)
+
+
+### Bug Fixes
+
+* some images come with wrong src in md ([#16](https://github.com/adobe/helix-importer/issues/16)) ([7f27432](https://github.com/adobe/helix-importer/commit/7f274326683313cd11c2a92bb1c01c1960de5fcd))
+
 # [1.4.0](https://github.com/adobe/helix-importer/compare/v1.3.0...v1.4.0) (2022-02-02)
 
 
