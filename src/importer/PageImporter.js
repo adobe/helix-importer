@@ -25,6 +25,7 @@ import { md2docx } from '@adobe/helix-md2docx';
 import Utils from '../utils/Utils.js';
 import DOMUtils from '../utils/DOMUtils.js';
 import FileUtils from '../utils/FileUtils.js';
+import MDUtils from '../utils/MDUtils.js';
 
 export default class PageImporter {
   params;
@@ -143,14 +144,10 @@ export default class PageImporter {
       }
     });
 
-    const patchSrcInContent = (c, oldSrc, newSrc) => contents
-      .replace(new RegExp(`${oldSrc.replace('.', '\\.').replace('?', '\\?')}`, 'gm'), newSrc)
-      .replace(new RegExp(`${decodeURI(oldSrc).replace('.', '\\.')}`, 'gm'), newSrc);
-
     // adjust assets url (from relative to absolute)
     assets.forEach((asset) => {
       const u = new URL(decodeURI(asset.url), url);
-      contents = patchSrcInContent(contents, asset.url, u.toString());
+      contents = MDUtils.replaceSrcInMarkdown(contents, asset.url, u.toString());
     });
 
     if (resource.prepend) {
