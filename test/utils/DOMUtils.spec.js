@@ -324,22 +324,22 @@ describe('DOM#createTable tests', () => {
   });
 });
 
-describe('DOMUtils#replaceBackgroundByImg', () => {
-  const createElement = (tag, attrs, styles, innerHTML) => {
-    const { document } = (new JSDOM()).window;
-    const element = document.createElement(tag);
-    // eslint-disable-next-line no-restricted-syntax, guard-for-in
-    for (const a in attrs) {
-      element.setAttribute(a, attrs[a]);
-    }
-    // eslint-disable-next-line no-restricted-syntax, guard-for-in
-    for (const p in styles) {
-      element.style[p] = styles[p];
-    }
-    element.innerHTML = innerHTML;
-    return element;
-  };
+const createElement = (tag, attrs, styles, innerHTML) => {
+  const { document } = (new JSDOM()).window;
+  const element = document.createElement(tag);
+  // eslint-disable-next-line no-restricted-syntax, guard-for-in
+  for (const a in attrs) {
+    element.setAttribute(a, attrs[a]);
+  }
+  // eslint-disable-next-line no-restricted-syntax, guard-for-in
+  for (const p in styles) {
+    element.style[p] = styles[p];
+  }
+  element.innerHTML = innerHTML;
+  return element;
+};
 
+describe('DOMUtils#replaceBackgroundByImg', () => {
   const test = (element, expected) => {
     const { document } = (new JSDOM()).window;
     const ret = DOMUtils.replaceBackgroundByImg(element, document);
@@ -356,5 +356,24 @@ describe('DOMUtils#replaceBackgroundByImg', () => {
     test(createElement('p', {}, { 'background-image': 'url(https://www.server.com/image.jpg)' }, 'Some content'), '<img src="https://www.server.com/image.jpg">');
     test(createElement('p', { class: 'class-is-lost' }, { 'background-image': 'url("https://www.server.com/image.jpg")' }, 'Some content'), '<img src="https://www.server.com/image.jpg">');
     test(createElement('div', { class: 'class-is-lost' }, { 'background-image': 'url("https://www.server.com/image.jpg")' }, '<div><div>Some divs</div><div>More divs</div></div>'), '<img src="https://www.server.com/image.jpg">');
+  });
+});
+
+describe('DOMUtils#getImgFromBackground', () => {
+  const test = (element, expected) => {
+    const { document } = (new JSDOM()).window;
+    const ret = DOMUtils.getImgFromBackground(element, document);
+    strictEqual(ret ? ret.outerHTML : null, expected);
+  };
+
+  it('no background-image style', () => {
+    test(createElement('p', {}, {}, 'Some content'), null);
+
+    test(createElement('img', { src: 'https://www.server.com/image.jpg', title: 'Some title' }, {}, ''), null);
+  });
+
+  it('with background-image style', () => {
+    test(createElement('p', {}, { 'background-image': 'url(https://www.server.com/image.jpg)' }, 'Some content'), '<img src="https://www.server.com/image.jpg">');
+    test(createElement('div', { class: 'someclass' }, { 'background-image': 'url("https://www.server.com/image.jpg")', background: 'rgb(0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box' }, '<div><div>Some divs</div><div>More divs</div></div>'), '<img src="https://www.server.com/image.jpg">');
   });
 });

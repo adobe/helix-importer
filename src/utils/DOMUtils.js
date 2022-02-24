@@ -231,14 +231,22 @@ export default class DOMUtils {
   }
 
   static replaceBackgroundByImg(element, document) {
+    const img = DOMUtils.getImgFromBackground(element, document);
+    if (img) {
+      element.replaceWith(img);
+      return img;
+    }
+    return element;
+  }
+
+  static getImgFromBackground(element, document) {
     const url = element?.style?.['background-image'];
     if (url) {
       const src = url.replace(/url\(/gm, '').replace(/'/gm, '').replace(/\)/gm, '');
       const img = document.createElement('img');
       img.src = src;
-      element.replaceWith(img);
       return img;
     }
-    return element;
+    return null;
   }
 }
