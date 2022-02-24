@@ -241,7 +241,7 @@ export default class DOMUtils {
 
   static getImgFromBackground(element, document) {
     const url = element?.style?.['background-image'];
-    if (url) {
+    if (url && url.toLowerCase() !== 'none') {
       const src = url.replace(/url\(/gm, '').replace(/'/gm, '').replace(/\)/gm, '');
       const img = document.createElement('img');
       img.src = src;

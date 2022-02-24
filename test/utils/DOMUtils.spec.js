@@ -350,6 +350,8 @@ describe('DOMUtils#replaceBackgroundByImg', () => {
     test(createElement('p', {}, {}, 'Some content'), '<p>Some content</p>');
 
     test(createElement('img', { src: 'https://www.server.com/image.jpg', title: 'Some title' }, {}, ''), '<img src="https://www.server.com/image.jpg" title="Some title">');
+
+    test(createElement('p', {}, { 'background-image': 'none' }, 'Some content'), '<p style="background-image: none;">Some content</p>');
   });
 
   it('with background-image style', () => {
@@ -370,6 +372,8 @@ describe('DOMUtils#getImgFromBackground', () => {
     test(createElement('p', {}, {}, 'Some content'), null);
 
     test(createElement('img', { src: 'https://www.server.com/image.jpg', title: 'Some title' }, {}, ''), null);
+
+    test(createElement('p', {}, { 'background-image': 'none' }, 'Some content'), null);
   });
 
   it('with background-image style', () => {
