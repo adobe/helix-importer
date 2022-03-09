@@ -188,6 +188,8 @@ describe('DOMUtils#removeSpans tests', () => {
     test('<p><span>Content should remain</span> the same</p>', '<p>Content should remain the same</p>');
     test('<p>Spacing<span> should</span> remain the same</p>', '<p>Spacing should remain the same</p>');
     test('<p>Spacing<span> should</span> remain the <span>same even</span> with<span> multiple spans</span></p>', '<p>Spacing should remain the same even with multiple spans</p>');
+    test('<span><div><img src="animage.jpg"></div></span>', '<span><div><img src="animage.jpg"></div></span>');
+    test('<span>Some image here: <div><img src="animage.jpg"></div></span>', '<span>Some image here: <div><img src="animage.jpg"></div></span>');
   });
 });
 

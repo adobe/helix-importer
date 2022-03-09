@@ -144,10 +144,13 @@ export default class DOMUtils {
   static removeSpans(document) {
     // remove spans
     document.querySelectorAll('span').forEach((span) => {
-      if (span.textContent === '') {
-        span.remove();
-      } else {
-        span.replaceWith(JSDOM.fragment(span.innerHTML));
+      if (!span.querySelector('img')) {
+        // do not touch spans with images
+        if (span.textContent === '') {
+          span.remove();
+        } else {
+          span.replaceWith(JSDOM.fragment(span.innerHTML));
+        }
       }
     });
   }
