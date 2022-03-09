@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/adobe/helix-importer/compare/v1.6.0...v1.7.0) (2022-03-09)
+
+
+### Features
+
+* do not change span with an image ([db51e1c](https://github.com/adobe/helix-importer/commit/db51e1cb068d44571c97c83d6e25b38f8e27003e))
+
 # [1.6.0](https://github.com/adobe/helix-importer/compare/v1.5.0...v1.6.0) (2022-02-24)
 
 
