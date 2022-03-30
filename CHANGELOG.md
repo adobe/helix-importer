@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/adobe/helix-importer/compare/v1.8.0...v1.9.0) (2022-03-30)
+
+
+### Features
+
+* exclude filtering if span has class or id ([#19](https://github.com/adobe/helix-importer/issues/19)) ([9a1b525](https://github.com/adobe/helix-importer/commit/9a1b52526538bf4d1c3da5fe683346f8d7970a87))
+
 # [1.8.0](https://github.com/adobe/helix-importer/compare/v1.7.0...v1.8.0) (2022-03-24)
 
 
