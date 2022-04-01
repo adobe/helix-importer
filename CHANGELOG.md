@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/adobe/helix-importer/compare/v1.9.0...v1.10.0) (2022-04-01)
+
+
+### Features
+
+* use latest dependency ([654cfd4](https://github.com/adobe/helix-importer/commit/654cfd43b93cc8eb2a2fbe8fd8661153a885f78a))
+
 # [1.9.0](https://github.com/adobe/helix-importer/compare/v1.8.0...v1.9.0) (2022-03-30)
 
 
