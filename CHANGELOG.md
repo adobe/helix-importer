@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/adobe/helix-importer/compare/v1.10.0...v1.11.0) (2022-04-05)
+
+
+### Features
+
+* replace weird spaces characters ([4c9b43f](https://github.com/adobe/helix-importer/commit/4c9b43fe2693b0cacae8a7ef2210b0ab271f918d))
+
 # [1.10.0](https://github.com/adobe/helix-importer/compare/v1.9.0...v1.10.0) (2022-04-01)
 
 
