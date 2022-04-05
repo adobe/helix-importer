@@ -231,7 +231,7 @@ export default class PageImporter {
   }
 
   postProcessMD(md) {
-    return md.replace(/\\\\~/gm, '\\~');
+    return MDUtils.cleanupMarkdown(md);
   }
 
   async download(url) {

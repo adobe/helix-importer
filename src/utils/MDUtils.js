@@ -18,4 +18,20 @@ export default class MDUtils {
       return md.replace(new RegExp(`${oldSrc.replace('.', '\\.').replace('?', '\\?')}`, 'gm'), newSrc);
     }
   };
+
+  static cleanupMarkdown(md) {
+    let ret = md?.replace(/\\\\~/gm, '\\~');
+    if (ret) {
+      for (let i = 0; i < 20; i += 1) {
+        let x = `${i}`;
+        if (i < 10) x = `0${i}`;
+        const c = String.fromCodePoint(parseInt(`00${x}`, 16));
+        const reg = new RegExp(`\\u00${x}`, 'g');
+        const r = [c.length].map(() => ' ').join('');
+        ret = ret.replace(reg, r);
+      }
+      ret = ret.replace(/\u00A0/gm, '');
+    }
+    return ret;
+  }
 }
