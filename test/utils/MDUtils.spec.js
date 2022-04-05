@@ -15,7 +15,7 @@ import { describe, it } from 'mocha';
 
 import MDUtils from '../../src/utils/MDUtils.js';
 
-describe('MDUtils tests', () => {
+describe('MDUtils#replaceSrcInMarkdown tests', () => {
   it('MDUtils#replaceSrcInMarkdown do nothing', () => {
     strictEqual(
       MDUtils.replaceSrcInMarkdown('#A title\n![](https://www.sample.com/image.jpg)', 'https://www.sample.com/replace.jpg', 'https://www.sample.com/withimage.jpg'),
@@ -49,6 +49,33 @@ describe('MDUtils tests', () => {
       MDUtils.replaceSrcInMarkdown('#A title\n![](https://www.sample.com/imagé.jpg)', 'https://www.sample.com/imag%C3%A9.jpg', 'https://www.sample.com/withsomethingelse.jpg'),
       '#A title\n![](https://www.sample.com/withsomethingelse.jpg)',
       'encoded to replacement',
+    );
+  });
+});
+
+describe('MDUtils#cleanupMarkdown tests', () => {
+  it('MDUtils#cleanupMarkdown do nothing', () => {
+    const md = '#A title\n![](https://www.sample.com/image.jpg)\nShould be clean\n<table><tr><th colspan="2">Metadata</th></tr><tr><td>key</td><td>value</td></tr></table>';
+    strictEqual(
+      MDUtils.cleanupMarkdown(md),
+      md,
+      'do nothing',
+    );
+  });
+
+  it('MDUtils#cleanupMarkdown unescape tildes', () => {
+    strictEqual(
+      MDUtils.cleanupMarkdown('#A title\n~~Tilde can be an pb~~\n Especially \\\\~in the content'),
+      '#A title\n~~Tilde can be an pb~~\n Especially \\~in the content',
+      'unescape tildes',
+    );
+  });
+
+  it('MDUtils#cleanupMarkdown replace weird spaces', () => {
+    strictEqual(
+      MDUtils.cleanupMarkdown('#A title\nReplaces the weird spaces characters: "\u0001\u0002\u0003\u0004\u0005\u0006\u0007\u0008\u0009\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019"'),
+      '#A title\nReplaces the weird spaces characters: "                    "',
+      'replace weird spaces',
     );
   });
 });
