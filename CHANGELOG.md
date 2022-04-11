@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/adobe/helix-importer/compare/v1.11.0...v1.12.0) (2022-04-11)
+
+
+### Features
+
+* add support for mdast2docxOptions ([a6649df](https://github.com/adobe/helix-importer/commit/a6649dfcce76d9d68f4d9a35625ebd4584938d72))
+
 # [1.11.0](https://github.com/adobe/helix-importer/compare/v1.10.0...v1.11.0) (2022-04-05)
 
 
