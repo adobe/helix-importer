@@ -21,5 +21,5 @@ export default class PageImporterParams {
 
   logger;
 
-  docxStylesXML;
+  mdast2docxOptions;
 }
