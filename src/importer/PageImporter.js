@@ -42,7 +42,10 @@ export default class PageImporter {
   }
 
   async convertToDocx(docxPath, content) {
-    const buffer = await md2docx(content, this.logger, this.params.docxStylesXML);
+    const buffer = await md2docx(content, {
+      log: this.logger,
+      ...this.params.mdast2docxOptions,
+    });
     return this.params.storageHandler.put(docxPath, buffer);
   }
 

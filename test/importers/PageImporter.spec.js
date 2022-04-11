@@ -91,12 +91,14 @@ describe('PageImporter tests - various options', () => {
   });
 
   it('import - can provide a custom styles.xml', async () => {
-    const docxStylesXML = await fs.readFile(path.resolve(__dirname, 'fixtures', 'custom-styles.xml'), 'utf-8');
+    const stylesXML = await fs.readFile(path.resolve(__dirname, 'fixtures', 'custom-styles.xml'), 'utf-8');
     const storageHandler = new MemoryHandler(logger);
     const config = {
       storageHandler,
       logger,
-      docxStylesXML,
+      mdast2Docx2Options: {
+        stylesXML,
+      },
     };
     const se = new Test(config);
     const results = await se.import('/someurl');
