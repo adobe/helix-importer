@@ -44,6 +44,23 @@ describe('MDUtils#replaceSrcInMarkdown tests', () => {
     );
   });
 
+  it('MDUtils#replaceSrcInMarkdown can be called multiple times', () => {
+    const md = '![](/book/resources/_prod/img/hero/image.jpg)\n\n# Title for the page\n\n![](/book/resources/_prod/img/hero/image.jpg)';
+    const expected = '![](https://www.sample.com/book/resources/_prod/img/hero/image.jpg)\n\n# Title for the page\n\n![](https://www.sample.com/book/resources/_prod/img/hero/image.jpg)';
+    const round1 = MDUtils.replaceSrcInMarkdown(md, '/book/resources/_prod/img/hero/image.jpg', 'https://www.sample.com/book/resources/_prod/img/hero/image.jpg');
+    const round2 = MDUtils.replaceSrcInMarkdown(round1, '/book/resources/_prod/img/hero/image.jpg', 'https://www.sample.com/book/resources/_prod/img/hero/image.jpg');
+    strictEqual(
+      expected,
+      round1,
+      'relative to absolute replacement (multiple replacements - round1)',
+    );
+    strictEqual(
+      expected,
+      round2,
+      'relative to absolute replacement (multiple replacements - round2)',
+    );
+  });
+
   it('MDUtils#replaceSrcInMarkdown can replace with encoding', () => {
     strictEqual(
       MDUtils.replaceSrcInMarkdown('#A title\n![](https://www.sample.com/imagé.jpg)', 'https://www.sample.com/imag%C3%A9.jpg', 'https://www.sample.com/withsomethingelse.jpg'),

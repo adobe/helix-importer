@@ -13,9 +13,9 @@
 export default class MDUtils {
   static replaceSrcInMarkdown = (md, oldSrc, newSrc) => {
     if (decodeURI(oldSrc) !== oldSrc) {
-      return md.replace(new RegExp(`${decodeURI(oldSrc).replace('.', '\\.')}`, 'gm'), newSrc);
+      return md.replace(new RegExp(`\\(${decodeURI(oldSrc).replace('.', '\\.')}\\)`, 'gm'), `(${newSrc})`);
     } else {
-      return md.replace(new RegExp(`${oldSrc.replace('.', '\\.').replace('?', '\\?')}`, 'gm'), newSrc);
+      return md.replace(new RegExp(`\\(${oldSrc.replace('.', '\\.').replace('?', '\\?')}\\)`, 'gm'), `(${newSrc})`);
     }
   };
 
