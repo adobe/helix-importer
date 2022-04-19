@@ -1,3 +1,10 @@
+## [1.12.1](https://github.com/adobe/helix-importer/compare/v1.12.0...v1.12.1) (2022-04-19)
+
+
+### Bug Fixes
+
+* do not replace src multiple times ([972a1d9](https://github.com/adobe/helix-importer/commit/972a1d96e02e9e59196f76f02f8b4cde9424f961))
+
 # [1.12.0](https://github.com/adobe/helix-importer/compare/v1.11.0...v1.12.0) (2022-04-11)
 
 
