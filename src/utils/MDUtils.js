@@ -30,7 +30,7 @@ export default class MDUtils {
         const r = [c.length].map(() => ' ').join('');
         ret = ret.replace(reg, r);
       }
-      ret = ret.replace(/\u00A0/gm, '');
+      ret = ret.replace(/\u00A0/gm, ' ');
     }
     return ret;
   }

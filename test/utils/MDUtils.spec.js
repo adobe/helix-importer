@@ -95,4 +95,12 @@ describe('MDUtils#cleanupMarkdown tests', () => {
       'replace weird spaces',
     );
   });
+
+  it('MDUtils#cleanupMarkdown replace invisible characters', () => {
+    strictEqual(
+      MDUtils.cleanupMarkdown('Vols à partir de Paris'),
+      'Vols à partir de Paris',
+      'replace invisble characters',
+    );
+  });
 });
