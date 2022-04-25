@@ -1,3 +1,10 @@
+## [1.12.2](https://github.com/adobe/helix-importer/compare/v1.12.1...v1.12.2) (2022-04-25)
+
+
+### Bug Fixes
+
+* invisible characters ([8c9daeb](https://github.com/adobe/helix-importer/commit/8c9daebab6e50df3dea693335df4d302ea4f4b39))
+
 ## [1.12.1](https://github.com/adobe/helix-importer/compare/v1.12.0...v1.12.1) (2022-04-19)
 
 
