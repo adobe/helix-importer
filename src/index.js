@@ -30,6 +30,8 @@ import WPAdminAjaxPager from './wp/explorers/WPAdminAjaxPager.js';
 import WPContentPager from './wp/explorers/WPContentPager.js';
 import WPPostWrapPager from './wp/explorers/WPPostWrapPager.js';
 
+import { html2md, html2docx } from './importer/HTML2x.js';
+
 export {
   PagingExplorer,
   PagingExplorerParams,
@@ -47,4 +49,6 @@ export {
   WPAdminAjaxPager,
   WPContentPager,
   WPPostWrapPager,
+  html2md,
+  html2docx,
 };
