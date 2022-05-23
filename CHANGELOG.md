@@ -1,3 +1,10 @@
+## [1.13.1](https://github.com/adobe/helix-importer/compare/v1.13.0...v1.13.1) (2022-05-23)
+
+
+### Bug Fixes
+
+* missing slash in path ([4880b05](https://github.com/adobe/helix-importer/commit/4880b05f74862ad5a59566d816027064feb22ea7))
+
 # [1.13.0](https://github.com/adobe/helix-importer/compare/v1.12.2...v1.13.0) (2022-05-23)
 
 
