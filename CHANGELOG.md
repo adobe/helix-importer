@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/adobe/helix-importer/compare/v1.12.2...v1.13.0) (2022-05-23)
+
+
+### Features
+
+* move HTML2x from ui to importer ([729f842](https://github.com/adobe/helix-importer/commit/729f84228f3ab029f892bbab342ba42a59882fb3))
+
 ## [1.12.2](https://github.com/adobe/helix-importer/compare/v1.12.1...v1.12.2) (2022-04-25)
 
 
