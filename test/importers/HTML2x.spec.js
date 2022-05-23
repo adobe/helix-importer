@@ -63,11 +63,11 @@ describe('html2md tests', () => {
         p.innerHTML = 'My Hello to the World';
         return p;
       },
-      generateDocumentPath: () => '/my-custom-path',
+      generateDocumentPath: () => '/folder/my-custom-path',
     });
     strictEqual(out.html.trim(), '<p>My Hello to the World</p>');
     strictEqual(out.md.trim(), 'My Hello to the World');
-    strictEqual(out.path, '/my-custom-path');
+    strictEqual(out.path, '/folder/my-custom-path');
   });
 
   it('html2md can deal with null returning transformation', async () => {
@@ -117,11 +117,11 @@ describe('html2docx tests', () => {
         p.innerHTML = 'My Hello to the World';
         return p;
       },
-      generateDocumentPath: () => '/my-custom-path',
+      generateDocumentPath: () => '/folder1/folder2/my-custom-path',
     });
     strictEqual(out.html.trim(), '<p>My Hello to the World</p>');
     strictEqual(out.md.trim(), 'My Hello to the World');
-    strictEqual(out.path, '/my-custom-path');
+    strictEqual(out.path, '/folder1/folder2/my-custom-path');
 
     ok(out.docx);
     const md = await docx2md(out.docx, {

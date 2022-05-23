@@ -122,7 +122,7 @@ async function html2x(url, doc, transformCfg, toMd, toDocx, options = {}) {
     html: pirs[0].extra.html,
   };
 
-  res.path = `${dirname}${name}`;
+  res.path = path.resolve(dirname, name);
 
   if (toMd) {
     const md = await storageHandler.get(pirs[0].md);
