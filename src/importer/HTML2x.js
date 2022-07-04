@@ -17,6 +17,7 @@ import { JSDOM } from 'jsdom';
 import PageImporter from './PageImporter.js';
 import PageImporterResource from './PageImporterResource.js';
 import MemoryHandler from '../storage/MemoryHandler.js';
+import Utils from '../utils/Utils.js';
 
 // import docxStylesXML from '../resources/styles.xml';
 
@@ -53,17 +54,16 @@ async function defaultGenerateDocumentPath({ url, document }) {
 }
 
 async function html2x(url, doc, transformCfg, toMd, toDocx, options = {}) {
-  let name = 'index';
-  let dirname = '';
+  const transformer = transformCfg || {};
 
-  const transfrom = transformCfg || {};
+  if (!transformer.transform) {
+    if (!transformer.transformDOM) {
+      transformer.transformDOM = defaultTransformDOM;
+    }
 
-  if (!transfrom.transformDOM) {
-    transfrom.transformDOM = defaultTransformDOM;
-  }
-
-  if (!transfrom.generateDocumentPath) {
-    transfrom.generateDocumentPath = defaultGenerateDocumentPath;
+    if (!transformer.generateDocumentPath) {
+      transformer.generateDocumentPath = defaultGenerateDocumentPath;
+    }
   }
 
   if (options.preprocess !== false) {
@@ -77,22 +77,44 @@ async function html2x(url, doc, transformCfg, toMd, toDocx, options = {}) {
     }
 
     async process(document) {
-      let output = await transfrom.transformDOM({ url, document, html });
-      output = output || document.body;
+      if (transformer.transform) {
+        let results = transformer.transform({ url, document, html });
+        if (!results) return null;
+        const pirs = [];
 
-      let p = await transfrom.generateDocumentPath({ url, document });
-      if (!p) {
-        // provided function returns null -> apply default
-        p = await defaultGenerateDocumentPath({ url, document });
+        if (!Array.isArray(results)) {
+          // single element with transform function
+          results = [results];
+        }
+
+        results.forEach((result) => {
+          const name = path.basename(result.path);
+          const dirname = path.dirname(result.path);
+
+          const pir = new PageImporterResource(name, dirname, result.element, null, {
+            html: result.element.outerHTML,
+          });
+          pirs.push(pir);
+        });
+        return pirs;
+      } else {
+        let output = await transformer.transformDOM({ url, document, html });
+        output = output || document.body;
+
+        let p = await transformer.generateDocumentPath({ url, document });
+        if (!p) {
+          // provided function returns null -> apply default
+          p = await defaultGenerateDocumentPath({ url, document });
+        }
+
+        const name = path.basename(p);
+        const dirname = path.dirname(p);
+
+        const pir = new PageImporterResource(name, dirname, output, null, {
+          html: output.outerHTML,
+        });
+        return [pir];
       }
-
-      name = path.basename(p);
-      dirname = path.dirname(p);
-
-      const pir = new PageImporterResource(name, dirname, output, null, {
-        html: output.outerHTML,
-      });
-      return [pir];
     }
   }
 
@@ -118,23 +140,43 @@ async function html2x(url, doc, transformCfg, toMd, toDocx, options = {}) {
 
   const pirs = await importer.import(url);
 
-  const res = {
-    html: pirs[0].extra.html,
+  const getResponseObjectFromPIR = async (pir) => {
+    const res = {
+      html: pir.extra.html,
+    };
+
+    res.path = path.resolve(pir.directory, pir.name);
+
+    if (toMd) {
+      const md = await storageHandler.get(pir.md);
+      res.md = md;
+    }
+    if (toDocx) {
+      const docx = await storageHandler.get(pir.docx);
+      res.docx = docx;
+    }
+    return res;
   };
 
-  res.path = path.resolve(dirname, name);
-
-  if (toMd) {
-    const md = await storageHandler.get(pirs[0].md);
-    res.md = md;
+  if (pirs.length === 1) {
+    return getResponseObjectFromPIR(pirs[0]);
+  } else {
+    const res = [];
+    await Utils.asyncForEach(pirs, async (pir) => {
+      res.push(await getResponseObjectFromPIR(pir));
+    });
+    return res;
   }
-  if (toDocx) {
-    const docx = await storageHandler.get(pirs[0].docx);
-    res.docx = docx;
-  }
-  return res;
 }
 
+/**
+ * Returns the result of the conversion from html to md.
+ * @param {string} url URL of the document to convert
+ * @param {HTMLElement|string} document Document to convert
+ * @param {Object} transformCfg Conversion configuration
+ * @param {Object} options Conversion options
+ * @returns {Object|Array} Result(s) of the conversion
+ */
 async function html2md(url, document, transformCfg, options = {}) {
   let doc = document;
   if (typeof document === 'string') {
@@ -143,6 +185,14 @@ async function html2md(url, document, transformCfg, options = {}) {
   return html2x(url, doc, transformCfg, true, false, options);
 }
 
+/**
+ * Returns the result of the conversion from html to docx.
+ * @param {string} url URL of the document to convert
+ * @param {HTMLElement|string} document Document to convert
+ * @param {Object} transformCfg Conversion configuration
+ * @param {Object} options Conversion options
+ * @returns {Object|Array} Result(s) of the conversion
+ */
 async function html2docx(url, document, transformCfg, options = {}) {
   let doc = document;
   if (typeof document === 'string') {

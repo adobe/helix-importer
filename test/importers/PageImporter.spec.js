@@ -76,6 +76,7 @@ describe('PageImporter tests - various options', () => {
     const results = await se.import('/someurl');
 
     strictEqual(results.length, 1, 'expect no result');
+    strictEqual(results[0].path, '/someurl/somecomputedpath/resource1', 'expect no result');
 
     ok(await storageHandler.exists('/someurl/somecomputedpath/resource1.md'), 'md has been stored');
     ok(await storageHandler.exists('/someurl/somecomputedpath/resource1.docx'), 'docx has been stored');
@@ -144,7 +145,7 @@ describe('PageImporter tests - fixtures', () => {
 
     strictEqual(results.length, 1, 'expect one result');
 
-    const md = await storageHandler.get(`/${feature}.md`);
+    const md = await storageHandler.get(results[0].md);
     const expectedMD = await fs.readFile(path.resolve(__dirname, 'fixtures', `${feature}.spec.md`), 'utf-8');
     strictEqual(md.trim(), expectedMD.trim(), 'inported md is expected one');
   };

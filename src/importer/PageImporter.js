@@ -160,7 +160,7 @@ export default class PageImporter {
     contents = this.postProcessMD(contents);
 
     return {
-      path: `${directory}/${sanitizedName}`,
+      path: path.join(directory, sanitizedName),
       content: contents,
     };
   }
@@ -295,6 +295,8 @@ export default class PageImporter {
           const res = await this.createMarkdown(entry, url);
           // eslint-disable-next-line no-param-reassign
           entry.source = url;
+          // eslint-disable-next-line no-param-reassign
+          entry.path = res.path;
           // eslint-disable-next-line no-param-reassign
           entry.markdown = res.content;
 
