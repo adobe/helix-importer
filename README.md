@@ -15,7 +15,7 @@ Idea of an explorer is to crawl the site in order to collect a list of urls. Thi
 
 Here is a basic sample:
 
-```typescript
+```js
 
 import { WPContentPager, FSHandler, CSV } from '@adobe/helix-importer';
 
@@ -42,11 +42,22 @@ The final result is a list of urls that could be found on list of paged results 
 
 ## Importer
 
-An importer must extends [PageImporter](src/importer/PageImporter.ts) and implement the `fetch` and `process` method. The general idea is that `fetch` receives the url to import and is responsible to return the HTML. `process` receives the corresponding Document in order to filter / rearrange / reshuffle the DOM before it gets processed by the Markdown transformer. `process` computes and defines the list of [PageImporterResource](src/importer/PageImporterResource.ts) (could be more than one), each resource being transformed as a Markdown document.
+An importer must extends [PageImporter](src/importer/PageImporter.js) and implement the `fetch` and `process` method. The general idea is that `fetch` receives the url to import and is responsible to return the HTML. `process` receives the corresponding Document in order to filter / rearrange / reshuffle the DOM before it gets processed by the Markdown transformer. `process` computes and defines the list of [PageImporterResource](src/importer/PageImporterResource.ts) (could be more than one), each resource being transformed as a Markdown document.
 
 Goal of the importer is to get rid of the generic DOM elements like the header / footer, the nav... and all elements that are common to all pages in order to get the unique piece(s) of content per page.
 
-You can find a large collection of importer examples in repo: https://github.com/kptdobe/helix-importer-projects
+### HTML2x helpers
+
+[HTML2x](src/importer/HTML2x.js) methods (`HTML2md` and `HTML2docx`) are convienence methods to run an import. As input, they take:
+- `URL`: URL of the page to import
+- `document`: the DOM element to import
+- `transformerCfg`: object with the transformation "rules". Object can be either:
+  - `{ transformDOM: ({ url, document, html }) => { ... return element-to-convert  }, generateDocumentPath: ({ url, document }) => { ... return path-to-target; }}` for a single mapping between one input document / one output file
+  - `{ transform: ({ url, document, html }) => { ... return [{ element: first-element-to-convert, path: first-path-to-target }, ...]  }` for a mapping one input document / multiple output files (useful to generate multiple docx from a single web page)
+
+### Importer UI
+
+The Helix Importer has a dedicated browser UI: see https://github.com/adobe/helix-importer-ui
 
 ## Installation
 
@@ -58,6 +69,6 @@ TODO: publish npm module
 
 ## Usage
 
-```typescript
+```js
 import { ... } from '@adobe/helix-importer';
 ```
