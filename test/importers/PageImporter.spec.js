@@ -172,4 +172,8 @@ describe('PageImporter tests - fixtures', () => {
   it('import - complex', async () => {
     await featureTest('complex');
   });
+
+  it('import - spaces', async () => {
+    await featureTest('space');
+  });
 });
