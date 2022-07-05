@@ -48,6 +48,57 @@ describe('defaultGenerateDocumentPath tests', () => {
   });
 });
 
+describe('html2x parameters', () => {
+  const URL = 'https://www.sample.com/page.html';
+  const ORIGNAL_URL = 'https://www.notproxyurl.com/folder/page.html';
+  const HTML = '<html><head></head><body><h1>Hello World</h1></body></html>';
+
+  const testParams = ({
+    url,
+    document,
+    html,
+    originalURL,
+  }) => {
+    strictEqual(url, URL);
+    strictEqual(originalURL, ORIGNAL_URL);
+    strictEqual(html, HTML);
+
+    const h1 = document.querySelector('h1');
+    ok(h1);
+    strictEqual(h1.textContent, 'Hello World');
+  };
+
+  it('parameters are correctly passed in single mode', async () => {
+    await html2md(URL, HTML, {
+      transformDOM: testParams,
+      generateDocumentPath: testParams,
+    }, {
+      originalURL: ORIGNAL_URL,
+    });
+
+    await html2docx(URL, HTML, {
+      transformDOM: testParams,
+      generateDocumentPath: testParams,
+    }, {
+      originalURL: ORIGNAL_URL,
+    });
+  });
+
+  it('parameters are correctly passed in multi mode', async () => {
+    await html2md(URL, HTML, {
+      transform: testParams,
+    }, {
+      originalURL: ORIGNAL_URL,
+    });
+
+    await html2docx(URL, HTML, {
+      transform: testParams,
+    }, {
+      originalURL: ORIGNAL_URL,
+    });
+  });
+});
+
 describe('html2md tests', () => {
   it('html2md provides a default transformation', async () => {
     const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>');

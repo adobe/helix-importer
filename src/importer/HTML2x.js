@@ -78,7 +78,12 @@ async function html2x(url, doc, transformCfg, toMd, toDocx, options = {}) {
 
     async process(document) {
       if (transformer.transform) {
-        let results = transformer.transform({ url, document, html });
+        let results = transformer.transform({
+          url,
+          document,
+          html,
+          originalURL: options.originalURL || url,
+        });
         if (!results) return null;
         const pirs = [];
 
@@ -98,10 +103,20 @@ async function html2x(url, doc, transformCfg, toMd, toDocx, options = {}) {
         });
         return pirs;
       } else {
-        let output = await transformer.transformDOM({ url, document, html });
+        let output = await transformer.transformDOM({
+          url,
+          document,
+          html,
+          originalURL: options.originalURL || url,
+        });
         output = output || document.body;
 
-        let p = await transformer.generateDocumentPath({ url, document });
+        let p = await transformer.generateDocumentPath({
+          url,
+          document,
+          html,
+          originalURL: options.originalURL || url,
+        });
         if (!p) {
           // provided function returns null -> apply default
           p = await defaultGenerateDocumentPath({ url, document });
