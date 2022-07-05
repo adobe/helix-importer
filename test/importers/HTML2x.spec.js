@@ -48,7 +48,7 @@ describe('defaultGenerateDocumentPath tests', () => {
   });
 });
 
-describe('html2x parameters', () => {
+describe.only('html2x parameters', () => {
   const URL = 'https://www.sample.com/page.html';
   const ORIGNAL_URL = 'https://www.notproxyurl.com/folder/page.html';
   const HTML = '<html><head></head><body><h1>Hello World</h1></body></html>';
@@ -57,10 +57,10 @@ describe('html2x parameters', () => {
     url,
     document,
     html,
-    originalURL,
+    options,
   }) => {
     strictEqual(url, URL);
-    strictEqual(originalURL, ORIGNAL_URL);
+    strictEqual(options.originalURL, ORIGNAL_URL);
     strictEqual(html, HTML);
 
     const h1 = document.querySelector('h1');

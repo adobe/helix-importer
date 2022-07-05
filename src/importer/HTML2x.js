@@ -82,7 +82,7 @@ async function html2x(url, doc, transformCfg, toMd, toDocx, options = {}) {
           url,
           document,
           html,
-          originalURL: options.originalURL || url,
+          options,
         });
         if (!results) return null;
         const pirs = [];
@@ -107,7 +107,7 @@ async function html2x(url, doc, transformCfg, toMd, toDocx, options = {}) {
           url,
           document,
           html,
-          originalURL: options.originalURL || url,
+          options,
         });
         output = output || document.body;
 
@@ -115,7 +115,7 @@ async function html2x(url, doc, transformCfg, toMd, toDocx, options = {}) {
           url,
           document,
           html,
-          originalURL: options.originalURL || url,
+          options,
         });
         if (!p) {
           // provided function returns null -> apply default
