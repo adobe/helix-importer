@@ -48,7 +48,7 @@ describe('defaultGenerateDocumentPath tests', () => {
   });
 });
 
-describe.only('html2x parameters', () => {
+describe('html2x parameters', () => {
   const URL = 'https://www.sample.com/page.html';
   const ORIGNAL_URL = 'https://www.notproxyurl.com/folder/page.html';
   const HTML = '<html><head></head><body><h1>Hello World</h1></body></html>';
@@ -57,10 +57,10 @@ describe.only('html2x parameters', () => {
     url,
     document,
     html,
-    options,
+    params,
   }) => {
     strictEqual(url, URL);
-    strictEqual(options.originalURL, ORIGNAL_URL);
+    strictEqual(params.originalURL, ORIGNAL_URL);
     strictEqual(html, HTML);
 
     const h1 = document.querySelector('h1');
@@ -72,14 +72,14 @@ describe.only('html2x parameters', () => {
     await html2md(URL, HTML, {
       transformDOM: testParams,
       generateDocumentPath: testParams,
-    }, {
+    }, null, {
       originalURL: ORIGNAL_URL,
     });
 
     await html2docx(URL, HTML, {
       transformDOM: testParams,
       generateDocumentPath: testParams,
-    }, {
+    }, null, {
       originalURL: ORIGNAL_URL,
     });
   });
@@ -87,13 +87,13 @@ describe.only('html2x parameters', () => {
   it('parameters are correctly passed in multi mode', async () => {
     await html2md(URL, HTML, {
       transform: testParams,
-    }, {
+    }, null, {
       originalURL: ORIGNAL_URL,
     });
 
     await html2docx(URL, HTML, {
       transform: testParams,
-    }, {
+    }, null, {
       originalURL: ORIGNAL_URL,
     });
   });

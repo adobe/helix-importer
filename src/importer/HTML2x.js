@@ -36,13 +36,17 @@ function preprocessDOM(document) {
   }
 }
 
-// eslint-disable-next-line no-unused-vars
-async function defaultTransformDOM({ url, document, html }) {
+async function defaultTransformDOM({
+  // eslint-disable-next-line no-unused-vars
+  url, document, html, params,
+}) {
   return document.body;
 }
 
-// eslint-disable-next-line no-unused-vars
-async function defaultGenerateDocumentPath({ url, document }) {
+async function defaultGenerateDocumentPath({
+  // eslint-disable-next-line no-unused-vars
+  url, document, html, params,
+}) {
   let p = new URL(url).pathname;
   if (p.endsWith('/')) {
     p = `${p}index`;
@@ -53,7 +57,13 @@ async function defaultGenerateDocumentPath({ url, document }) {
     .replace(/[^a-z0-9/]/gm, '-');
 }
 
-async function html2x(url, doc, transformCfg, toMd, toDocx, options = {}) {
+async function html2x(
+  url,
+  doc,
+  transformCfg,
+  config = { toMd: true, toDocx: false },
+  params = {},
+) {
   const transformer = transformCfg || {};
 
   if (!transformer.transform) {
@@ -66,7 +76,7 @@ async function html2x(url, doc, transformCfg, toMd, toDocx, options = {}) {
     }
   }
 
-  if (options.preprocess !== false) {
+  if (config.preprocess !== false) {
     preprocessDOM(doc);
   }
 
@@ -82,7 +92,7 @@ async function html2x(url, doc, transformCfg, toMd, toDocx, options = {}) {
           url,
           document,
           html,
-          options,
+          params,
         });
         if (!results) return null;
         const pirs = [];
@@ -107,7 +117,7 @@ async function html2x(url, doc, transformCfg, toMd, toDocx, options = {}) {
           url,
           document,
           html,
-          options,
+          params,
         });
         output = output || document.body;
 
@@ -115,7 +125,7 @@ async function html2x(url, doc, transformCfg, toMd, toDocx, options = {}) {
           url,
           document,
           html,
-          options,
+          params,
         });
         if (!p) {
           // provided function returns null -> apply default
@@ -144,12 +154,12 @@ async function html2x(url, doc, transformCfg, toMd, toDocx, options = {}) {
   const storageHandler = new MemoryHandler(logger);
   const importer = new InternalImporter({
     storageHandler,
-    skipDocxConversion: !toDocx,
-    skipMDFileCreation: !toMd,
+    skipDocxConversion: !config.toDocx,
+    skipMDFileCreation: !config.toMd,
     logger,
     mdast2docxOptions: {
-      stylesXML: options.docxStylesXML,
-      svg2png: options.svg2png,
+      stylesXML: config.docxStylesXML,
+      svg2png: config.svg2png,
     },
   });
 
@@ -162,11 +172,11 @@ async function html2x(url, doc, transformCfg, toMd, toDocx, options = {}) {
 
     res.path = path.resolve(pir.directory, pir.name);
 
-    if (toMd) {
+    if (config.toMd) {
       const md = await storageHandler.get(pir.md);
       res.md = md;
     }
-    if (toDocx) {
+    if (config.toDocx) {
       const docx = await storageHandler.get(pir.docx);
       res.docx = docx;
     }
@@ -189,15 +199,16 @@ async function html2x(url, doc, transformCfg, toMd, toDocx, options = {}) {
  * @param {string} url URL of the document to convert
  * @param {HTMLElement|string} document Document to convert
  * @param {Object} transformCfg Conversion configuration
- * @param {Object} options Conversion options
+ * @param {Object} config Conversion configuration.
+ * @param {Object} params Conversion params. Object will be pass to the transformer functions.
  * @returns {Object|Array} Result(s) of the conversion
  */
-async function html2md(url, document, transformCfg, options = {}) {
+async function html2md(url, document, transformCfg, config, params = {}) {
   let doc = document;
   if (typeof document === 'string') {
     doc = new JSDOM(document, { runScripts: undefined }).window.document;
   }
-  return html2x(url, doc, transformCfg, true, false, options);
+  return html2x(url, doc, transformCfg, { ...config, toMd: true, toDocx: false }, params);
 }
 
 /**
@@ -205,15 +216,16 @@ async function html2md(url, document, transformCfg, options = {}) {
  * @param {string} url URL of the document to convert
  * @param {HTMLElement|string} document Document to convert
  * @param {Object} transformCfg Conversion configuration
- * @param {Object} options Conversion options
+ * @param {Object} config Conversion configuration.
+ * @param {Object} params Conversion params. Object will be pass to the transformer functions.
  * @returns {Object|Array} Result(s) of the conversion
  */
-async function html2docx(url, document, transformCfg, options = {}) {
+async function html2docx(url, document, transformCfg, config, params = {}) {
   let doc = document;
   if (typeof document === 'string') {
     doc = new JSDOM(document, { runScripts: undefined }).window.document;
   }
-  return html2x(url, doc, transformCfg, true, true, options);
+  return html2x(url, doc, transformCfg, { ...config, toMd: true, toDocx: true }, params);
 }
 
 export {
