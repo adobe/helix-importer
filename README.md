@@ -52,8 +52,8 @@ Goal of the importer is to get rid of the generic DOM elements like the header /
 - `URL`: URL of the page to import
 - `document`: the DOM element to import
 - `transformerCfg`: object with the transformation "rules". Object can be either:
-  - `{ transformDOM: ({ url, document, html }) => { ... return element-to-convert  }, generateDocumentPath: ({ url, document }) => { ... return path-to-target; }}` for a single mapping between one input document / one output file
-  - `{ transform: ({ url, document, html }) => { ... return [{ element: first-element-to-convert, path: first-path-to-target }, ...]  }` for a mapping one input document / multiple output files (useful to generate multiple docx from a single web page)
+  - `{ transformDOM: ({ url, document, html, originalURL }) => { ... return element-to-convert  }, generateDocumentPath: ({ url, document, html, originalURL }) => { ... return path-to-target; }}` for a single mapping between one input document / one output file
+  - `{ transform: ({ url, document, html, originalURL }) => { ... return [{ element: first-element-to-convert, path: first-path-to-target }, ...]  }` for a mapping one input document / multiple output files (useful to generate multiple docx from a single web page)
 
 ### Importer UI
 
