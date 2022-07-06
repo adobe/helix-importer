@@ -1,3 +1,10 @@
+# [1.14.0](https://github.com/adobe/helix-importer/compare/v1.13.1...v1.14.0) (2022-07-06)
+
+
+### Features
+
+* import one document -> multiple output ([f0b688e](https://github.com/adobe/helix-importer/commit/f0b688ebc9dbb68a9981c45c99bad9fa106d4376))
+
 ## [1.13.1](https://github.com/adobe/helix-importer/compare/v1.13.0...v1.13.1) (2022-05-23)
 
 
