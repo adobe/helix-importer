@@ -48,6 +48,57 @@ describe('defaultGenerateDocumentPath tests', () => {
   });
 });
 
+describe('html2x parameters', () => {
+  const URL = 'https://www.sample.com/page.html';
+  const ORIGNAL_URL = 'https://www.notproxyurl.com/folder/page.html';
+  const HTML = '<html><head></head><body><h1>Hello World</h1></body></html>';
+
+  const testParams = ({
+    url,
+    document,
+    html,
+    params,
+  }) => {
+    strictEqual(url, URL);
+    strictEqual(params.originalURL, ORIGNAL_URL);
+    strictEqual(html, HTML);
+
+    const h1 = document.querySelector('h1');
+    ok(h1);
+    strictEqual(h1.textContent, 'Hello World');
+  };
+
+  it('parameters are correctly passed in single mode', async () => {
+    await html2md(URL, HTML, {
+      transformDOM: testParams,
+      generateDocumentPath: testParams,
+    }, null, {
+      originalURL: ORIGNAL_URL,
+    });
+
+    await html2docx(URL, HTML, {
+      transformDOM: testParams,
+      generateDocumentPath: testParams,
+    }, null, {
+      originalURL: ORIGNAL_URL,
+    });
+  });
+
+  it('parameters are correctly passed in multi mode', async () => {
+    await html2md(URL, HTML, {
+      transform: testParams,
+    }, null, {
+      originalURL: ORIGNAL_URL,
+    });
+
+    await html2docx(URL, HTML, {
+      transform: testParams,
+    }, null, {
+      originalURL: ORIGNAL_URL,
+    });
+  });
+});
+
 describe('html2md tests', () => {
   it('html2md provides a default transformation', async () => {
     const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>');
@@ -56,7 +107,7 @@ describe('html2md tests', () => {
     strictEqual(out.path, '/page');
   });
 
-  it('html2md handles a custom transformations', async () => {
+  it('html2md handles a custom transformation', async () => {
     const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', {
       transformDOM: ({ document }) => {
         const p = document.createElement('p');
@@ -68,6 +119,65 @@ describe('html2md tests', () => {
     strictEqual(out.html.trim(), '<p>My Hello to the World</p>');
     strictEqual(out.md.trim(), 'My Hello to the World');
     strictEqual(out.path, '/folder/my-custom-path');
+  });
+
+  it('html2md handles multiple transform', async () => {
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', {
+      transform: ({ document }) => {
+        const p1 = document.createElement('p');
+        p1.innerHTML = 'My Hello to the World 1';
+
+        const p2 = document.createElement('p');
+        p2.innerHTML = 'My Hello to the World 2';
+
+        return [{
+          element: p1,
+          path: '/my-custom-path-p1',
+        }, {
+          element: p2,
+          path: '/folder/my-custom-path-p2',
+        }];
+      },
+    });
+
+    const out1 = out[0];
+    strictEqual(out1.html.trim(), '<p>My Hello to the World 1</p>');
+    strictEqual(out1.md.trim(), 'My Hello to the World 1');
+    strictEqual(out1.path, '/my-custom-path-p1');
+
+    const out2 = out[1];
+    strictEqual(out2.html.trim(), '<p>My Hello to the World 2</p>');
+    strictEqual(out2.md.trim(), 'My Hello to the World 2');
+    strictEqual(out2.path, '/folder/my-custom-path-p2');
+  });
+
+  it('html2md handles multiple transform', async () => {
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', {
+      transform: ({ document }) => {
+        const p1 = document.createElement('p');
+        p1.innerHTML = 'My Hello to the World 1';
+
+        const p2 = document.createElement('p');
+        p2.innerHTML = 'My Hello to the World 2';
+
+        return {
+          element: p1,
+          path: '/my-custom-path-p1',
+        };
+      },
+    });
+
+    strictEqual(out.html.trim(), '<p>My Hello to the World 1</p>');
+    strictEqual(out.md.trim(), 'My Hello to the World 1');
+    strictEqual(out.path, '/my-custom-path-p1');
+  });
+
+  it('html2md does not crash if transform returns null', async () => {
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', {
+      transform: () => null,
+    });
+
+    strictEqual(out.length, 0);
   });
 
   it('html2md can deal with null returning transformation', async () => {
