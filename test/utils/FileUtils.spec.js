@@ -26,7 +26,8 @@ describe('FileUtils tests', () => {
   });
 
   it('FileUtils#sanitizeFilename sanitize', () => {
-    strictEqual(FileUtils.sanitizeFilename('UPPERCASE---with spaces and%20encoded.dotalso'), 'uppercase-with-spaces-and-encodeddotalso');
+    strictEqual(FileUtils.sanitizeFilename('UPPERCASE---with spaces and%20encoded.dotalso_nounderscore'), 'uppercase-with-spaces-and-encoded-dotalso-nounderscore');
+    strictEqual(FileUtils.sanitizeFilename('f@rbidd&n-®-25'), 'f-rbidd-n-25');
   });
 
   it('FileUtils#sanitizePath empty', () => {
@@ -39,6 +40,6 @@ describe('FileUtils tests', () => {
   });
 
   it('FileUtils#sanitizePath sanitize', () => {
-    strictEqual(FileUtils.sanitizePath('//should/BE/1/paTh/to sanitize/but.still.keep.extension'), '/should/be/1/path/to-sanitize/butstillkeep.extension');
+    strictEqual(FileUtils.sanitizePath('//should/BE/1/p@Th/to%20sanitize/but.still.keep.extension'), '/should/be/1/p-th/to-sanitize/but-still-keep.extension');
   });
 });
