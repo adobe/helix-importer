@@ -57,7 +57,6 @@
     "rehype-parse": "8.0.3",
     "rehype-remark": "9.1.2",
     "remark-stringify": "10.0.2",
-    "sanitize-filename": "1.6.3",
     "unified": "10.1.1"
   }
 }

@@ -10,18 +10,14 @@
  * governing permissions and limitations under the License.
  */
 
-import sanitize from 'sanitize-filename';
-
 export default class FileUtils {
   static sanitizeFilename(name) {
     if (!name) return '';
-    return sanitize(decodeURIComponent(name))
-      .trim()
-      .toLowerCase()
-      .replace(/\./gm, '')
-      .replace(/&/gm, '')
-      .replace(/\s/g, '-')
-      .replace(/-{2,}/g, '-');
+    return decodeURIComponent(name).toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
   }
 
   static sanitizePath(path) {
