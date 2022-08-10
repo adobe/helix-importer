@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/adobe/helix-importer/compare/v1.14.0...v1.15.0) (2022-08-10)
+
+
+### Features
+
+* add sanitize path helper ([f0d6865](https://github.com/adobe/helix-importer/commit/f0d6865a6e2dc79ae51b017ab8da0e431d57a539))
+
 # [1.14.0](https://github.com/adobe/helix-importer/compare/v1.13.1...v1.14.0) (2022-07-06)
 
 
