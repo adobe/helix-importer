@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/adobe/helix-importer/compare/v1.15.0...v1.16.0) (2022-08-10)
+
+
+### Features
+
+* align the sanitize method with the onedrive support ([20113e7](https://github.com/adobe/helix-importer/commit/20113e7396aa7ddce72c12aabe6ed344e7061183))
+
 # [1.15.0](https://github.com/adobe/helix-importer/compare/v1.14.0...v1.15.0) (2022-08-10)
 
 
