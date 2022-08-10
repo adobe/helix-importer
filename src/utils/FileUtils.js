@@ -14,6 +14,7 @@ import sanitize from 'sanitize-filename';
 
 export default class FileUtils {
   static sanitizeFilename(name) {
+    if (!name) return '';
     return sanitize(decodeURIComponent(name))
       .trim()
       .toLowerCase()
@@ -21,5 +22,21 @@ export default class FileUtils {
       .replace(/&/gm, '')
       .replace(/\s/g, '-')
       .replace(/-{2,}/g, '-');
+  }
+
+  static sanitizePath(path) {
+    if (!path) return '';
+    const extension = path.split('.').pop();
+    const pathname = extension !== path ? path.substring(0, path.lastIndexOf('.')) : path;
+    let sanitizedPath = '';
+    pathname.split('/').forEach((p) => {
+      if (p !== '') {
+        sanitizedPath += `/${FileUtils.sanitizeFilename(p)}`;
+      }
+    });
+    if (extension !== path) {
+      sanitizedPath += `.${extension}`;
+    }
+    return sanitizedPath;
   }
 }
