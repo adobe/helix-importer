@@ -1,3 +1,10 @@
+## [1.16.1](https://github.com/adobe/helix-importer/compare/v1.16.0...v1.16.1) (2022-09-15)
+
+
+### Bug Fixes
+
+* better u tag support ([#27](https://github.com/adobe/helix-importer/issues/27)) ([6ffb3a3](https://github.com/adobe/helix-importer/commit/6ffb3a3f6bc86194bcce88dd5bdff2059162af3c))
+
 # [1.16.0](https://github.com/adobe/helix-importer/compare/v1.15.0...v1.16.0) (2022-08-10)
 
 
