@@ -65,7 +65,18 @@ export default class PageImporter {
           },
           u: (h, node) => {
             if (node.children && node.children.length > 0) {
-              const children = node.children.map((child) => processor.stringify(child).trim());
+              const children = node.children.map((child) => {
+                try {
+                  if (child.type === 'element' && child.tagName !== 'span') {
+                    const n = h(child, child.tagName, child.children);
+                    return processor.stringify(n).trim();
+                  }
+                  return processor.stringify(child).trim();
+                } catch (e) {
+                  // cannot stringify the node, return html
+                  return toHtml(child);
+                }
+              });
               return h(node, 'html', `<u>${children.join()}</u>`);
             }
             return '';
@@ -194,11 +205,13 @@ export default class PageImporter {
     ].forEach((tag) => DOMUtils.reviewInlineElement(document, tag));
 
     // u a tag combo is not handled properly by unified js and is discouraged anyway -> remove the u
-    document.querySelectorAll('u > a').forEach((a) => {
-      const p = a.parentNode;
-      p.before(a);
-      p.remove();
+    const us = [];
+    document.querySelectorAll('u > a, u > span > a').forEach((a) => {
+      const u = a.closest('u');
+      u.before(a);
+      us.push(u);
     });
+    us.forEach((u) => u.remove());
 
     const imgs = document.querySelectorAll('img');
     imgs.forEach((img) => {
