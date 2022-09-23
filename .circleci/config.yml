@@ -1,48 +1,43 @@
 version: 2.1
 executors:
-  node14:
+  node16:
     docker:
-    - image: cimg/node:14.18
-    environment:
-      NPM_CONFIG_PREFIX: ~/.npm-global
+      - image: cimg/node:16.16
+
+orbs:
+  codecov: codecov/codecov@3.2.3
 
 commands:
   setup:
     steps:
-    - checkout
-    - run:
-        name: install latest npm
-        command: sudo npm -g install npm
-    - run:
-        name: Installing Dependencies
-        command: npm ci
-    - run:
-        name: prepare test git user
-        command: git config --global user.email "circleci@example.com" && git config --global user.name "CircleCi Build"
+      - checkout
+      - run:
+          name: Installing Dependencies
+          command: npm ci
+      - run:
+          name: prepare test git user
+          command: git config --global user.email "circleci@example.com" && git config --global user.name "CircleCi Build"
 
 jobs:
   build:
-    executor: node14
-
+    executor: node16
     steps:
-    - setup
-    - run: mkdir junit
-    - run:
-        name: Lint
-        command: npm run lint
-
-    - run:
-        name: Run tests
-        command: npm run test-ci
-
-    - store_test_results:
-        path: junit
-
-    - store_artifacts:
-        path: junit
+      - setup
+      - run: mkdir junit
+      - run:
+          name: Lint
+          command: npm run lint
+      - run:
+          name: Run tests
+          command: npm run test-ci
+      - codecov/upload
+      - store_test_results:
+          path: junit
+      - store_artifacts:
+          path: junit
 
 workflows:
   version: 2
   build:
     jobs:
-    - build
+      - build
