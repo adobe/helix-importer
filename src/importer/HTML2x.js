@@ -159,7 +159,7 @@ async function html2x(
     logger,
     mdast2docxOptions: {
       stylesXML: config.docxStylesXML,
-      svg2png: config.svg2png,
+      image2png: config.image2png,
     },
   });
 
