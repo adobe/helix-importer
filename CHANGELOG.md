@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/adobe/helix-importer/compare/v1.16.1...v2.0.0) (2022-09-23)
+
+
+### Features
+
+* upgrade to latest md2docx ([4a8a38c](https://github.com/adobe/helix-importer/commit/4a8a38cb3ef0ff0ca2489b12f6b801af1e84d85b))
+
+
+### BREAKING CHANGES
+
+* svg2png was replaced with image2png
+
 ## [1.16.1](https://github.com/adobe/helix-importer/compare/v1.16.0...v1.16.1) (2022-09-15)
 
 
