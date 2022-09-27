@@ -27,4 +27,10 @@ module.exports = {
   globals: {
     __rootdir: true,
   },
+  plugins: ['import'],
+  settings: {
+    "import/resolver": {
+      exports: {},
+    },
+  },
 };

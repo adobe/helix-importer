@@ -22,10 +22,17 @@ import rehype2remark from 'rehype-remark';
 import stringify from 'remark-stringify';
 import fs from 'fs-extra';
 import { md2docx } from '@adobe/helix-md2docx';
+import { remarkGridTable } from '@adobe/helix-markdown-support/gridtable';
+import { imageReferences } from '@adobe/helix-markdown-support';
+import gridtableHandlers from './hast-to-mdast-gridtable-handlers.js';
 import Utils from '../utils/Utils.js';
 import DOMUtils from '../utils/DOMUtils.js';
 import FileUtils from '../utils/FileUtils.js';
 import MDUtils from '../utils/MDUtils.js';
+
+function remarkImageReferences() {
+  return imageReferences;
+}
 
 export default class PageImporter {
   params;
@@ -61,7 +68,7 @@ export default class PageImporter {
         handlers: {
           hlxembed: (h, node) => {
             const children = node.children.map((child) => processor.stringify(child).trim());
-            return h(node, 'text', `${children.join()}\n`);
+            return h(node, 'paragraph', [h(node, 'text', children.join())]);
           },
           u: (h, node) => {
             if (node.children && node.children.length > 0) {
@@ -81,9 +88,11 @@ export default class PageImporter {
             }
             return '';
           },
-          table: (h, node) => h(node, 'html', toHtml(node)),
+          ...gridtableHandlers,
         },
       })
+      .use(remarkImageReferences)
+      .use(remarkGridTable)
       .use(stringify, {
         bullet: '-',
         fence: '`',
