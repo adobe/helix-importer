@@ -1,6 +1,6 @@
 # How Sample Performance Management Improved in 2021
 
-![](https://www.sample.com/blog/wp-content/uploads/How-Sample-Performance-Management-Improved-in-2021_1920x733-scaled.jpg)
+![][image0]
 
 Over the course of 2021, we've improved Sample® Performance Management with more flexibility and greater depth, giving you more choice for the when, who, and how of the performance management process at your organization. Here's a quick summary to let you know how to take advantage of these updates.
 
@@ -8,7 +8,7 @@ Over the course of 2021, we've improved Sample® Performance Management with mor
 
 These updates give greater flexibility in the cadence and dates you administer assessments and feedback. We separated scheduling for assessments and feedback, so each process can operate on separate timelines depending on your needs. For example, you might choose to have feedback sessions every four months while keeping formal assessments on a six-month schedule.
 
-![Screen\_Shot\_2022-01-05\_at\_9.26.41\_AM](https://www.sample.com/blog/wp-content/uploads/Screen_Shot_2022-01-05_at_9.26.41_AM.png)
+![Screen\_Shot\_2022-01-05\_at\_9.26.41\_AM][image1]
 
 We also made performance reports searchable by date range instead of tying them to individual Performance Management events.
 
@@ -16,7 +16,7 @@ We also made performance reports searchable by date range instead of tying them 
 
 When an employee moves to a new team right before their scheduled assessment, their new manager might not have what they need to make accurate observations. To resolve this issue, you now have the option to [skip a regularly-scheduled assessment](https://help.sample.com/hc/en-us/articles/360060935131-skip-assessments).
 
-![a66eddc3-4e16-49a9-b597-1151e233790d](https://www.sample.com/blog/wp-content/uploads/a66eddc3-4e16-49a9-b597-1151e233790d.png)
+![a66eddc3-4e16-49a9-b597-1151e233790d][image2]
 
 This doesn't mean someone who skips an assessment has to go without feedback for months. Scheduling [impromptu assessments](https://help.sample.com/hc/en-us/articles/360060531312-impromptu-assessments) helps you keep employees informed during off-cycle evaluations, such as:
 
@@ -25,7 +25,7 @@ This doesn't mean someone who skips an assessment has to go without feedback for
 -   On their anniversary
 -   As part of their onboarding process
 
-![Impromptu Assessment (1)](https://www.sample.com/blog/wp-content/uploads/Impromptu-Assessment-1.png)
+![Impromptu Assessment (1)][image3]
 
 ## Expanded Feedback
 
@@ -49,6 +49,43 @@ These updates help expand Performance Management's reach and help your managers 
 
 [Performance Settings Updates](https://help.sample.com/hc/en-us/articles/360057083332-Performance-Management-Settings-Update-2-25-2021-)
 
-<table><tbody><tr><th>Related Posts</th></tr><tr><td><a class="blogPostsBlock__titleLink" href="https://www.sample.com/blog/how-sample-performance-management-improved-in-2021/" aria-label="How Sample Performance Management Improved in 2021">https://www.sample.com/blog/how-sample-performance-management-improved-in-2021/</a></td></tr><tr><td><a class="blogPostsBlock__titleLink" href="https://www.sample.com/blog/announcing-the-product-updates-webpage/" aria-label="Announcing the Product Updates Webpage">https://www.sample.com/blog/announcing-the-product-updates-webpage/</a></td></tr><tr><td><a class="blogPostsBlock__titleLink" href="https://www.sample.com/blog/take-a-look-back-at-2021/" aria-label="Take a Look Back at 2021">https://www.sample.com/blog/take-a-look-back-at-2021/</a></td></tr><tr><td><a class="blogPostsBlock__titleLink" href="https://www.sample.com/blog/whats-new-in-sample-vaccination-tracking-feature/" aria-label="What&#x27;s New in Sample: Vaccination Tracking Feature">https://www.sample.com/blog/whats-new-in-sample-vaccination-tracking-feature/</a></td></tr></tbody></table>
++-----------------------------------------------------------------------------------+
+| Related Posts                                                                     |
++===================================================================================+
+| <https://www.sample.com/blog/how-sample-performance-management-improved-in-2021/> |
++-----------------------------------------------------------------------------------+
+| <https://www.sample.com/blog/announcing-the-product-updates-webpage/>             |
++-----------------------------------------------------------------------------------+
+| <https://www.sample.com/blog/take-a-look-back-at-2021/>                           |
++-----------------------------------------------------------------------------------+
+| <https://www.sample.com/blog/whats-new-in-sample-vaccination-tracking-feature/>   |
++-----------------------------------------------------------------------------------+
 
-<table><tbody><tr><th colspan="2">Metadata</th></tr><tr><td>Title</td><td>How Sample Performance Management Improved in 2021 - Sample Blog</td></tr><tr><td>Description</td><td>In 2021, we improved Sample® Performance Management with more flexibility and greater depth, giving you finer control of your performance management.</td></tr><tr><td>Category</td><td>Product Announcements</td></tr><tr><td>Author</td><td><a href="https://www.sample.com/blog/author/eserdar/" rel="author" class="fn" style="color: #1d9336;">Eric Serdar</a></td></tr><tr><td>Read Time</td><td>8 min</td></tr><tr><td>Image</td><td><img src="https://www.sample.com/blog/wp-content/uploads/How-Sample-Performance-Management-Improved-in-2021_1200x628-1024x536.jpg"></td></tr></tbody></table>
++--------------------------------------------------------------------------+
+| Metadata                                                                 |
++=============+============================================================+
+| Title       | How Sample Performance Management Improved in 2021 -       |
+|             | Sample Blog                                                |
++-------------+------------------------------------------------------------+
+| Description | In 2021, we improved Sample® Performance Management with   |
+|             | more flexibility and greater depth, giving you finer       |
+|             | control of your performance management.                    |
++-------------+------------------------------------------------------------+
+| Category    | Product Announcements                                      |
++-------------+------------------------------------------------------------+
+| Author      | [Eric Serdar](https://www.sample.com/blog/author/eserdar/) |
++-------------+------------------------------------------------------------+
+| Read Time   | 8 min                                                      |
++-------------+------------------------------------------------------------+
+| Image       | ![][image4]                                                |
++-------------+------------------------------------------------------------+
+
+[image0]: https://www.sample.com/blog/wp-content/uploads/How-Sample-Performance-Management-Improved-in-2021_1920x733-scaled.jpg
+
+[image1]: https://www.sample.com/blog/wp-content/uploads/Screen_Shot_2022-01-05_at_9.26.41_AM.png
+
+[image2]: https://www.sample.com/blog/wp-content/uploads/a66eddc3-4e16-49a9-b597-1151e233790d.png
+
+[image3]: https://www.sample.com/blog/wp-content/uploads/Impromptu-Assessment-1.png
+
+[image4]: https://www.sample.com/blog/wp-content/uploads/How-Sample-Performance-Management-Improved-in-2021_1200x628-1024x536.jpg
