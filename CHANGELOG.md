@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/adobe/helix-importer/compare/v2.0.0...v2.1.0) (2022-09-28)
+
+
+### Features
+
+* use gridtables for markdown ([#31](https://github.com/adobe/helix-importer/issues/31)) ([b0c8922](https://github.com/adobe/helix-importer/commit/b0c8922c3b7d06d5f5ff2be2ef881e52b0f84fed)), closes [#30](https://github.com/adobe/helix-importer/issues/30)
+
 # [2.0.0](https://github.com/adobe/helix-importer/compare/v1.16.1...v2.0.0) (2022-09-23)
 
 
