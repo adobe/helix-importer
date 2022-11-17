@@ -82,7 +82,7 @@ describe('Blocks#convertBlocksToTables tests', () => {
       `<main>${div}${div}${div}
         <div>
           <table>
-            <tr><th>Another Block</th></tr>
+            <tr><th colspan="2">Another Block</th></tr>
             <tr><td>cell11</td><td>cell12</td></tr>
             <tr><td>cell21</td><td>cell22</td></tr>
             <tr><td><img src="https://www.sample.com/image.jpeg"></td><td><a href="https://www.sample.com/">A link</a></td></tr>
@@ -103,7 +103,7 @@ describe('Blocks#convertBlocksToTables tests', () => {
       `<main>${div}${div}${div}
         <div>
           <table>
-            <tr><th>Promotion</th></tr>
+            <tr><th colspan="2">Promotion</th></tr>
             <tr>
               <td><a href="https://blog.adobe.com/en/promotions/doc-cloud-education.html">https://blog.adobe.com/en/promotions/doc-cloud-education.html</a></td>
               <td><span>with content</span></td>

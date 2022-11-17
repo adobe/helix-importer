@@ -297,10 +297,28 @@ describe('DOM#createTable tests', () => {
       [['header1', 'header2'], ['cell11', 'cell12'], ['cell21', 'cell22']],
       '<table><tr><th>header1</th><th>header2</th></tr><tr><td>cell11</td><td>cell12</td></tr><tr><td>cell21</td><td>cell22</td></tr></table>',
     );
-    // TODO deal with colspan ?
+  });
+
+  it('createTable - handles colspans', () => {
     test(
       [['header1'], ['cell11', 'cell12'], ['cell21', 'cell22']],
-      '<table><tr><th>header1</th></tr><tr><td>cell11</td><td>cell12</td></tr><tr><td>cell21</td><td>cell22</td></tr></table>',
+      '<table><tr><th colspan="2">header1</th></tr><tr><td>cell11</td><td>cell12</td></tr><tr><td>cell21</td><td>cell22</td></tr></table>',
+    );
+
+    test(
+      [['header1'], ['cell11', 'cell12', 'cell13', 'cell14']],
+      '<table><tr><th colspan="4">header1</th></tr><tr><td>cell11</td><td>cell12</td><td>cell13</td><td>cell14</td></tr></table>',
+    );
+
+    test(
+      [['header1', 'header2'], ['cell11', 'cell12', 'cell13', 'cell14']],
+      '<table><tr><th>header1</th><th colspan="3">header2</th></tr><tr><td>cell11</td><td>cell12</td><td>cell13</td><td>cell14</td></tr></table>',
+    );
+
+    // messy table
+    test(
+      [['header1', 'header2'], ['cell11', 'cell12', 'cell13', 'cell14'], ['cell22'], ['cell31', 'cell32', 'cell33']],
+      '<table><tr><th>header1</th><th colspan="3">header2</th></tr><tr><td>cell11</td><td>cell12</td><td>cell13</td><td>cell14</td></tr><tr><td colspan="4">cell22</td></tr><tr><td>cell31</td><td>cell32</td><td colspan="2">cell33</td></tr></table>',
     );
   });
 
@@ -318,8 +336,8 @@ describe('DOM#createTable tests', () => {
       '<table><tr><th>header</th></tr><tr><td><img src="https://www.sample.com/image.jpeg"></td></tr></table>',
     );
     test(
-      [['header'], [img, a, 'some text']],
-      '<table><tr><th>header</th></tr><tr><td><img src="https://www.sample.com/image.jpeg"></td><td><a href="https://www.sample.com/"></a></td><td>some text</td></tr></table>',
+      [['header1', 'header2', 'header3'], [img, a, 'some text']],
+      '<table><tr><th>header1</th><th>header2</th><th>header3</th></tr><tr><td><img src="https://www.sample.com/image.jpeg"></td><td><a href="https://www.sample.com/"></a></td><td>some text</td></tr></table>',
     );
     test(
       [['header'], [[img, a, 'some text']]],
