@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/adobe/helix-importer/compare/v2.1.1...v2.2.0) (2022-11-17)
+
+
+### Features
+
+* createTable handles colspans ([#33](https://github.com/adobe/helix-importer/issues/33)) ([06c48cf](https://github.com/adobe/helix-importer/commit/06c48cfdab04c0190f43bae12893ac560d5b3daf))
+
 ## [2.1.1](https://github.com/adobe/helix-importer/compare/v2.1.0...v2.1.1) (2022-09-29)
 
 
