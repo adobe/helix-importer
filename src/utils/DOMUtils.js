@@ -168,9 +168,11 @@ export default class DOMUtils {
   static createTable(data, document) {
     const table = document.createElement('table');
 
+    let maxColumns = 0;
     data.forEach((row, index) => {
       const tr = document.createElement('tr');
 
+      maxColumns = Math.max(maxColumns, row.length);
       row.forEach((cell) => {
         const t = document.createElement(index === 0 ? 'th' : 'td');
         if (typeof cell === 'string') {
@@ -185,6 +187,15 @@ export default class DOMUtils {
         tr.appendChild(t);
       });
       table.appendChild(tr);
+    });
+
+    // adjust the colspans
+    table.querySelectorAll('tr').forEach((tr) => {
+      const cells = Array.from(tr.querySelectorAll('td, th'));
+      if (cells.length < maxColumns) {
+        const lastCell = cells[cells.length - 1];
+        lastCell.setAttribute('colspan', maxColumns - cells.length + 1);
+      }
     });
 
     return table;
