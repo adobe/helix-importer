@@ -46,7 +46,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@adobe/helix-markdown-support": "5.0.10",
+    "@adobe/helix-markdown-support": "6.0.0",
     "@adobe/helix-md2docx": "2.0.22",
     "form-data": "4.0.0",
     "fs-extra": "10.1.0",
