@@ -17,7 +17,7 @@ import {
   TYPE_HEADER,
   TYPE_ROW,
   TYPE_TABLE,
-} from '@adobe/helix-markdown-support/gridtable';
+} from '@adobe/mdast-util-gridtables';
 
 function convert(type) {
   return (h, node) => h(node, type, all(h, node));
