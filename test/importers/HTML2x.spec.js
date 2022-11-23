@@ -72,6 +72,7 @@ describe('html2x parameters', () => {
     await html2md(URL, HTML, {
       transformDOM: testParams,
       generateDocumentPath: testParams,
+      preprocess: testParams,
     }, null, {
       originalURL: ORIGNAL_URL,
     });
@@ -79,6 +80,7 @@ describe('html2x parameters', () => {
     await html2docx(URL, HTML, {
       transformDOM: testParams,
       generateDocumentPath: testParams,
+      preprocess: testParams,
     }, null, {
       originalURL: ORIGNAL_URL,
     });
@@ -87,12 +89,14 @@ describe('html2x parameters', () => {
   it('parameters are correctly passed in multi mode', async () => {
     await html2md(URL, HTML, {
       transform: testParams,
+      preprocess: testParams,
     }, null, {
       originalURL: ORIGNAL_URL,
     });
 
     await html2docx(URL, HTML, {
       transform: testParams,
+      preprocess: testParams,
     }, null, {
       originalURL: ORIGNAL_URL,
     });
@@ -204,6 +208,30 @@ describe('html2md tests', () => {
       },
     );
     strictEqual(out.html.trim(), '<body><img src="./image.png"></body>');
+  });
+
+  it('html2md removes images with src attributes', async () => {
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><img src="data:abc"></body></html>');
+    strictEqual(out.html.trim(), '<body></body>');
+    strictEqual(out.md.trim(), '');
+  });
+
+  it('html2md set image src with data-src attribute value', async () => {
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><img src="data:abc" data-src="./image.jpg"></body></html>');
+    strictEqual(out.html.trim(), '<body><img src="./image.jpg" data-src="./image.jpg"></body>');
+    strictEqual(out.md.trim(), '![][image0]\n\n[image0]: ./image.jpg');
+  });
+
+  it('html2md allows to preprocess the document', async () => {
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><img src="data:abc" data-fancy-src="./image.jpg"></body></html>', {
+      preprocess: ({ document }) => {
+        const img = document.querySelector('img');
+        img.setAttribute('src', img.getAttribute('data-fancy-src'));
+        img.removeAttribute('data-fancy-src');
+      },
+    });
+    strictEqual(out.html.trim(), '<body><img src="./image.jpg"></body>');
+    strictEqual(out.md.trim(), '![][image0]\n\n[image0]: ./image.jpg');
   });
 });
 
