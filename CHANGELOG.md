@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/adobe/helix-importer/compare/v2.2.3...v2.3.0) (2022-11-23)
+
+
+### Features
+
+* give access to the original dom, before any preprocessing ([#41](https://github.com/adobe/helix-importer/issues/41)) ([6c394c5](https://github.com/adobe/helix-importer/commit/6c394c5991b66765e43c04d4083a5879d6669f4e))
+
 ## [2.2.3](https://github.com/adobe/helix-importer/compare/v2.2.2...v2.2.3) (2022-11-20)
 
 
