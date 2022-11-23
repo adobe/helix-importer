@@ -21,7 +21,7 @@ import Utils from '../utils/Utils.js';
 
 // import docxStylesXML from '../resources/styles.xml';
 
-function preprocessDOM(document) {
+function setBackgroundImagesFromCSS(document) {
   const elements = document.querySelectorAll('body, header, footer, div, span, section, main');
   const getComputedStyle = document.defaultView?.getComputedStyle;
   if (getComputedStyle) {
@@ -76,8 +76,19 @@ async function html2x(
     }
   }
 
-  if (config.preprocess !== false) {
-    preprocessDOM(doc);
+  // for more advanced use cases, give access to the original dom with
+  // no preprocessing at all
+  if (transformer.preprocess) {
+    transformer.preprocess({
+      url,
+      document: doc,
+      html: doc.documentElement.outerHTML,
+      params,
+    });
+  }
+
+  if (config.setBackgroundImagesFromCSS !== false) {
+    setBackgroundImagesFromCSS(doc);
   }
 
   const html = doc.documentElement.outerHTML;
