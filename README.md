@@ -71,4 +71,4 @@ TODO: publish npm module
 
 ```js
 import { ... } from '@adobe/helix-importer';
-```
+```test
