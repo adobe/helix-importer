@@ -116,10 +116,15 @@ async function html2x(
         results.forEach((result) => {
           const name = path.basename(result.path);
           const dirname = path.dirname(result.path);
-
-          const pir = new PageImporterResource(name, dirname, result.element, null, {
+          const extra = {
             html: result.element.outerHTML,
-          });
+          };
+
+          if (result.report) {
+            extra.report = result.report;
+          }
+
+          const pir = new PageImporterResource(name, dirname, result.element, null, extra);
           pirs.push(pir);
         });
         return pirs;
@@ -180,6 +185,10 @@ async function html2x(
     const res = {
       html: pir.extra.html,
     };
+
+    if (pir.extra.report) {
+      res.report = pir.extra.report;
+    }
 
     res.path = path.resolve(pir.directory, pir.name);
 

@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-import { ok, strictEqual } from 'assert';
+import { deepStrictEqual, ok, strictEqual } from 'assert';
 import { describe, it } from 'mocha';
 import { JSDOM } from 'jsdom';
 import { docx2md } from '@adobe/helix-docx2md';
@@ -155,7 +155,7 @@ describe('html2md tests', () => {
     strictEqual(out2.path, '/folder/my-custom-path-p2');
   });
 
-  it('html2md handles multiple transform', async () => {
+  it('html2md handles multiple transform (but single output)', async () => {
     const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', {
       transform: ({ document }) => {
         const p1 = document.createElement('p');
@@ -174,6 +174,60 @@ describe('html2md tests', () => {
     strictEqual(out.html.trim(), '<p>My Hello to the World 1</p>');
     strictEqual(out.md.trim(), 'My Hello to the World 1');
     strictEqual(out.path, '/my-custom-path-p1');
+  });
+
+  it('html2md allows to report when using transform', async () => {
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', {
+      transform: ({ document }) => {
+        const p1 = document.createElement('p');
+        p1.innerHTML = 'My Hello to the World 1';
+
+        const p2 = document.createElement('p');
+        p2.innerHTML = 'My Hello to the World 2';
+
+        return [{
+          element: p1,
+          path: '/my-custom-path-p1',
+          report: {
+            custom: 'A custom property',
+            customArray: ['a', 'b', 'c'],
+            customObject: {
+              a: 1,
+              b: true,
+              c: {
+                d: 'e',
+              },
+            },
+          },
+        }, {
+          element: p2,
+          path: '/folder/my-custom-path-p2',
+          report: {
+            custom: 'Another value',
+            customArray: ['a', 'b', 'c'],
+            somethingElse: 'something else',
+          },
+        }];
+      },
+    });
+
+    const out1 = out[0];
+    strictEqual(out1.html.trim(), '<p>My Hello to the World 1</p>');
+    strictEqual(out1.md.trim(), 'My Hello to the World 1');
+    strictEqual(out1.path, '/my-custom-path-p1');
+    ok(out1.report);
+    strictEqual(out1.report.custom, 'A custom property');
+    deepStrictEqual(out1.report.customArray, ['a', 'b', 'c']);
+    deepStrictEqual(out1.report.customObject, { a: 1, b: true, c: { d: 'e' } });
+
+    const out2 = out[1];
+    strictEqual(out2.html.trim(), '<p>My Hello to the World 2</p>');
+    strictEqual(out2.md.trim(), 'My Hello to the World 2');
+    strictEqual(out2.path, '/folder/my-custom-path-p2');
+    ok(out2.report);
+    strictEqual(out2.report.custom, 'Another value');
+    deepStrictEqual(out2.report.customArray, ['a', 'b', 'c']);
+    strictEqual(out2.report.somethingElse, 'something else');
   });
 
   it('html2md does not crash if transform returns null', async () => {
