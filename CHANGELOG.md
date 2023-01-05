@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/adobe/helix-importer/compare/v2.3.6...v2.4.0) (2023-01-05)
+
+
+### Features
+
+* allow to transform and report back ([#59](https://github.com/adobe/helix-importer/issues/59)) ([bfeea5d](https://github.com/adobe/helix-importer/commit/bfeea5ddf24aee30749c6952d2c3cbd83a5b4255))
+
 ## [2.3.6](https://github.com/adobe/helix-importer/compare/v2.3.5...v2.3.6) (2022-12-31)
 
 
