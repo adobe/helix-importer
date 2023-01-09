@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/adobe/helix-importer/compare/v2.4.1...v2.5.0) (2023-01-09)
+
+
+### Features
+
+* allow no element to be provided in transform returned object ([44e4167](https://github.com/adobe/helix-importer/commit/44e4167abd00e796a2b4f68a0384a9cdd8618c31))
+
 ## [2.4.1](https://github.com/adobe/helix-importer/compare/v2.4.0...v2.4.1) (2023-01-07)
 
 
