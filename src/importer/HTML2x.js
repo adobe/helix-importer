@@ -116,9 +116,11 @@ async function html2x(
         results.forEach((result) => {
           const name = path.basename(result.path);
           const dirname = path.dirname(result.path);
-          const extra = {
-            html: result.element.outerHTML,
-          };
+          const extra = {};
+
+          if (result.element) {
+            extra.html = result.element.outerHTML;
+          }
 
           if (result.report) {
             extra.report = result.report;
@@ -182,9 +184,11 @@ async function html2x(
   const pirs = await importer.import(url);
 
   const getResponseObjectFromPIR = async (pir) => {
-    const res = {
-      html: pir.extra.html,
-    };
+    const res = {};
+
+    if (pir.extra && pir.extra.html) {
+      res.html = pir.extra.html;
+    }
 
     if (pir.extra.report) {
       res.report = pir.extra.report;
@@ -192,11 +196,11 @@ async function html2x(
 
     res.path = path.resolve(pir.directory, pir.name);
 
-    if (config.toMd) {
+    if (config.toMd && pir.md) {
       const md = await storageHandler.get(pir.md);
       res.md = md;
     }
-    if (config.toDocx) {
+    if (config.toDocx && pir.docx) {
       const docx = await storageHandler.get(pir.docx);
       res.docx = docx;
     }
