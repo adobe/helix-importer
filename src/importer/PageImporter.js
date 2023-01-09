@@ -314,28 +314,30 @@ export default class PageImporter {
 
       if (entries) {
         await Utils.asyncForEach(entries, async (entry) => {
-          const res = await this.createMarkdown(entry, url);
-          // eslint-disable-next-line no-param-reassign
-          entry.source = url;
-          // eslint-disable-next-line no-param-reassign
-          entry.path = res.path;
-          // eslint-disable-next-line no-param-reassign
-          entry.markdown = res.content;
-
-          if (!this.params.skipMDFileCreation) {
-            const mdPath = `${res.path}.md`;
-            await this.params.storageHandler.put(mdPath, res.content);
-            this.logger.log(`MD file created: ${mdPath}`);
-
+          if (entry.document) {
+            const res = await this.createMarkdown(entry, url);
             // eslint-disable-next-line no-param-reassign
-            entry.md = mdPath;
-          }
-
-          if (!this.params.skipDocxConversion) {
-            const docxPath = `${res.path}.docx`;
-            await this.convertToDocx(docxPath, res.content);
+            entry.source = url;
             // eslint-disable-next-line no-param-reassign
-            entry.docx = docxPath;
+            entry.path = res.path;
+            // eslint-disable-next-line no-param-reassign
+            entry.markdown = res.content;
+
+            if (!this.params.skipMDFileCreation) {
+              const mdPath = `${res.path}.md`;
+              await this.params.storageHandler.put(mdPath, res.content);
+              this.logger.log(`MD file created: ${mdPath}`);
+
+              // eslint-disable-next-line no-param-reassign
+              entry.md = mdPath;
+            }
+
+            if (!this.params.skipDocxConversion) {
+              const docxPath = `${res.path}.docx`;
+              await this.convertToDocx(docxPath, res.content);
+              // eslint-disable-next-line no-param-reassign
+              entry.docx = docxPath;
+            }
           }
 
           results.push(entry);

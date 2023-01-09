@@ -230,6 +230,35 @@ describe('html2md tests', () => {
     strictEqual(out2.report.somethingElse, 'something else');
   });
 
+  it('html2md allows no element to be provided when using transform', async () => {
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', {
+      transform: () => [{
+        path: '/my-custom-path-p1',
+        report: {
+          custom: 'A custom property',
+          customArray: ['a', 'b', 'c'],
+          customObject: {
+            a: 1,
+            b: true,
+            c: {
+              d: 'e',
+            },
+          },
+        },
+      }],
+    });
+
+    // if no element provided, no creation of html, md or docx
+    strictEqual(out.html, undefined);
+    strictEqual(out.md, undefined);
+    strictEqual(out.docx, undefined);
+    strictEqual(out.path, '/my-custom-path-p1');
+    ok(out.report);
+    strictEqual(out.report.custom, 'A custom property');
+    deepStrictEqual(out.report.customArray, ['a', 'b', 'c']);
+    deepStrictEqual(out.report.customObject, { a: 1, b: true, c: { d: 'e' } });
+  });
+
   it('html2md does not crash if transform returns null', async () => {
     const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', {
       transform: () => null,
