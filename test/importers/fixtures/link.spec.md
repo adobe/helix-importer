@@ -5,5 +5,3 @@
 [Link without p](http://wwww.sample.com/b)
 
 http://wwww.sample.com/c
-
-http://wwww.sample.com/d
