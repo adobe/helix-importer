@@ -9,7 +9,6 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-// import { all } from 'hast-util-to-mdast';
 import {
   TYPE_BODY,
   TYPE_CELL,
