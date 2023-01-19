@@ -1,3 +1,10 @@
+## [2.5.9](https://github.com/adobe/helix-importer/compare/v2.5.8...v2.5.9) (2023-01-19)
+
+
+### Bug Fixes
+
+* Simplify underline handler ([0aa1b14](https://github.com/adobe/helix-importer/commit/0aa1b1434404fb6cf157f8ad548a627492b44e6b))
+
 ## [2.5.8](https://github.com/adobe/helix-importer/compare/v2.5.7...v2.5.8) (2023-01-19)
 
 
