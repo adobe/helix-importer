@@ -9,7 +9,6 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-import { all } from 'hast-util-to-mdast';
 import {
   TYPE_BODY,
   TYPE_CELL,
@@ -20,11 +19,11 @@ import {
 } from '@adobe/mdast-util-gridtables';
 
 function convert(type) {
-  return (h, node) => h(node, type, all(h, node));
+  return (state, node) => ({ type, children: state.all(node) });
 }
 
-function table(h, node) {
-  let children = all(h, node);
+function table(state, node) {
+  let children = state.all(node);
 
   // people never create <thead> or <tbody>, but only use a <th> to mark the cell (row) as header
   // which is technically wrong, since also a column can be a header. however the default sanitized
@@ -52,22 +51,33 @@ function table(h, node) {
     }
     children = [];
     if (head.length) {
-      children.push(h(node, TYPE_HEADER, head));
+      children.push({
+        type: TYPE_HEADER,
+        children: head,
+      });
     }
     if (body.length) {
-      children.push(h(node, TYPE_BODY, body));
+      children.push({
+        type: TYPE_BODY,
+        children: body,
+      });
     }
   }
-  return h(node, TYPE_TABLE, children);
+  return {
+    type: TYPE_TABLE,
+    children,
+  };
 }
 
-function row(h, node) {
-  const mdast = h(node, TYPE_ROW, all(h, node));
-  mdast.hasHeaderCell = node.hasHeaderCell;
-  return mdast;
+function row(state, node) {
+  return {
+    type: TYPE_ROW,
+    children: state.all(node),
+    hasHeaderCell: node.hasHeaderCell,
+  };
 }
 
-function cell(h, node, parent) {
+function cell(state, node, parent) {
   const ATTR_MAP = {
     align: 'align',
     valign: 'valign',
@@ -87,7 +97,11 @@ function cell(h, node, parent) {
       }
     }
   }
-  return h(node, TYPE_CELL, props, all(h, node));
+  return {
+    type: TYPE_CELL,
+    children: state.all(node),
+    ...props,
+  };
 }
 
 export default {
