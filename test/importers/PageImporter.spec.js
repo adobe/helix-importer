@@ -147,6 +147,7 @@ describe('PageImporter tests - fixtures', () => {
 
     const md = await storageHandler.get(results[0].md);
     const expectedMD = await fs.readFile(path.resolve(__dirname, 'fixtures', `${feature}.spec.md`), 'utf-8');
+    console.log(md);
     strictEqual(md.trim(), expectedMD.trim(), 'imported md is expected one');
   };
 

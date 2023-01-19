@@ -66,16 +66,25 @@ export default class PageImporter {
       .use(parse, { emitParseErrors: true })
       .use(rehype2remark, {
         handlers: {
-          hlxembed: (h, node) => {
+          hlxembed: (state, node) => {
             const children = node.children.map((child) => processor.stringify(child).trim());
-            return h(node, 'paragraph', [h(node, 'text', children.join())]);
+            return {
+              type: 'paragraph',
+              children: [{
+                type: 'text',
+                value: children.join(''),
+              }],
+            };
           },
-          u: (h, node) => {
+          u: (state, node) => {
             if (node.children && node.children.length > 0) {
               const children = node.children.map((child) => {
                 try {
                   if (child.type === 'element' && child.tagName !== 'span') {
-                    const n = h(child, child.tagName, child.children);
+                    const n = {
+                      type: child.tagName,
+                      children: child.children,
+                    };
                     return processor.stringify(n).trim();
                   }
                   return processor.stringify(child).trim();
@@ -84,7 +93,20 @@ export default class PageImporter {
                   return toHtml(child);
                 }
               });
-              return h(node, 'html', `<u>${children.join()}</u>`);
+              return {
+                type: 'html',
+                value: `<u>${children.join('')}</u>`,
+              };
+              // todo: use this
+              // return [{
+              //   type: 'html',
+              //   value: '<u>',
+              // },
+              //   ...state.all(node),
+              // {
+              //   type: 'html',
+              //   value: '</u>',
+              // }];
             }
             return '';
           },
