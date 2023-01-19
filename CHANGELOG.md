@@ -1,3 +1,10 @@
+## [2.5.8](https://github.com/adobe/helix-importer/compare/v2.5.7...v2.5.8) (2023-01-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency hast-util-to-mdast to v9 ([#68](https://github.com/adobe/helix-importer/issues/68)) ([e09dcd1](https://github.com/adobe/helix-importer/commit/e09dcd1498c852cacf6403e562934fc79bba5093))
+
 ## [2.5.7](https://github.com/adobe/helix-importer/compare/v2.5.6...v2.5.7) (2023-01-19)
 
 
