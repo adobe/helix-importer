@@ -17,7 +17,6 @@ import { JSDOM } from 'jsdom';
 import path from 'path';
 import { unified } from 'unified';
 import parse from 'rehype-parse';
-import { toHtml } from 'hast-util-to-html';
 import rehype2remark from 'rehype-remark';
 import stringify from 'remark-stringify';
 import fs from 'fs-extra';
@@ -66,47 +65,17 @@ export default class PageImporter {
       .use(parse, { emitParseErrors: true })
       .use(rehype2remark, {
         handlers: {
-          hlxembed: (state, node) => {
-            const children = node.children.map((child) => processor.stringify(child).trim());
-            return {
-              type: 'paragraph',
-              children: [{
-                type: 'text',
-                value: children.join(''),
-              }],
-            };
-          },
           u: (state, node) => {
             if (node.children && node.children.length > 0) {
-              const children = node.children.map((child) => {
-                try {
-                  if (child.type === 'element' && child.tagName !== 'span') {
-                    const n = {
-                      type: child.tagName,
-                      children: child.children,
-                    };
-                    return processor.stringify(n).trim();
-                  }
-                  return processor.stringify(child).trim();
-                } catch (e) {
-                  // cannot stringify the node, return html
-                  return toHtml(child);
-                }
-              });
-              return {
+              return [{
                 type: 'html',
-                value: `<u>${children.join('')}</u>`,
-              };
-              // todo: use this
-              // return [{
-              //   type: 'html',
-              //   value: '<u>',
-              // },
-              //   ...state.all(node),
-              // {
-              //   type: 'html',
-              //   value: '</u>',
-              // }];
+                value: '<u>',
+              },
+              ...state.all(node),
+              {
+                type: 'html',
+                value: '</u>',
+              }];
             }
             return '';
           },
