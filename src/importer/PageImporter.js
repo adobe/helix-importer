@@ -19,6 +19,7 @@ import { unified } from 'unified';
 import parse from 'rehype-parse';
 import rehype2remark from 'rehype-remark';
 import stringify from 'remark-stringify';
+import remarkGfm from 'remark-gfm';
 import fs from 'fs-extra';
 import { md2docx } from '@adobe/helix-md2docx';
 import remarkGridTable from '@adobe/remark-gridtables';
@@ -84,6 +85,7 @@ export default class PageImporter {
       })
       .use(remarkImageReferences)
       .use(remarkGridTable)
+      .use(remarkGfm)
       .use(stringify, {
         bullet: '-',
         fence: '`',
