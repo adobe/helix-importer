@@ -19,11 +19,10 @@ import { unified } from 'unified';
 import parse from 'rehype-parse';
 import rehype2remark from 'rehype-remark';
 import stringify from 'remark-stringify';
-import remarkGfm from 'remark-gfm';
 import fs from 'fs-extra';
 import { md2docx } from '@adobe/helix-md2docx';
 import remarkGridTable from '@adobe/remark-gridtables';
-import { imageReferences } from '@adobe/helix-markdown-support';
+import { imageReferences, remarkGfmNoLink } from '@adobe/helix-markdown-support';
 import gridtableHandlers from './hast-to-mdast-gridtable-handlers.js';
 import Utils from '../utils/Utils.js';
 import DOMUtils from '../utils/DOMUtils.js';
@@ -85,7 +84,7 @@ export default class PageImporter {
       })
       .use(remarkImageReferences)
       .use(remarkGridTable)
-      .use(remarkGfm)
+      .use(remarkGfmNoLink)
       .use(stringify, {
         bullet: '-',
         fence: '`',
