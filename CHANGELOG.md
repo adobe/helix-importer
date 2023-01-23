@@ -1,3 +1,10 @@
+## [2.5.12](https://github.com/adobe/helix-importer/compare/v2.5.11...v2.5.12) (2023-01-23)
+
+
+### Bug Fixes
+
+* support <s> tag ([#76](https://github.com/adobe/helix-importer/issues/76)) ([2691506](https://github.com/adobe/helix-importer/commit/2691506601fa68ca8f721a34ffaf4926143cba7d))
+
 ## [2.5.11](https://github.com/adobe/helix-importer/compare/v2.5.10...v2.5.11) (2023-01-20)
 
 
