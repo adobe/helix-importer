@@ -316,6 +316,22 @@ describe('html2md tests', () => {
     strictEqual(out.html.trim(), '<body><img src="./image.jpg"></body>');
     strictEqual(out.md.trim(), '![][image0]\n\n[image0]: ./image.jpg');
   });
+
+  it('html2md removes original hrs but keeps md section breaks', async () => {
+    // hr from the source document are removed because they are meaningless
+    // (understand: they do not match the markdown section break concept)
+    // but hr added by the transformation are kept because they represent the sections breaks
+    const out = await html2md('https://www.sample.com/hr.html', '<html><body><p>text 1</p><hr><p>text 2</p><hr><p>text 3</p><p>text 4</p></body></html>', {
+      transformDOM: ({ document }) => {
+        const p = document.querySelector('p:last-of-type');
+        const hr = document.createElement('hr');
+        p.after(hr);
+        return document.body;
+      },
+    });
+    strictEqual(out.html.trim(), '<body><p>text 1</p><p>text 2</p><p>text 3</p><p>text 4</p><hr></body>');
+    strictEqual(out.md.trim(), 'text 1\n\ntext 2\n\ntext 3\n\ntext 4\n\n---');
+  });
 });
 
 describe('html2docx tests', () => {
