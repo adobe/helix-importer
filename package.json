@@ -57,6 +57,7 @@
     "node-fetch": "3.3.0",
     "rehype-parse": "8.0.4",
     "rehype-remark": "github:adobe-rnd/rehype-remark#45735e80a3d3c805d3c4211ae035f718ddd10bcb",
+    "remark-gfm": "3.0.1",
     "remark-stringify": "10.0.2",
     "unified": "10.1.2"
   }
