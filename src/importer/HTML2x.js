@@ -165,7 +165,7 @@ async function html2x(
     debug: () => {},
     info: () => {},
     log: () => {},
-    warn: (...args) => console.error(...args),
+    warn: (...args) => console.warn(...args),
     error: (...args) => console.error(...args),
   };
 
