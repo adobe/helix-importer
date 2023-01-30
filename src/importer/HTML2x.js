@@ -79,7 +79,7 @@ async function html2x(
   // for more advanced use cases, give access to the original dom with
   // no preprocessing at all
   if (transformer.preprocess) {
-    transformer.preprocess({
+    await transformer.preprocess({
       url,
       document: doc,
       html: doc.documentElement.outerHTML,
@@ -99,7 +99,7 @@ async function html2x(
 
     async process(document) {
       if (transformer.transform) {
-        let results = transformer.transform({
+        let results = await transformer.transform({
           url,
           document,
           html,
