@@ -1,3 +1,10 @@
+# [2.6.0](https://github.com/adobe/helix-importer/compare/v2.5.16...v2.6.0) (2023-01-31)
+
+
+### Features
+
+* transform can be async ([#88](https://github.com/adobe/helix-importer/issues/88)) ([9441e0e](https://github.com/adobe/helix-importer/commit/9441e0e8494d4f3c49a62712144e8082f85e2320))
+
 ## [2.5.16](https://github.com/adobe/helix-importer/compare/v2.5.15...v2.5.16) (2023-01-29)
 
 
