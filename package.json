@@ -33,7 +33,7 @@
     "@semantic-release/git": "10.0.1",
     "c8": "7.12.0",
     "dirname-filename-esm": "1.1.1",
-    "eslint": "8.32.0",
+    "eslint": "8.33.0",
     "husky": "8.0.3",
     "lint-staged": "13.1.0",
     "mocha": "10.2.0",
@@ -53,7 +53,7 @@
     "jsdom": "21.1.0",
     "node-fetch": "3.3.0",
     "rehype-parse": "8.0.4",
-    "rehype-remark": "github:adobe-rnd/rehype-remark#45735e80a3d3c805d3c4211ae035f718ddd10bcb",
+    "rehype-remark": "github:adobe-rnd/rehype-remark#f40d3bc47bb0902c0bbebcca62e6e547ce8d889c",
     "remark-stringify": "10.0.2",
     "unified": "10.1.2"
   }
