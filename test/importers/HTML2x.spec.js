@@ -234,6 +234,7 @@ describe('html2md tests', () => {
     const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', {
       transform: () => [{
         path: '/my-custom-path-p1',
+        from: 'https://www.sample.com/page.html',
         report: {
           custom: 'A custom property',
           customArray: ['a', 'b', 'c'],
@@ -253,6 +254,7 @@ describe('html2md tests', () => {
     strictEqual(out.md, undefined);
     strictEqual(out.docx, undefined);
     strictEqual(out.path, '/my-custom-path-p1');
+    strictEqual(out.from, 'https://www.sample.com/page.html');
     ok(out.report);
     strictEqual(out.report.custom, 'A custom property');
     deepStrictEqual(out.report.customArray, ['a', 'b', 'c']);
