@@ -1,3 +1,10 @@
+# [2.7.0](https://github.com/adobe/helix-importer/compare/v2.6.0...v2.7.0) (2023-02-06)
+
+
+### Features
+
+* allow from property ([#92](https://github.com/adobe/helix-importer/issues/92)) ([91f9681](https://github.com/adobe/helix-importer/commit/91f96812ce8062d860f57fa38d1795b8df242c55))
+
 # [2.6.0](https://github.com/adobe/helix-importer/compare/v2.5.16...v2.6.0) (2023-01-31)
 
 
