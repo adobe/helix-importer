@@ -120,6 +120,8 @@ async function html2x(
 
           if (result.element) {
             extra.html = result.element.outerHTML;
+          } else if (result.from) {
+            extra.from = result.from;
           }
 
           if (result.report) {
@@ -188,6 +190,10 @@ async function html2x(
 
     if (pir.extra && pir.extra.html) {
       res.html = pir.extra.html;
+    }
+
+    if (pir.extra.from) {
+      res.from = pir.extra.from;
     }
 
     if (pir.extra.report) {
