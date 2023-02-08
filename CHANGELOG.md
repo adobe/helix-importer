@@ -1,3 +1,10 @@
+# [2.8.0](https://github.com/adobe/helix-importer/compare/v2.7.0...v2.8.0) (2023-02-08)
+
+
+### Features
+
+* add waitForElement DOMUtils ([#94](https://github.com/adobe/helix-importer/issues/94)) ([ca041f3](https://github.com/adobe/helix-importer/commit/ca041f30f39b0d511fbbe30a1410b2c013826a0d))
+
 # [2.7.0](https://github.com/adobe/helix-importer/compare/v2.6.0...v2.7.0) (2023-02-06)
 
 
