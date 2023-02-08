@@ -263,4 +263,19 @@ export default class DOMUtils {
     }
     return null;
   }
+
+  static async waitForElement(selector, document, timeout = 5000, interval = 250) {
+    return new Promise((resolve, reject) => {
+      const timeWas = new Date();
+      const wait = setInterval(() => {
+        if (document.querySelector(selector)) {
+          clearInterval(wait);
+          resolve();
+        } else if (new Date() - timeWas > timeout) { // Timeout
+          clearInterval(wait);
+          reject();
+        }
+      }, interval);
+    });
+  }
 }
