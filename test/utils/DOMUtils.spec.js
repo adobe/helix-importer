@@ -12,7 +12,7 @@
 
 /* eslint-disable no-shadow */
 
-import { strictEqual, rejects, doesNotReject } from 'assert';
+import { strictEqual } from 'assert';
 import { describe, it } from 'mocha';
 
 import { JSDOM } from 'jsdom';
@@ -401,38 +401,5 @@ describe('DOMUtils#getImgFromBackground', () => {
   it('with background-image style', () => {
     test(createElement('p', {}, { 'background-image': 'url(https://www.server.com/image.jpg)' }, 'Some content'), '<img src="https://www.server.com/image.jpg">');
     test(createElement('div', { class: 'someclass' }, { 'background-image': 'url("https://www.server.com/image.jpg")', background: 'rgb(0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box' }, '<div><div>Some divs</div><div>More divs</div></div>'), '<img src="https://www.server.com/image.jpg">');
-  });
-});
-
-describe('DOMUtils#waitForElement', () => {
-  it('should fail for non existing element', async () => {
-    const { document } = (new JSDOM()).window;
-    const div = document.createElement('div');
-    document.body.appendChild(div);
-    await rejects(async () => {
-      await DOMUtils.waitForElement('.dummy', document, 25, 20);
-    });
-  });
-
-  it('should find existing element', async () => {
-    const { document } = (new JSDOM()).window;
-    const div = document.createElement('div');
-    div.classList.add('dummy');
-    document.body.appendChild(div);
-    await doesNotReject(async () => {
-      await DOMUtils.waitForElement('.dummy', document, 100, 20);
-    });
-  });
-
-  it('should wait for element to appear in the DOM', async () => {
-    const { document } = (new JSDOM()).window;
-    setTimeout(() => {
-      const div = document.createElement('div');
-      div.classList.add('dummy');
-      document.body.appendChild(div);
-    }, 50);
-    await doesNotReject(async () => {
-      await DOMUtils.waitForElement('.dummy', document, 100, 20);
-    });
   });
 });
