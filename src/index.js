@@ -23,6 +23,7 @@ import Blocks from './utils/Blocks.js';
 import CSV from './utils/CSV.js';
 import DOMUtils from './utils/DOMUtils.js';
 import FileUtils from './utils/FileUtils.js';
+import Loader from './utils/Loader.js';
 import Utils from './utils/Utils.js';
 
 import WPUtils from './wp/WPUtils.js';
@@ -44,6 +45,7 @@ export {
   CSV,
   DOMUtils,
   FileUtils,
+  Loader,
   Utils,
   WPUtils,
   WPAdminAjaxPager,
