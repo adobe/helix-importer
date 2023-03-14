@@ -116,8 +116,8 @@ export default class PageImporter {
     const as = document.querySelectorAll('a');
     as.forEach((a) => {
       const { href } = a;
-      if ((href && href !== '' && contents.indexOf(href) !== -1) || contents.indexOf(decodeURI(href)) !== -1) {
-        try {
+      try {
+        if ((href && href !== '' && contents.indexOf(href) !== -1) || contents.indexOf(decodeURI(href)) !== -1) {
           const u = new URL(href, url);
           const ext = path.extname(u.href);
           if (ext === '.mp4') {
@@ -127,9 +127,9 @@ export default class PageImporter {
               append: '#image.mp4',
             });
           }
-        } catch (error) {
-          this.logger.warn(`Invalid link in the page: ${href}`, error);
         }
+      } catch (error) {
+        this.logger.warn(`Invalid link in the page - ${href}`, error);
       }
     });
 
