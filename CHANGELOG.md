@@ -1,3 +1,10 @@
+## [2.8.5](https://github.com/adobe/helix-importer/compare/v2.8.4...v2.8.5) (2023-03-14)
+
+
+### Bug Fixes
+
+* catch invalid link decoding ([7eedc30](https://github.com/adobe/helix-importer/commit/7eedc30aefff48407c537b285c6f00762afef11a))
+
 ## [2.8.4](https://github.com/adobe/helix-importer/compare/v2.8.3...v2.8.4) (2023-03-14)
 
 
