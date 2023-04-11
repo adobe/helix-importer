@@ -145,7 +145,7 @@ export default class DOMUtils {
     // remove spans
     document.querySelectorAll('span').forEach((span) => {
       // do not touch spans with images and span with a css class or an id
-      if (!span.querySelector('img') && span.classList.length === 0 && !span.id) {
+      if (!span.querySelector('img') && span.classList.length === 0 && !span.id && !span.getAttribute('style')) {
         if (span.textContent === '') {
           span.remove();
         } else {
