@@ -33,6 +33,21 @@ function remarkImageReferences() {
   return imageReferences;
 }
 
+function htmlElementNode(element, state, node) {
+  if (node.children && node.children.length > 0) {
+    return [{
+      type: 'html',
+      value: `<${element}>`,
+    },
+    ...state.all(node),
+    {
+      type: 'html',
+      value: `</${element}>`,
+    }];
+  }
+  return '';
+}
+
 export default class PageImporter {
   params;
 
@@ -65,20 +80,9 @@ export default class PageImporter {
       .use(parse, { emitParseErrors: true })
       .use(rehype2remark, {
         handlers: {
-          u: (state, node) => {
-            if (node.children && node.children.length > 0) {
-              return [{
-                type: 'html',
-                value: '<u>',
-              },
-              ...state.all(node),
-              {
-                type: 'html',
-                value: '</u>',
-              }];
-            }
-            return '';
-          },
+          u: (state, node) => htmlElementNode('u', state, node),
+          sub: (state, node) => htmlElementNode('sub', state, node),
+          sup: (state, node) => htmlElementNode('sup', state, node),
           ...gridtableHandlers,
         },
       })

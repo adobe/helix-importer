@@ -1,4 +1,5 @@
 # sub and sup
 
-This test must be <sub>subscripted</sub>
-This test must be <sup>superscripted</sup>
+This text must be a <sub>subscript</sub>.
+
+This text must be a <sup>superscript</sup>.
