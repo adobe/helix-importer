@@ -178,7 +178,7 @@ describe('PageImporter tests - fixtures', () => {
     await featureTest('space');
   });
 
-  it('import - strikethroughs', async () => {
-    await featureTest('s');
+  it('import - sub and sup', async () => {
+    await featureTest('subsup');
   });
 });
