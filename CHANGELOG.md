@@ -1,3 +1,10 @@
+# [2.9.0](https://github.com/adobe/helix-importer/compare/v2.8.13...v2.9.0) (2023-04-20)
+
+
+### Features
+
+* implement superscript and subscript support ([#137](https://github.com/adobe/helix-importer/issues/137)) ([1f0d97f](https://github.com/adobe/helix-importer/commit/1f0d97fd844d7f8d2145970b97348211efd026e2))
+
 ## [2.8.13](https://github.com/adobe/helix-importer/compare/v2.8.12...v2.8.13) (2023-04-16)
 
 
