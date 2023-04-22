@@ -33,7 +33,7 @@
     "@semantic-release/git": "10.0.1",
     "c8": "7.13.0",
     "dirname-filename-esm": "1.1.1",
-    "eslint": "8.38.0",
+    "eslint": "8.39.0",
     "husky": "8.0.3",
     "lint-staged": "13.2.1",
     "mocha": "10.2.0",
