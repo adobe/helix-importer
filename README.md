@@ -34,7 +34,7 @@ async function main() {
 }
 ```
 
-In this example, the [WPContentPager](./src/wp/explorers/WPContentPager.ts) extends the [PagignExplorer](src/explorer/PagingExplorer.ts) which implements the 2 methods:
+In this example, the [WPContentPager](./src/wp/explorers/WPContentPager.ts) extends the [PagingExplorer](src/explorer/PagingExplorer.ts) which implements the 2 methods:
 - `fetch` which defines how to fetch one page on results
 - `explore` which extracts the list of urls present on that page
 
