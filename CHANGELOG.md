@@ -1,3 +1,10 @@
+## [2.9.2](https://github.com/adobe/helix-importer/compare/v2.9.1...v2.9.2) (2023-05-04)
+
+
+### Bug Fixes
+
+* replace nbsp with space ([#142](https://github.com/adobe/helix-importer/issues/142)) ([f093c74](https://github.com/adobe/helix-importer/commit/f093c749be0dcd75ec3a2b44313346fac2f3ede4))
+
 ## [2.9.1](https://github.com/adobe/helix-importer/compare/v2.9.0...v2.9.1) (2023-04-22)
 
 
