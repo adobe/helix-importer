@@ -198,6 +198,9 @@ describe('DOMUtils#removeSpans tests', () => {
     test('<div>Spans potentially used to do layouting: <span class="tab1">tab1</span><span class="tab2">tab2</span></div>', '<div>Spans potentially used to do layouting: <span class="tab1">tab1</span><span class="tab2">tab2</span></div>');
     test('<div>Spans potentially used to do layouting: <span id="tab1">tab1</span><span id="tab2">tab2</span></div>', '<div>Spans potentially used to do layouting: <span id="tab1">tab1</span><span id="tab2">tab2</span></div>');
   });
+  it('keeps styled spans', () => {
+    test('<p><span style="text-decoration: underline;">This should be underlined.</span></p>', '<p><span style="text-decoration: underline;">This should be underlined.</span></p>');
+  });
 });
 
 describe('DOMUtils#removeNoscripts tests', () => {
