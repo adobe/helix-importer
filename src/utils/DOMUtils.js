@@ -103,10 +103,12 @@ export default class DOMUtils {
         (tag.textContent === ''
           || tag.textContent === ' '
           || tag.textContent === '&nbsp;'
-          || tag.textContent.charCodeAt(0) === 160)
+          || (tag.textContent.charCodeAt(0) === 160 && tag.textContent.length === 1))
         && !tag.querySelector(DOMUtils.EMPTY_TAGS_TO_PRESERVE.join(','))
       ) {
         tag.remove();
+      } else {
+        tag.innerHTML = tag.innerHTML.replace(/&nbsp;/gm, ' ');
       }
     }
   }

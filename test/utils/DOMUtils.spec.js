@@ -95,6 +95,11 @@ describe('DOMUtils#reviewParagraphs tests', () => {
     test('<p><video width="320" height="240" controls=""><source src="movie.mp4" type="video/mp4"></video></p>', '<p><video width="320" height="240" controls=""><source src="movie.mp4" type="video/mp4"></video></p>');
     test('<p><iframe src="www.iframe.com"></iframe></p>', '<p><iframe src="www.iframe.com"></iframe></p>');
   });
+
+  it('reviewParagraphs replaces &nbsp; with spaces', () => {
+    test('<p>usefull with space&nbsp;</p>', '<p>usefull with space </p>');
+    test('<p>&nbsp;more&nbsp;spaces&nbsp;<br> &nbsp;</p>', '<p> more spaces <br>  </p>');
+  });
 });
 
 describe('DOMUtils#reviewHeadings tests', () => {
