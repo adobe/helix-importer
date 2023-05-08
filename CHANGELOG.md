@@ -1,3 +1,10 @@
+## [2.9.5](https://github.com/adobe/helix-importer/compare/v2.9.4...v2.9.5) (2023-05-08)
+
+
+### Bug Fixes
+
+* **deps:** update dependency jsdom to v22 ([#147](https://github.com/adobe/helix-importer/issues/147)) ([bce31f7](https://github.com/adobe/helix-importer/commit/bce31f7c38f140b8cf5359e3d1aa15713b0071b7))
+
 ## [2.9.4](https://github.com/adobe/helix-importer/compare/v2.9.3...v2.9.4) (2023-05-06)
 
 
