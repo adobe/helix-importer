@@ -10,8 +10,9 @@
  * governing permissions and limitations under the License.
  */
 
+/* global Blob */
+
 import { JSDOM } from 'jsdom';
-import { Blob } from 'buffer';
 
 export default class DOMUtils {
   static EMPTY_TAGS_TO_PRESERVE = ['img', 'video', 'iframe', 'div', 'picture'];
