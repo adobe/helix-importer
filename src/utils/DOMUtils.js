@@ -11,6 +11,7 @@
  */
 
 import { JSDOM } from 'jsdom';
+import { Blob } from 'buffer';
 
 export default class DOMUtils {
   static EMPTY_TAGS_TO_PRESERVE = ['img', 'video', 'iframe', 'div', 'picture'];
@@ -279,5 +280,24 @@ export default class DOMUtils {
         }
       }, interval);
     });
+  }
+
+  static getDataUrlFromB64Img(src) {
+    try {
+      const arr = src.split(',');
+      const bstr = atob(arr[1]);
+      let n = bstr.length - 1;
+      const u8arr = new Uint8Array(n);
+      while (n >= 0) {
+        u8arr[n] = bstr.charCodeAt(n);
+        n -= 1;
+      }
+      const blob = new Blob([u8arr]);
+      return URL.createObjectURL(blob);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(`get data url from a base64 image (${src}):`, e);
+      return null;
+    }
   }
 }

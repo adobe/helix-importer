@@ -233,9 +233,14 @@ export default class PageImporter {
       }
 
       src = img.getAttribute('src');
+      // try to handle b64 img
       if (!src || src.indexOf('data:') === 0) {
-        // we cannot handle b64 asset for now, remove
-        img.remove();
+        const dataUrl = DOMUtils.getDataUrlFromB64Img(img.src);
+        if (dataUrl) {
+          img.setAttribute('src', dataUrl);
+        } else {
+          img.remove();
+        }
       }
 
       const alt = img.getAttribute('alt');
