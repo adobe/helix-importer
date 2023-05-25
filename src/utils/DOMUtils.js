@@ -286,14 +286,13 @@ export default class DOMUtils {
   static getDataUrlFromB64Img(src) {
     try {
       const arr = src.split(',');
-      const bstr = atob(arr[1]);
-      let n = bstr.length - 1;
-      const u8arr = new Uint8Array(n);
-      while (n >= 0) {
-        u8arr[n] = bstr.charCodeAt(n);
-        n -= 1;
+      const type = arr[0].split(':')[1];
+      const b64Str = atob(arr[1]);
+      const bytesArray = new Uint8Array(b64Str.length);
+      for (let i = 0; i < b64Str.length; i += 1) {
+        bytesArray[i] = b64Str.charCodeAt(i);
       }
-      const blob = new Blob([u8arr]);
+      const blob = new Blob([bytesArray], { type });
       return URL.createObjectURL(blob);
     } catch (e) {
       // eslint-disable-next-line no-console
