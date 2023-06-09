@@ -13,7 +13,7 @@
 /* eslint-disable no-shadow */
 
 import { strictEqual } from 'assert';
-import { describe, it } from 'mocha';
+import { describe, it, xit } from 'mocha';
 
 import { JSDOM } from 'jsdom';
 
@@ -409,5 +409,15 @@ describe('DOMUtils#getImgFromBackground', () => {
   it('with background-image style', () => {
     test(createElement('p', {}, { 'background-image': 'url(https://www.server.com/image.jpg)' }, 'Some content'), '<img src="https://www.server.com/image.jpg">');
     test(createElement('div', { class: 'someclass' }, { 'background-image': 'url("https://www.server.com/image.jpg")', background: 'rgb(0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box' }, '<div><div>Some divs</div><div>More divs</div></div>'), '<img src="https://www.server.com/image.jpg">');
+  });
+
+  // `createElement` uses JSDOM to create the test-DOM
+  // the workaround in DOMUtils#getImgFromBackground exists _precisely_
+  // because of a potential bug in JSDOM due to which it doesn't
+  // parse `url()` with whitespaces correctly
+  // disabling the test, keeping it as a reference
+  xit('with background-image style containing whitespace in url()', () => {
+    test(createElement('p', {}, { 'background-image': 'url( /image.jpg )' }, 'Some content'), '<img src="/image.jpg">');
+    test(createElement('div', { class: 'someclass' }, { 'background-image': 'url( https://www.server.com/image.jpg )', background: 'rgb(0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box' }, '<div><div>Some divs</div><div>More divs</div></div>'), '<img src="https://www.server.com/image.jpg">');
   });
 });
