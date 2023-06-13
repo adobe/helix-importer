@@ -267,7 +267,6 @@ export default class DOMUtils {
         }
       });
       const url = element.style.backgroundImage;
-      console.log(`inlining background-image for ${element.outerHTML}`);
       if (url && url.toLowerCase() !== 'none') {
         const src = url.replace(/url\(/gm, '').replace(/'/gm, '').replace(/\)/gm, '');
         const img = document.createElement('img');
