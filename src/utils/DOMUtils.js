@@ -256,12 +256,23 @@ export default class DOMUtils {
   }
 
   static getImgFromBackground(element, document) {
-    const url = element?.style?.['background-image'];
-    if (url && url.toLowerCase() !== 'none') {
-      const src = url.replace(/url\(/gm, '').replace(/'/gm, '').replace(/\)/gm, '');
-      const img = document.createElement('img');
-      img.src = src;
-      return img;
+    const styleAttr = element?.getAttribute('style')?.split(';');
+    if (styleAttr) {
+      styleAttr.forEach((style) => {
+        const [prop, value] = style.split(':');
+        if (prop === 'background-image') {
+          const trimmedValue = value.replace(/\s/g, '');
+          const elStyle = element.style;
+          elStyle.backgroundImage = trimmedValue;
+        }
+      });
+      const url = element.style.backgroundImage;
+      if (url && url.toLowerCase() !== 'none') {
+        const src = url.replace(/url\(/gm, '').replace(/'/gm, '').replace(/\)/gm, '');
+        const img = document.createElement('img');
+        img.src = src;
+        return img;
+      }
     }
     return null;
   }
