@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@adobe/eslint-config-helix": "2.0.2",
-    "@adobe/helix-docx2md": "1.4.5",
+    "@adobe/helix-docx2md": "1.4.6",
     "@adobe/helix-mediahandler": "2.2.2",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/exec": "6.0.3",
@@ -44,7 +44,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@adobe/helix-markdown-support": "6.1.3",
-    "@adobe/helix-md2docx": "2.1.8",
+    "@adobe/helix-md2docx": "2.1.9",
     "@adobe/mdast-util-gridtables": "1.0.9",
     "@adobe/remark-gridtables": "1.0.3",
     "form-data": "4.0.0",
