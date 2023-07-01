@@ -33,13 +33,13 @@
     "@semantic-release/git": "10.0.1",
     "c8": "8.0.0",
     "dirname-filename-esm": "1.1.1",
-    "eslint": "8.43.0",
+    "eslint": "8.44.0",
     "husky": "8.0.3",
-    "lint-staged": "13.2.2",
+    "lint-staged": "13.2.3",
     "mocha": "10.2.0",
     "mocha-multi-reporters": "1.5.1",
     "mock-fs": "5.2.0",
-    "semantic-release": "21.0.5"
+    "semantic-release": "21.0.6"
   },
   "license": "Apache-2.0",
   "dependencies": {
