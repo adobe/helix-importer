@@ -20,7 +20,7 @@ export default class MDUtils {
   };
 
   static cleanupMarkdown(md) {
-    let ret = md?.replace(/\\\\~/gm, '\\~');
+    let ret = md;
     if (ret) {
       for (let i = 0; i < 20; i += 1) {
         let x = `${i}`;

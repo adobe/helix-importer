@@ -99,7 +99,8 @@ export default class PageImporter {
         ruleSpaces: false,
       });
 
-    const file = await processor.process(resource.document.innerHTML);
+    const html = resource.document.innerHTML;
+    const file = await processor.process(html);
     let contents = String(file);
 
     // process image links
@@ -191,7 +192,6 @@ export default class PageImporter {
     this.cleanup(document);
     DOMUtils.reviewHeadings(document);
     DOMUtils.reviewParagraphs(document);
-    DOMUtils.escapeSpecialCharacters(document);
     [
       'b',
       'a',
