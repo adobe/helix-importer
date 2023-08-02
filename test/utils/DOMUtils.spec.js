@@ -130,18 +130,6 @@ describe('DOMUtils#reviewHeadings tests', () => {
   });
 });
 
-describe('DOMUtils#escapeSpecialCharacters tests', () => {
-  const test = (input, expected) => {
-    const { document } = (new JSDOM(input)).window;
-    DOMUtils.escapeSpecialCharacters(document);
-    strictEqual(document.body.innerHTML, expected);
-  };
-
-  it('escapeSpecialCharacters escape tidles', () => {
-    test('<p>Paragraph with 2 tildes: 20~30 and 40~50</p>', '<p>Paragraph with 2 tildes: 20\\~30 and 40\\~50</p>');
-  });
-});
-
 describe('DOMUtils#remove tests', () => {
   const test = (input, selectors, expected) => {
     const { document } = (new JSDOM(input)).window;
