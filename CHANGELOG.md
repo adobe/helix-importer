@@ -1,3 +1,10 @@
+## [2.9.18](https://github.com/adobe/helix-importer/compare/v2.9.17...v2.9.18) (2023-08-02)
+
+
+### Bug Fixes
+
+* properly escape tilde ([#190](https://github.com/adobe/helix-importer/issues/190)) ([9853f17](https://github.com/adobe/helix-importer/commit/9853f17b9feeba52f910baeb6834f8c08ea5df08)), closes [#189](https://github.com/adobe/helix-importer/issues/189)
+
 ## [2.9.17](https://github.com/adobe/helix-importer/compare/v2.9.16...v2.9.17) (2023-07-27)
 
 
