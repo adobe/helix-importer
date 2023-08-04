@@ -1,3 +1,10 @@
+## [2.9.19](https://github.com/adobe/helix-importer/compare/v2.9.18...v2.9.19) (2023-08-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.19 ([#200](https://github.com/adobe/helix-importer/issues/200)) ([e647807](https://github.com/adobe/helix-importer/commit/e647807ea39c981a16bc0f6b8dcf8ecbf91cd8b1))
+
 ## [2.9.18](https://github.com/adobe/helix-importer/compare/v2.9.17...v2.9.18) (2023-08-02)
 
 
