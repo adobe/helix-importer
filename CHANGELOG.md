@@ -1,3 +1,10 @@
+## [2.9.21](https://github.com/adobe/helix-importer/compare/v2.9.20...v2.9.21) (2023-08-14)
+
+
+### Bug Fixes
+
+* **deps:** update external major ([#208](https://github.com/adobe/helix-importer/issues/208)) ([e6942fa](https://github.com/adobe/helix-importer/commit/e6942fa709b5541aa2e240e50705040125a7de17))
+
 ## [2.9.20](https://github.com/adobe/helix-importer/compare/v2.9.19...v2.9.20) (2023-08-14)
 
 
