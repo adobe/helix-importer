@@ -1,3 +1,10 @@
+## [2.9.23](https://github.com/adobe/helix-importer/compare/v2.9.22...v2.9.23) (2023-08-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency rehype-parse to v8.0.5 ([#209](https://github.com/adobe/helix-importer/issues/209)) ([d0c7e3b](https://github.com/adobe/helix-importer/commit/d0c7e3b2a29503edd535af97dce3bfa19402e10e))
+
 ## [2.9.22](https://github.com/adobe/helix-importer/compare/v2.9.21...v2.9.22) (2023-08-14)
 
 
