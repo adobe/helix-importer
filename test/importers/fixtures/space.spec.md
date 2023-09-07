@@ -11,9 +11,6 @@ A paragraph with a br at the end and \&nbsp; " ".
 
 A paragraph followed by a br
 
-\
-
-
 A paragraph after the br
 
 A paragraph after the nbsp;
