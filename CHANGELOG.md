@@ -1,3 +1,10 @@
+## [2.9.29](https://github.com/adobe/helix-importer/compare/v2.9.28...v2.9.29) (2023-09-07)
+
+
+### Bug Fixes
+
+* cleanup mdast tree before writing as md ([#223](https://github.com/adobe/helix-importer/issues/223)) ([49f88ce](https://github.com/adobe/helix-importer/commit/49f88cec0bbc30cbf8e5806b1467a21f05ab9814)), closes [#217](https://github.com/adobe/helix-importer/issues/217) [#214](https://github.com/adobe/helix-importer/issues/214) [#166](https://github.com/adobe/helix-importer/issues/166) [#213](https://github.com/adobe/helix-importer/issues/213)
+
 ## [2.9.28](https://github.com/adobe/helix-importer/compare/v2.9.27...v2.9.28) (2023-09-02)
 
 
