@@ -1,0 +1,102 @@
+root[10]
+├─0 heading[1]
+│   │ depth: 1
+│   └─0 text "Underline combo sample"
+├─1 paragraph[3]
+│   ├─0 html "<u>"
+│   ├─1 text "Underline 1"
+│   └─2 html "</u>"
+├─2 paragraph[13]
+│   ├─0  text "Some normal text with random "
+│   ├─1  html "<u>"
+│   ├─2  text "underline"
+│   ├─3  html "</u>"
+│   ├─4  text " or "
+│   ├─5  html "<u>"
+│   ├─6  text "span with underline"
+│   ├─7  html "</u>"
+│   ├─8  text " or "
+│   ├─9  html "<u>"
+│   ├─10 text "underline with span"
+│   ├─11 html "</u>"
+│   └─12 text "..."
+├─3 paragraph[1]
+│   └─0 strong[3]
+│       ├─0 html "<u>"
+│       ├─1 text "Underline 2"
+│       └─2 html "</u>"
+├─4 paragraph[1]
+│   └─0 strong[3]
+│       ├─0 html "<u>"
+│       ├─1 text "Underline 3"
+│       └─2 html "</u>"
+├─5 list[3]
+│   │ ordered: false
+│   │ start: null
+│   │ spread: false
+│   ├─0 listItem[1]
+│   │   │ spread: false
+│   │   │ checked: null
+│   │   └─0 paragraph[3]
+│   │       ├─0 html "<u>"
+│   │       ├─1 text "li underline 1"
+│   │       └─2 html "</u>"
+│   ├─1 listItem[1]
+│   │   │ spread: false
+│   │   │ checked: null
+│   │   └─0 paragraph[4]
+│   │       ├─0 html "<u>"
+│   │       ├─1 text "li underline 2"
+│   │       ├─2 html "</u>"
+│   │       └─3 text "\nalso may have text here"
+│   └─2 listItem[1]
+│       │ spread: false
+│       │ checked: null
+│       └─0 paragraph[3]
+│           ├─0 html "<u>"
+│           ├─1 text "li underline 3"
+│           └─2 html "</u>"
+├─6 paragraph[4]
+│   ├─0 link[1]
+│   │   │ title: null
+│   │   │ url: "https:/www.sample.com/a"
+│   │   └─0 text "Unlined link"
+│   ├─1 text " or "
+│   ├─2 link[3]
+│   │   │ title: null
+│   │   │ url: "https:/www.sample.com/b"
+│   │   ├─0 html "<u>"
+│   │   ├─1 text "Linked underline"
+│   │   └─2 html "</u>"
+│   └─3 text " ?"
+├─7 paragraph[1]
+│   └─0 strong[3]
+│       ├─0 html "<u>"
+│       ├─1 text "Some underline and strong text"
+│       └─2 html "</u>"
+├─8 paragraph[3]
+│   ├─0 link[1]
+│   │   │ title: null
+│   │   │ url: "https://www.austinparks.org/"
+│   │   └─0 text "U and A are not friends"
+│   ├─1 link[1]
+│   │   │ title: null
+│   │   │ url: "http://www.bgcaustin.org/"
+│   │   └─0 text "Boys & Girls Clubs of the Austin Area"
+│   └─2 link[1]
+│       │ title: null
+│       │ url: "http://www.thefirstteeaustin.org/club/scripts/public/public.asp"
+│       └─0 text "The First Tee of Greater Austin"
+└─9 paragraph[3]
+    ├─0 link[1]
+    │   │ title: null
+    │   │ url: "https://www.austinparks.org/"
+    │   └─0 text "U and A are not friends"
+    ├─1 link[1]
+    │   │ title: null
+    │   │ url: "http://www.bgcaustin.org/"
+    │   └─0 text "Boys & Girls Clubs of the Austin Area"
+    └─2 link[1]
+        │ title: null
+        │ url: "http://www.thefirstteeaustin.org/club/scripts/public/public.asp"
+        └─0 text "The First Tee of Greater Austin"

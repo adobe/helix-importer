@@ -39,7 +39,9 @@
     "mocha": "10.2.0",
     "mocha-multi-reporters": "1.5.1",
     "mock-fs": "5.2.0",
-    "semantic-release": "21.1.1"
+    "remark-parse": "10.0.2",
+    "semantic-release": "21.1.1",
+    "unist-util-inspect": "8.0.0"
   },
   "license": "Apache-2.0",
   "dependencies": {

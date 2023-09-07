@@ -21,6 +21,11 @@ import { dirname } from 'dirname-filename-esm';
 
 import { docx2md } from '@adobe/helix-docx2md';
 
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGridTable from '@adobe/remark-gridtables';
+// eslint-disable-next-line no-unused-vars
+import { inspect, inspectNoColor } from 'unist-util-inspect';
 import PageImporter from '../../src/importer/PageImporter.js';
 import PageImporterResource from '../../src/importer/PageImporterResource.js';
 import MemoryHandler from '../../src/storage/MemoryHandler.js';
@@ -148,6 +153,22 @@ describe('PageImporter tests - fixtures', () => {
     const md = await storageHandler.get(results[0].md);
     const expectedMD = await fs.readFile(path.resolve(__dirname, 'fixtures', `${feature}.spec.md`), 'utf-8');
     strictEqual(md.trim(), expectedMD.trim(), 'imported md is expected one');
+
+    // parse md to verify mdast
+    const mdast = unified()
+      .use(remarkParse)
+      .use(remarkGridTable)
+      .use()
+      .parse(md);
+
+    // process.stdout.write(inspect(mdast, { showPositions: false }));
+    // process.stdout.write('\n');
+
+    if (await fs.pathExistsSync(path.resolve(__dirname, 'fixtures', `${feature}.spec.mdast`))) {
+      const actualMdast = inspectNoColor(mdast, { showPositions: false });
+      const expectedMdast = await fs.readFile(path.resolve(__dirname, 'fixtures', `${feature}.spec.mdast`), 'utf-8');
+      strictEqual(actualMdast.trim(), expectedMdast.trim(), 'imported mdast is expected one');
+    }
   };
 
   it('import - tables', async () => {
