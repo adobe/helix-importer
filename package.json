@@ -39,8 +39,8 @@
     "mocha": "10.2.0",
     "mocha-multi-reporters": "1.5.1",
     "mock-fs": "5.2.0",
-    "remark-parse": "10.0.2",
-    "semantic-release": "21.1.2",
+    "remark-parse": "11.0.0",
+    "semantic-release": "22.0.5",
     "unist-util-inspect": "8.0.0"
   },
   "license": "Apache-2.0",
@@ -54,9 +54,9 @@
     "hast-util-to-mdast": "10.0.1",
     "jsdom": "22.1.0",
     "node-fetch": "3.3.2",
-    "rehype-parse": "8.0.5",
+    "rehype-parse": "9.0.0",
     "rehype-remark": "github:adobe-rnd/rehype-remark#45735e80a3d3c805d3c4211ae035f718ddd10bcb",
-    "remark-stringify": "10.0.3",
-    "unified": "10.1.2"
+    "remark-stringify": "11.0.0",
+    "unified": "11.0.3"
   }
 }
