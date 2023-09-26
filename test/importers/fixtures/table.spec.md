@@ -7,9 +7,9 @@
 +------------+----------------------------------+
 | Link       | [A link](https://www.sample.com) |
 +------------+----------------------------------+
-| List       | -   Value 1                      |
-|            | -   Value 2                      |
-|            | -   Another value...             |
+| List       | - Value 1                        |
+|            | - Value 2                        |
+|            | - Another value...               |
 +------------+----------------------------------+
 | Paragraphs | Paragraph 1 with some text       |
 |            |                                  |

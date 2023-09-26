@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@adobe/eslint-config-helix": "2.0.3",
-    "@adobe/helix-docx2md": "1.4.15",
+    "@adobe/helix-docx2md": "1.4.17",
     "@adobe/helix-mediahandler": "2.2.16",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/exec": "6.0.3",
@@ -45,17 +45,17 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@adobe/helix-markdown-support": "6.3.1",
-    "@adobe/helix-md2docx": "2.1.25",
-    "@adobe/mdast-util-gridtables": "2.0.2",
-    "@adobe/remark-gridtables": "1.0.4",
+    "@adobe/helix-markdown-support": "7.0.0",
+    "@adobe/helix-md2docx": "2.1.26",
+    "@adobe/mdast-util-gridtables": "3.0.1",
+    "@adobe/remark-gridtables": "2.0.1",
     "form-data": "4.0.0",
     "fs-extra": "11.1.1",
     "hast-util-to-mdast": "10.0.1",
     "jsdom": "22.1.0",
     "node-fetch": "3.3.2",
     "rehype-parse": "9.0.0",
-    "rehype-remark": "github:adobe-rnd/rehype-remark#45735e80a3d3c805d3c4211ae035f718ddd10bcb",
+    "rehype-remark": "10.0.0",
     "remark-stringify": "11.0.0",
     "unified": "11.0.3"
   }

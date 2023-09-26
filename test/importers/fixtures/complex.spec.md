@@ -20,10 +20,10 @@ When an employee moves to a new team right before their scheduled assessment, th
 
 This doesn't mean someone who skips an assessment has to go without feedback for months. Scheduling [impromptu assessments](https://help.sample.com/hc/en-us/articles/360060531312-impromptu-assessments) helps you keep employees informed during off-cycle evaluations, such as:
 
--   When considering employees for a promotion or raise
--   When they face disciplinary action
--   On their anniversary
--   As part of their onboarding process
+- When considering employees for a promotion or raise
+- When they face disciplinary action
+- On their anniversary
+- As part of their onboarding process
 
 ![Impromptu Assessment (1)][image3]
 
@@ -33,9 +33,9 @@ Great feedback can come from anyone who interacts with an employee, from their c
 
 Feedback is also no longer limited to assessment periods, letting you ask in the moment for what you need. Here are a few examples:
 
--   After a big project, the manager wants to see how the team lead performed. They can send feedback requests to everyone involved in it. This could include team members, directors and executives they presented to, or other departments that they trained.
--   A manager thinks an employee is struggling and wants to know how well the employee works with their peers or with other departments. This feedback can help the manager understand an employee's situation before speaking with them.
--   An employee is up for a promotion, and the manager would like to understand how the employee works with others.
+- After a big project, the manager wants to see how the team lead performed. They can send feedback requests to everyone involved in it. This could include team members, directors and executives they presented to, or other departments that they trained.
+- A manager thinks an employee is struggling and wants to know how well the employee works with their peers or with other departments. This feedback can help the manager understand an employee's situation before speaking with them.
+- An employee is up for a promotion, and the manager would like to understand how the employee works with others.
 
 ## Sample Performance Management: Timely and Targeted
 
