@@ -1,3 +1,10 @@
+## [2.9.31](https://github.com/adobe/helix-importer/compare/v2.9.30...v2.9.31) (2023-09-26)
+
+
+### Bug Fixes
+
+* update unified dependencies ([#235](https://github.com/adobe/helix-importer/issues/235)) ([e7f8441](https://github.com/adobe/helix-importer/commit/e7f84414aba484cf3873ee81a635f2ddb8bfebd3))
+
 ## [2.9.30](https://github.com/adobe/helix-importer/compare/v2.9.29...v2.9.30) (2023-09-13)
 
 
