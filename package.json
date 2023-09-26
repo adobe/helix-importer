@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@adobe/eslint-config-helix": "2.0.3",
-    "@adobe/helix-docx2md": "1.4.16",
+    "@adobe/helix-docx2md": "1.4.17",
     "@adobe/helix-mediahandler": "2.2.16",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/exec": "6.0.3",
