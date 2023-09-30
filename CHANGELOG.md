@@ -1,3 +1,10 @@
+## [2.9.34](https://github.com/adobe/helix-importer/compare/v2.9.33...v2.9.34) (2023-09-30)
+
+
+### Bug Fixes
+
+* **deps:** update dependency hast-util-to-mdast to v10.1.0 ([#240](https://github.com/adobe/helix-importer/issues/240)) ([4d024e8](https://github.com/adobe/helix-importer/commit/4d024e89575acf4c58348fe416c940a9be1f104b))
+
 ## [2.9.33](https://github.com/adobe/helix-importer/compare/v2.9.32...v2.9.33) (2023-09-30)
 
 
