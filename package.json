@@ -51,7 +51,7 @@
     "@adobe/remark-gridtables": "2.0.1",
     "form-data": "4.0.0",
     "fs-extra": "11.1.1",
-    "hast-util-to-mdast": "10.0.1",
+    "hast-util-to-mdast": "10.1.0",
     "jsdom": "22.1.0",
     "node-fetch": "3.3.2",
     "rehype-parse": "9.0.0",
