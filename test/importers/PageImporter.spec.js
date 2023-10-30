@@ -21,6 +21,8 @@ import { dirname } from 'dirname-filename-esm';
 
 import { docx2md } from '@adobe/helix-docx2md';
 
+import { JSDOM } from 'jsdom';
+
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGridTable from '@adobe/remark-gridtables';
@@ -38,11 +40,17 @@ const __dirname = dirname(import.meta);
 
 const logger = new NoopLogger();
 
+const parseHTML = (html) => {
+  const { document } = new JSDOM(html, { runScripts: undefined }).window;
+  return document;
+};
+
 describe('PageImporter tests', () => {
   const storageHandler = new MemoryHandler(logger);
   const config = {
     storageHandler,
     logger,
+    parseHTML,
   };
 
   it('import - do nothing', async () => {
@@ -76,6 +84,7 @@ describe('PageImporter tests - various options', () => {
     const config = {
       storageHandler,
       logger,
+      parseHTML,
     };
     const se = new Test(config);
     const results = await se.import('/someurl');
@@ -105,6 +114,7 @@ describe('PageImporter tests - various options', () => {
       mdast2Docx2Options: {
         stylesXML,
       },
+      parseHTML,
     };
     const se = new Test(config);
     const results = await se.import('/someurl');
@@ -144,6 +154,7 @@ describe('PageImporter tests - fixtures', () => {
       storageHandler,
       skipDocxConversion: true,
       logger,
+      parseHTML,
     };
     const se = new Test(config);
     const results = await se.import(`https://www.sample.com/${feature}`);

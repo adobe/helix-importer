@@ -12,8 +12,6 @@
 
 /* eslint-disable class-methods-use-this */
 
-import { JSDOM } from 'jsdom';
-
 import path from 'path';
 import { unified } from 'unified';
 import parse from 'rehype-parse';
@@ -55,6 +53,19 @@ export default class PageImporter {
 
   constructor(params) {
     this.params = params;
+
+    if (!this.params.parseHTML) {
+      this.params.parseHTML = (html) => {
+        try {
+          // eslint-disable-next-line no-undef
+          const parser = new DOMParser();
+          return parser.parseFromString(html, 'text/html');
+        } catch (e) {
+          throw new Error('Unable to parse HTML using default parseHTML function and global DOMParser. Please provide a custom parseHTML.');
+        }
+      };
+    }
+
     this.logger = params.logger || console;
 
     this.useCache = !!params.cache;
@@ -297,7 +308,9 @@ export default class PageImporter {
     const html = await this.download(url);
 
     if (html) {
-      const { document } = new JSDOM(DOMUtils.removeNoscripts(html.toString())).window;
+      const cleanedHTML = DOMUtils.removeNoscripts(html.toString());
+
+      const document = this.params.parseHTML(cleanedHTML);
       this.preProcess(document);
       return {
         document,

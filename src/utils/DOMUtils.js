@@ -10,10 +10,14 @@
  * governing permissions and limitations under the License.
  */
 
-import { JSDOM } from 'jsdom';
-
 export default class DOMUtils {
   static EMPTY_TAGS_TO_PRESERVE = ['img', 'video', 'iframe', 'div', 'picture'];
+
+  static fragment(document, string) {
+    const tpl = document.createElement('template');
+    tpl.innerHTML = string;
+    return tpl.content;
+  }
 
   static reviewInlineElement(document, tagName) {
     let tags = [...document.querySelectorAll(tagName)];
@@ -48,7 +52,7 @@ export default class DOMUtils {
     for (let i = tags.length - 1; i >= 0; i -= 1) {
       const tag = tags[i];
       if (tag.innerHTML === '.' || tag.innerHTML === '. ' || tag.innerHTML === ':' || tag.innerHTML === ': ') {
-        tag.replaceWith(JSDOM.fragment(tag.innerHTML));
+        tag.replaceWith(DOMUtils.fragment(document, tag.innerHTML));
       } else {
         const { innerHTML } = tag;
         if (tag.previousSibling) {
@@ -82,13 +86,13 @@ export default class DOMUtils {
           // move trailing space to a new text node outside of current element
           tag.innerHTML = innerHTML.slice(0, innerHTML.length - 1);
           ({ innerHTML } = tag);
-          tag.after(JSDOM.fragment('<span> </span>'));
+          tag.after(DOMUtils.fragment(document, '<span> </span>'));
         }
 
         if (innerHTML.indexOf(' ') === 0) {
           // move leading space to a new text node outside of current element
           tag.innerHTML = innerHTML.slice(1);
-          tag.before(JSDOM.fragment('<span> </span>'));
+          tag.before(DOMUtils.fragment(document, '<span> </span>'));
         }
       }
     }
@@ -146,7 +150,7 @@ export default class DOMUtils {
         if (span.textContent === '') {
           span.remove();
         } else {
-          span.replaceWith(JSDOM.fragment(span.innerHTML));
+          span.replaceWith(DOMUtils.fragment(document, span.innerHTML));
         }
       }
     });
@@ -156,7 +160,7 @@ export default class DOMUtils {
     selectors.forEach((selector) => {
       document.querySelectorAll(selector).forEach((elem) => {
         const captionText = elem.textContent.trim();
-        elem.parentNode.insertBefore(JSDOM.fragment(`<p><em>${captionText}</em></p>`), elem);
+        elem.parentNode.insertBefore(DOMUtils.fragment(document, `<p><em>${captionText}</em></p>`), elem);
         elem.remove();
       });
     });
@@ -198,8 +202,8 @@ export default class DOMUtils {
     return table;
   }
 
-  static generateEmbed(url) {
-    return JSDOM.fragment(`<table><tr><th>Embed</th></tr><tr><td><a href="${url}">${url}</a></td></tr></table>`);
+  static generateEmbed(document, url) {
+    return DOMUtils.fragment(document, `<table><tr><th>Embed</th></tr><tr><td><a href="${url}">${url}</a></td></tr></table>`);
   }
 
   static replaceEmbeds(document) {
@@ -208,7 +212,7 @@ export default class DOMUtils {
       const dataSrc = iframe.getAttribute('data-src');
       const url = dataSrc || src;
       if (url) {
-        iframe.after(DOMUtils.generateEmbed(url));
+        iframe.after(DOMUtils.generateEmbed(document, url));
       }
       iframe.remove();
     });
@@ -218,7 +222,7 @@ export default class DOMUtils {
       if (video.autoplay) {
         blockType = 'Animation';
       }
-      const anim = JSDOM.fragment(`<table><tr><th>${blockType}</th></tr><tr><td>${video.outerHTML}</td></tr></table>`);
+      const anim = DOMUtils.fragment(document, `<table><tr><th>${blockType}</th></tr><tr><td>${video.outerHTML}</td></tr></table>`);
       video.replaceWith(anim);
     });
   }
