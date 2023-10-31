@@ -67,6 +67,7 @@ export default async function transformDOM({
     '.nav',
     'footer',
     '.footer',
+    'iframe',
   ]);
 
   createMetadata(main, document);
