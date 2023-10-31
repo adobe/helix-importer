@@ -57,4 +57,13 @@ describe('defaultTransformDOM tests', () => {
     });
     strictEqual(out.outerHTML, '<body><h1>Hello World</h1><img src="https://wwww.sample.com/image1.png"><img src="https://wwww.sample.com/path/image2.png"><img src="https://wwww.sample.com/image3.png"><img src="https://wwww.anotherhost.com/image4.png"></body>');
   });
+
+  it('default transformation converts icons', async () => {
+    const document = createDocumentFromString('<html><body><h1>Hello World</h1><img src="/icon1.svg"><p>This is text with an icon <img src="./icon2.svg"></p></body></html>');
+    const out = await defaultTransformDOM({
+      url: 'https://wwww.sample.com/path/page.html',
+      document,
+    });
+    strictEqual(out.outerHTML, '<body><h1>Hello World</h1><span>:icon1:</span><p>This is text with an icon <span>:icon2:</span></p></body>');
+  });
 });

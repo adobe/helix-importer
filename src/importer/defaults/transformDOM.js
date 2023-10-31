@@ -69,6 +69,20 @@ const adjustImageUrls = (main, url) => {
   });
 };
 
+const convertIcons = (main, document) => {
+  [...main.querySelectorAll('img')].forEach((img) => {
+    const src = img.getAttribute('src');
+    if (src && src.endsWith('.svg')) {
+      const span = document.createElement('span');
+      const name = src.split('/').pop().split('.')[0].toLowerCase().trim().replace(/[^a-z0-9]/g, '-');
+      if (name) {
+        span.innerHTML = `:${name}:`;
+        img.replaceWith(span);
+      }
+    }
+  });
+};
+
 export default async function transformDOM({
   // eslint-disable-next-line no-unused-vars
   url, document, html, params,
@@ -88,6 +102,7 @@ export default async function transformDOM({
 
   createMetadata(main, document);
   adjustImageUrls(main, url);
+  convertIcons(main, document);
 
   return main;
 }
