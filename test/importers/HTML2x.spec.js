@@ -10,7 +10,9 @@
  * governing permissions and limitations under the License.
  */
 
-import { deepStrictEqual, ok, strictEqual } from 'assert';
+import {
+  deepStrictEqual, ok, strictEqual, fail,
+} from 'assert';
 import { describe, it } from 'mocha';
 import { JSDOM } from 'jsdom';
 import { docx2md } from '@adobe/helix-docx2md';
@@ -24,19 +26,15 @@ import {
   defaultTransformDOM,
 } from '../../src/importer/HTML2x.js';
 
-const getDocument = (html) => {
-  const { document } = new JSDOM(html, { runScripts: undefined }).window;
-  return document;
-};
-
-const parseHTML = (html) => {
+// test environment createDocumentFromString version using JSDOM
+const createDocumentFromString = (html) => {
   const { document } = new JSDOM(html, { runScripts: undefined }).window;
   return document;
 };
 
 describe('defaultTransformDOM tests', () => {
   it('default transformation', async () => {
-    const document = getDocument('<html><body><h1>Hello World</h1></body></html>');
+    const document = createDocumentFromString('<html><body><h1>Hello World</h1></body></html>');
     const out = await defaultTransformDOM({ document });
     strictEqual(out.outerHTML, '<body><h1>Hello World</h1></body>');
   });
@@ -79,53 +77,118 @@ describe('html2x parameters', () => {
   };
 
   it('parameters are correctly passed in single mode', async () => {
-    await html2md(URL, getDocument(HTML), {
+    await html2md(URL, HTML, {
       transformDOM: testParams,
       generateDocumentPath: testParams,
       preprocess: testParams,
     }, {
-      parseHTML,
+      createDocumentFromString,
     }, {
       originalURL: ORIGNAL_URL,
     });
 
-    await html2docx(URL, getDocument(HTML), {
+    await html2docx(URL, HTML, {
       transformDOM: testParams,
       generateDocumentPath: testParams,
       preprocess: testParams,
     }, {
-      parseHTML,
+      createDocumentFromString,
     }, {
       originalURL: ORIGNAL_URL,
     });
   });
 
   it('parameters are correctly passed in multi mode', async () => {
-    await html2md(URL, getDocument(HTML), {
+    await html2md(URL, HTML, {
       transform: testParams,
       preprocess: testParams,
     }, {
-      parseHTML,
+      createDocumentFromString,
     }, {
       originalURL: ORIGNAL_URL,
     });
 
-    await html2docx(URL, getDocument(HTML), {
+    await html2docx(URL, HTML, {
       transform: testParams,
       preprocess: testParams,
     }, {
-      parseHTML,
+      createDocumentFromString,
     }, {
       originalURL: ORIGNAL_URL,
     });
+  });
+
+  it('document can be a Document', async () => {
+    const doc = createDocumentFromString(HTML);
+    await html2md(URL, doc, {
+      transformDOM: testParams,
+      generateDocumentPath: testParams,
+      preprocess: testParams,
+    }, {
+      createDocumentFromString,
+    }, {
+      originalURL: ORIGNAL_URL,
+    });
+
+    await html2docx(URL, doc, {
+      transformDOM: testParams,
+      generateDocumentPath: testParams,
+      preprocess: testParams,
+    }, {
+      createDocumentFromString,
+    }, {
+      originalURL: ORIGNAL_URL,
+    });
+  });
+
+  it('document cannot be a string in the testing context', async () => {
+    // we need JSDOM to create a document
+    // because importer default implementation relies on DOMParser
+    try {
+      await html2md(URL, HTML, {
+        transformDOM: testParams,
+        generateDocumentPath: testParams,
+        preprocess: testParams,
+      }, {
+        createDocumentFromString: null,
+      }, {
+        originalURL: ORIGNAL_URL,
+      });
+      fail('should have thrown an error: default createDocumentFromString works only in browser context');
+    } catch (e) {
+      ok(true);
+    }
+
+    try {
+      await html2docx(URL, HTML, {
+        transformDOM: testParams,
+        generateDocumentPath: testParams,
+        preprocess: testParams,
+      }, {
+        createDocumentFromString: null,
+      }, {
+        originalURL: ORIGNAL_URL,
+      });
+      fail('should have thrown an error: default createDocumentFromString works only in browser context');
+    } catch (e) {
+      ok(true);
+    }
   });
 });
 
 describe('html2md tests', () => {
   it('html2md provides a default transformation', async () => {
-    const doc = getDocument('<html><body><h1>Hello World</h1></body></html>');
-    const out = await html2md('https://www.sample.com/page.html', doc, null, {
-      parseHTML,
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', null, {
+      createDocumentFromString,
+    });
+    strictEqual(out.html.trim(), '<body><h1>Hello World</h1></body>');
+    strictEqual(out.md.trim(), '# Hello World');
+    strictEqual(out.path, '/page');
+  });
+
+  it('html2md accepts a string', async () => {
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', null, {
+      createDocumentFromString,
     });
     strictEqual(out.html.trim(), '<body><h1>Hello World</h1></body>');
     strictEqual(out.md.trim(), '# Hello World');
@@ -133,8 +196,7 @@ describe('html2md tests', () => {
   });
 
   it('html2md handles a custom transformation', async () => {
-    const doc = getDocument('<html><body><h1>Hello World</h1></body></html>');
-    const out = await html2md('https://www.sample.com/page.html', doc, {
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', {
       transformDOM: ({ document }) => {
         const p = document.createElement('p');
         p.innerHTML = 'My Hello to the World';
@@ -142,7 +204,7 @@ describe('html2md tests', () => {
       },
       generateDocumentPath: () => '/folder/my-custom-path',
     }, {
-      parseHTML,
+      createDocumentFromString,
     });
     strictEqual(out.html.trim(), '<p>My Hello to the World</p>');
     strictEqual(out.md.trim(), 'My Hello to the World');
@@ -150,8 +212,7 @@ describe('html2md tests', () => {
   });
 
   it('html2md handles multiple transform', async () => {
-    const doc = getDocument('<html><body><h1>Hello World</h1></body></html>');
-    const out = await html2md('https://www.sample.com/page.html', doc, {
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', {
       transform: ({ document }) => {
         const p1 = document.createElement('p');
         p1.innerHTML = 'My Hello to the World 1';
@@ -168,7 +229,7 @@ describe('html2md tests', () => {
         }];
       },
     }, {
-      parseHTML,
+      createDocumentFromString,
     });
 
     const out1 = out[0];
@@ -183,8 +244,7 @@ describe('html2md tests', () => {
   });
 
   it('html2md handles multiple transform (but single output)', async () => {
-    const doc = getDocument('<html><body><h1>Hello World</h1></body></html>');
-    const out = await html2md('https://www.sample.com/page.html', doc, {
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', {
       transform: ({ document }) => {
         const p1 = document.createElement('p');
         p1.innerHTML = 'My Hello to the World 1';
@@ -198,7 +258,7 @@ describe('html2md tests', () => {
         };
       },
     }, {
-      parseHTML,
+      createDocumentFromString,
     });
 
     strictEqual(out.html.trim(), '<p>My Hello to the World 1</p>');
@@ -207,8 +267,7 @@ describe('html2md tests', () => {
   });
 
   it('html2md allows to report when using transform', async () => {
-    const doc = getDocument('<html><body><h1>Hello World</h1></body></html>');
-    const out = await html2md('https://www.sample.com/page.html', doc, {
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', {
       transform: ({ document }) => {
         const p1 = document.createElement('p');
         p1.innerHTML = 'My Hello to the World 1';
@@ -241,7 +300,7 @@ describe('html2md tests', () => {
         }];
       },
     }, {
-      parseHTML,
+      createDocumentFromString,
     });
 
     const out1 = out[0];
@@ -264,8 +323,7 @@ describe('html2md tests', () => {
   });
 
   it('html2md allows no element to be provided when using transform', async () => {
-    const doc = getDocument('<html><body><h1>Hello World</h1></body></html>');
-    const out = await html2md('https://www.sample.com/page.html', doc, {
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', {
       transform: () => [{
         path: '/my-custom-path-p1',
         from: 'https://www.sample.com/page.html',
@@ -282,7 +340,7 @@ describe('html2md tests', () => {
         },
       }],
     }, {
-      parseHTML,
+      createDocumentFromString,
     });
 
     // if no element provided, no creation of html, md or docx
@@ -298,23 +356,21 @@ describe('html2md tests', () => {
   });
 
   it('html2md does not crash if transform returns null', async () => {
-    const doc = getDocument('<html><body><h1>Hello World</h1></body></html>');
-    const out = await html2md('https://www.sample.com/page.html', doc, {
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', {
       transform: () => null,
     }, {
-      parseHTML,
+      createDocumentFromString,
     });
 
     strictEqual(out.length, 0);
   });
 
   it('html2md can deal with null returning transformation', async () => {
-    const doc = getDocument('<html><body><h1>Hello World</h1></body></html>');
-    const out = await html2md('https://www.sample.com/page.html', doc, {
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', {
       transformDOM: () => null,
       generateDocumentPath: () => null,
     }, {
-      parseHTML,
+      createDocumentFromString,
     });
     strictEqual(out.html.trim(), '<body><h1>Hello World</h1></body>');
     strictEqual(out.md.trim(), '# Hello World');
@@ -322,10 +378,9 @@ describe('html2md tests', () => {
   });
 
   it('css background images are stored on elements and can be used during transformation', async () => {
-    const doc = getDocument('<html><head><style>div { background-image: url("./image.png"); }</style></head><body><div>div witth background image!</div></body></html>');
     const out = await html2md(
       'https://www.sample.com/page.html',
-      doc,
+      '<html><head><style>div { background-image: url("./image.png"); }</style></head><body><div>div witth background image!</div></body></html>',
       {
         transformDOM: ({ document }) => {
           const div = document.querySelector('div');
@@ -335,40 +390,37 @@ describe('html2md tests', () => {
         },
       },
       {
-        parseHTML,
+        createDocumentFromString,
       },
     );
     strictEqual(out.html.trim(), '<body><img src="./image.png"></body>');
   });
 
   it('html2md removes images with src attributes', async () => {
-    const doc = getDocument('<html><body><img src="data:abc"></body></html>');
-    const out = await html2md('https://www.sample.com/page.html', doc, null, {
-      parseHTML,
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><img src="data:abc"></body></html>', null, {
+      createDocumentFromString,
     });
     strictEqual(out.html.trim(), '<body></body>');
     strictEqual(out.md.trim(), '');
   });
 
   it('html2md set image src with data-src attribute value', async () => {
-    const doc = getDocument('<html><body><img src="data:abc" data-src="./image.jpg"></body></html>');
-    const out = await html2md('https://www.sample.com/page.html', doc, null, {
-      parseHTML,
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><img src="data:abc" data-src="./image.jpg"></body></html>', null, {
+      createDocumentFromString,
     });
     strictEqual(out.html.trim(), '<body><img src="./image.jpg" data-src="./image.jpg"></body>');
     strictEqual(out.md.trim(), '![][image0]\n\n[image0]: ./image.jpg');
   });
 
   it('html2md allows to preprocess the document', async () => {
-    const doc = getDocument('<html><body><img src="data:abc" data-fancy-src="./image.jpg"></body></html>');
-    const out = await html2md('https://www.sample.com/page.html', doc, {
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><img src="data:abc" data-fancy-src="./image.jpg"></body></html>', {
       preprocess: ({ document }) => {
         const img = document.querySelector('img');
         img.setAttribute('src', img.getAttribute('data-fancy-src'));
         img.removeAttribute('data-fancy-src');
       },
     }, {
-      parseHTML,
+      createDocumentFromString,
     });
     strictEqual(out.html.trim(), '<body><img src="./image.jpg"></body>');
     strictEqual(out.md.trim(), '![][image0]\n\n[image0]: ./image.jpg');
@@ -378,8 +430,7 @@ describe('html2md tests', () => {
     // hr from the source document are removed because they are meaningless
     // (understand: they do not match the markdown section break concept)
     // but hr added by the transformation are kept because they represent the sections breaks
-    const doc = getDocument('<html><body><p>text 1</p><hr><p>text 2</p><hr><p>text 3</p><p>text 4</p></body></html>');
-    const out = await html2md('https://www.sample.com/hr.html', doc, {
+    const out = await html2md('https://www.sample.com/hr.html', '<html><body><p>text 1</p><hr><p>text 2</p><hr><p>text 3</p><p>text 4</p></body></html>', {
       transformDOM: ({ document }) => {
         const p = document.querySelector('p:last-of-type');
         const hr = document.createElement('hr');
@@ -387,7 +438,7 @@ describe('html2md tests', () => {
         return document.body;
       },
     }, {
-      parseHTML,
+      createDocumentFromString,
     });
     strictEqual(out.html.trim(), '<body><p>text 1</p><p>text 2</p><p>text 3</p><p>text 4</p><hr></body>');
     strictEqual(out.md.trim(), 'text 1\n\ntext 2\n\ntext 3\n\ntext 4\n\n---');
@@ -396,9 +447,8 @@ describe('html2md tests', () => {
 
 describe('html2docx tests', () => {
   it('html2docx provides a default transformation', async () => {
-    const doc = getDocument('<html><body><h1>Hello World</h1></body></html>');
-    const out = await html2docx('https://www.sample.com/page.html', doc, null, {
-      parseHTML,
+    const out = await html2docx('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', null, {
+      createDocumentFromString,
     });
     strictEqual(out.html.trim(), '<body><h1>Hello World</h1></body>');
     strictEqual(out.md.trim(), '# Hello World');
@@ -411,8 +461,7 @@ describe('html2docx tests', () => {
   });
 
   it('html2docx handles a custom transformations', async () => {
-    const doc = getDocument('<html><body><h1>Hello World</h1></body></html>');
-    const out = await html2docx('https://www.sample.com/page.html', doc, {
+    const out = await html2docx('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', {
       transformDOM: ({ document }) => {
         const p = document.createElement('p');
         p.innerHTML = 'My Hello to the World';
@@ -420,7 +469,7 @@ describe('html2docx tests', () => {
       },
       generateDocumentPath: () => '/folder1/folder2/my-custom-path',
     }, {
-      parseHTML,
+      createDocumentFromString,
     });
     strictEqual(out.html.trim(), '<p>My Hello to the World</p>');
     strictEqual(out.md.trim(), 'My Hello to the World');

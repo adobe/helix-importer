@@ -34,6 +34,7 @@ import DOMUtils from '../utils/DOMUtils.js';
 import FileUtils from '../utils/FileUtils.js';
 import MDUtils from '../utils/MDUtils.js';
 import formatPlugin from './mdast-to-md-format-plugin.js';
+import BrowserUtils from '../utils/BrowserUtils.js';
 
 function formatNode(type, state, node) {
   const result = {
@@ -54,16 +55,9 @@ export default class PageImporter {
   constructor(params) {
     this.params = params;
 
-    if (!this.params.parseHTML) {
-      this.params.parseHTML = (html) => {
-        try {
-          // eslint-disable-next-line no-undef
-          const parser = new DOMParser();
-          return parser.parseFromString(html, 'text/html');
-        } catch (e) {
-          throw new Error('Unable to parse HTML using default parseHTML function and global DOMParser. Please provide a custom parseHTML.');
-        }
-      };
+    if (!this.params.createDocumentFromString) {
+      // default the string parsing using the browser DOMParser
+      this.params.createDocumentFromString = BrowserUtils.createDocumentFromString;
     }
 
     this.logger = params.logger || console;
@@ -310,7 +304,7 @@ export default class PageImporter {
     if (html) {
       const cleanedHTML = DOMUtils.removeNoscripts(html.toString());
 
-      const document = this.params.parseHTML(cleanedHTML);
+      const document = this.params.createDocumentFromString(cleanedHTML);
       this.preProcess(document);
       return {
         document,

@@ -17,6 +17,7 @@ import PageImporter from './PageImporter.js';
 import PageImporterResource from './PageImporterResource.js';
 import MemoryHandler from '../storage/MemoryHandler.js';
 import Utils from '../utils/Utils.js';
+import BrowserUtils from '../utils/BrowserUtils.js';
 
 // import docxStylesXML from '../resources/styles.xml';
 
@@ -180,7 +181,7 @@ async function html2x(
       stylesXML: config.docxStylesXML,
       image2png: config.image2png,
     },
-    parseHTML: config.parseHTML,
+    createDocumentFromString: config.createDocumentFromString,
   });
 
   const pirs = await importer.import(url);
@@ -224,6 +225,14 @@ async function html2x(
   }
 }
 
+const parseStringDocument = (html, config) => {
+  if (config?.createDocumentFromString) {
+    return config.createDocumentFromString(html);
+  } else {
+    return BrowserUtils.createDocumentFromString(html);
+  }
+};
+
 /**
  * Returns the result of the conversion from html to md.
  * @param {string} url URL of the document to convert
@@ -234,7 +243,11 @@ async function html2x(
  * @returns {Object|Array} Result(s) of the conversion
  */
 async function html2md(url, document, transformCfg, config, params = {}) {
-  return html2x(url, document, transformCfg, { ...config, toMd: true, toDocx: false }, params);
+  let doc = document;
+  if (typeof doc === 'string') {
+    doc = parseStringDocument(document, config);
+  }
+  return html2x(url, doc, transformCfg, { ...config, toMd: true, toDocx: false }, params);
 }
 
 /**
@@ -247,7 +260,11 @@ async function html2md(url, document, transformCfg, config, params = {}) {
  * @returns {Object|Array} Result(s) of the conversion
  */
 async function html2docx(url, document, transformCfg, config, params = {}) {
-  return html2x(url, document, transformCfg, { ...config, toMd: true, toDocx: true }, params);
+  let doc = document;
+  if (typeof doc === 'string') {
+    doc = parseStringDocument(document, config);
+  }
+  return html2x(url, doc, transformCfg, { ...config, toMd: true, toDocx: true }, params);
 }
 
 export {

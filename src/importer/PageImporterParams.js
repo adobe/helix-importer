@@ -23,5 +23,5 @@ export default class PageImporterParams {
 
   mdast2docxOptions;
 
-  parseHTML;
+  createDocumentFromString;
 }

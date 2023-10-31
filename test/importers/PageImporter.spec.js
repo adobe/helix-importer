@@ -40,7 +40,8 @@ const __dirname = dirname(import.meta);
 
 const logger = new NoopLogger();
 
-const parseHTML = (html) => {
+// test environment createDocumentFromString version using JSDOM
+const createDocumentFromString = (html) => {
   const { document } = new JSDOM(html, { runScripts: undefined }).window;
   return document;
 };
@@ -50,7 +51,7 @@ describe('PageImporter tests', () => {
   const config = {
     storageHandler,
     logger,
-    parseHTML,
+    createDocumentFromString,
   };
 
   it('import - do nothing', async () => {
@@ -84,7 +85,7 @@ describe('PageImporter tests - various options', () => {
     const config = {
       storageHandler,
       logger,
-      parseHTML,
+      createDocumentFromString,
     };
     const se = new Test(config);
     const results = await se.import('/someurl');
@@ -114,7 +115,7 @@ describe('PageImporter tests - various options', () => {
       mdast2Docx2Options: {
         stylesXML,
       },
-      parseHTML,
+      createDocumentFromString,
     };
     const se = new Test(config);
     const results = await se.import('/someurl');
@@ -154,7 +155,7 @@ describe('PageImporter tests - fixtures', () => {
       storageHandler,
       skipDocxConversion: true,
       logger,
-      parseHTML,
+      createDocumentFromString,
     };
     const se = new Test(config);
     const results = await se.import(`https://www.sample.com/${feature}`);
