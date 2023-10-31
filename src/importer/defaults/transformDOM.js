@@ -58,7 +58,7 @@ const adjustImageUrls = (main, url) => {
     const src = img.getAttribute('src');
     if (src && (src.startsWith('./') || src.startsWith('/') || src.startsWith('../'))) {
       try {
-        const u = new URL(img.src, url);
+        const u = new URL(src, url);
         // eslint-disable-next-line no-param-reassign
         img.src = u.toString();
       } catch (e) {
