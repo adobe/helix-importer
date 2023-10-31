@@ -18,7 +18,7 @@ import TestUtils from '../../TestUtils.js';
 
 const { createDocumentFromString } = TestUtils;
 
-describe.only('defaultTransformDOM tests', () => {
+describe('defaultTransformDOM tests', () => {
   it('default transformation', async () => {
     const document = createDocumentFromString('<html><body><h1>Hello World</h1></body></html>');
     const out = await defaultTransformDOM({ document });
@@ -47,5 +47,14 @@ describe.only('defaultTransformDOM tests', () => {
     const document = createDocumentFromString('<html><body><header>Top header</header><nav>Nav might be here</nav><main><h1>Hello World</h1><iframe src="iframe.html"></iframe></main><footer>Bottom footer</footer></body></html>');
     const out = await defaultTransformDOM({ document });
     strictEqual(out.outerHTML, '<body><main><h1>Hello World</h1></main></body>');
+  });
+
+  it('default transformation adjusts image urls', async () => {
+    const document = createDocumentFromString('<html><body><h1>Hello World</h1><img src="/image1.png"><img src="./image2.png"><img src="https://wwww.sample.com/image3.png"><img src="https://wwww.anotherhost.com/image4.png"></body></html>');
+    const out = await defaultTransformDOM({
+      url: 'https://wwww.sample.com/path/page.html',
+      document,
+    });
+    strictEqual(out.outerHTML, '<body><h1>Hello World</h1><img src="https://wwww.sample.com/image1.png"><img src="https://wwww.sample.com/path/image2.png"><img src="https://wwww.sample.com/image3.png"><img src="https://wwww.anotherhost.com/image4.png"></body>');
   });
 });

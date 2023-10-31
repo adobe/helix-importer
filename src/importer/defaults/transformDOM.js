@@ -53,6 +53,17 @@ const createMetadata = (main, document) => {
   return meta;
 };
 
+const adjustImageUrls = (main, url) => {
+  [...main.querySelectorAll('img')].forEach((img) => {
+    const src = img.getAttribute('src');
+    if (src && (src.startsWith('./') || src.startsWith('/') || src.startsWith('../'))) {
+      const u = new URL(img.src, url);
+      // eslint-disable-next-line no-param-reassign
+      img.src = u.toString();
+    }
+  });
+};
+
 export default async function transformDOM({
   // eslint-disable-next-line no-unused-vars
   url, document, html, params,
@@ -71,6 +82,7 @@ export default async function transformDOM({
   ]);
 
   createMetadata(main, document);
+  adjustImageUrls(main, url);
 
   return main;
 }
