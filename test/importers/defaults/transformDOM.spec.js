@@ -42,4 +42,10 @@ describe.only('defaultTransformDOM tests', () => {
     const out = await defaultTransformDOM({ document });
     strictEqual(out.outerHTML, '<body><h1>Hello World</h1><table><tr><th colspan="2">Metadata</th></tr><tr><td>Image</td><td><img src="/img.png" alt="This is the image alt text"></td></tr></table></body>');
   });
+
+  it('default transformation removes non content elements', async () => {
+    const document = createDocumentFromString('<html><body><header>Top header</header><nav>Nav might be here</nav><main><h1>Hello World</h1></main><footer>Bottom footer</footer></body></html>');
+    const out = await defaultTransformDOM({ document });
+    strictEqual(out.outerHTML, '<body><main><h1>Hello World</h1></main></body>');
+  });
 });

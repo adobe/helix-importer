@@ -10,6 +10,7 @@
  * governing permissions and limitations under the License.
  */
 import Blocks from '../../utils/Blocks.js';
+import DOMUtils from '../../utils/DOMUtils.js';
 
 function getMetadata(name, document) {
   const attr = name && name.includes(':') ? 'property' : 'name';
@@ -57,6 +58,16 @@ export default async function transformDOM({
   url, document, html, params,
 }) {
   const main = document.body;
+
+  // attempt to remove non-content elements
+  DOMUtils.remove(main, [
+    'header',
+    '.header',
+    'nav',
+    '.nav',
+    'footer',
+    '.footer',
+  ]);
 
   createMetadata(main, document);
 
