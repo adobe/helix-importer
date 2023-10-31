@@ -18,10 +18,28 @@ import TestUtils from '../../TestUtils.js';
 
 const { createDocumentFromString } = TestUtils;
 
-describe('defaultTransformDOM tests', () => {
+describe.only('defaultTransformDOM tests', () => {
   it('default transformation', async () => {
     const document = createDocumentFromString('<html><body><h1>Hello World</h1></body></html>');
     const out = await defaultTransformDOM({ document });
     strictEqual(out.outerHTML, '<body><h1>Hello World</h1></body>');
+  });
+
+  it('default transformation handles basic metadata', async () => {
+    const document = createDocumentFromString('<html><head><title>Page title</title><meta name="description" content="Page description"></head><body><h1>Hello World</h1></body></html>');
+    const out = await defaultTransformDOM({ document });
+    strictEqual(out.outerHTML, '<body><h1>Hello World</h1><table><tr><th colspan="2">Metadata</th></tr><tr><td>Title</td><td>Page title</td></tr><tr><td>Description</td><td>Page description</td></tr></table></body>');
+  });
+
+  it('default transformation handles img metadata', async () => {
+    const document = createDocumentFromString('<html><head><meta property="og:image" content="/img.png"></head><body><h1>Hello World</h1></body></html>');
+    const out = await defaultTransformDOM({ document });
+    strictEqual(out.outerHTML, '<body><h1>Hello World</h1><table><tr><th colspan="2">Metadata</th></tr><tr><td>Image</td><td><img src="/img.png"></td></tr></table></body>');
+  });
+
+  it('default transformation handles img and alt metadata', async () => {
+    const document = createDocumentFromString('<html><head><meta property="og:image" content="/img.png"><meta property="og:image:alt" content="This is the image alt text"></head><body><h1>Hello World</h1></body></html>');
+    const out = await defaultTransformDOM({ document });
+    strictEqual(out.outerHTML, '<body><h1>Hello World</h1><table><tr><th colspan="2">Metadata</th></tr><tr><td>Image</td><td><img src="/img.png" alt="This is the image alt text"></td></tr></table></body>');
   });
 });
