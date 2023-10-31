@@ -18,6 +18,8 @@ import PageImporterResource from './PageImporterResource.js';
 import MemoryHandler from '../storage/MemoryHandler.js';
 import Utils from '../utils/Utils.js';
 import BrowserUtils from '../utils/BrowserUtils.js';
+import defaultTransformDOM from './defaults/transformDOM.js';
+import defaultGenerateDocumentPath from './defaults/generateDocumentPath.js';
 
 // import docxStylesXML from '../resources/styles.xml';
 
@@ -34,27 +36,6 @@ function setBackgroundImagesFromCSS(document) {
       }
     });
   }
-}
-
-async function defaultTransformDOM({
-  // eslint-disable-next-line no-unused-vars
-  url, document, html, params,
-}) {
-  return document.body;
-}
-
-async function defaultGenerateDocumentPath({
-  // eslint-disable-next-line no-unused-vars
-  url, document, html, params,
-}) {
-  let p = new URL(url).pathname;
-  if (p.endsWith('/')) {
-    p = `${p}index`;
-  }
-  return decodeURIComponent(p)
-    .toLowerCase()
-    .replace(/\.html$/, '')
-    .replace(/[^a-z0-9/]/gm, '-');
 }
 
 async function html2x(

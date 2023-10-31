@@ -14,7 +14,6 @@ import {
   deepStrictEqual, ok, strictEqual, fail,
 } from 'assert';
 import { describe, it } from 'mocha';
-import { JSDOM } from 'jsdom';
 import { docx2md } from '@adobe/helix-docx2md';
 import MockMediaHandler from '../mocks/MockMediaHandler.js';
 
@@ -22,39 +21,11 @@ import DOMUtils from '../../src/utils/DOMUtils.js';
 import {
   html2md,
   html2docx,
-  defaultGenerateDocumentPath,
-  defaultTransformDOM,
 } from '../../src/importer/HTML2x.js';
 
-// test environment createDocumentFromString version using JSDOM
-const createDocumentFromString = (html) => {
-  const { document } = new JSDOM(html, { runScripts: undefined }).window;
-  return document;
-};
+import TestUtils from '../TestUtils.js';
 
-describe('defaultTransformDOM tests', () => {
-  it('default transformation', async () => {
-    const document = createDocumentFromString('<html><body><h1>Hello World</h1></body></html>');
-    const out = await defaultTransformDOM({ document });
-    strictEqual(out.outerHTML, '<body><h1>Hello World</h1></body>');
-  });
-});
-
-describe('defaultGenerateDocumentPath tests', () => {
-  it('default paths', async () => {
-    strictEqual(await defaultGenerateDocumentPath({ url: 'https://wwww.sample.com' }), '/index');
-    strictEqual(await defaultGenerateDocumentPath({ url: 'https://wwww.sample.com/' }), '/index');
-    strictEqual(await defaultGenerateDocumentPath({ url: 'https://wwww.sample.com/index.html' }), '/index');
-    strictEqual(await defaultGenerateDocumentPath({ url: 'https://wwww.sample.com/index' }), '/index');
-    strictEqual(await defaultGenerateDocumentPath({ url: 'https://wwww.sample.com/page' }), '/page');
-    strictEqual(await defaultGenerateDocumentPath({ url: 'https://wwww.sample.com/page.html' }), '/page');
-    strictEqual(await defaultGenerateDocumentPath({ url: 'https://wwww.sample.com/folder/page' }), '/folder/page');
-    strictEqual(await defaultGenerateDocumentPath({ url: 'https://wwww.sample.com/folder/page.html' }), '/folder/page');
-    strictEqual(await defaultGenerateDocumentPath({ url: 'https://wwww.sample.com/folder/page/' }), '/folder/page/index');
-    strictEqual(await defaultGenerateDocumentPath({ url: 'https://wwww.sample.com/folder/page with spaces.html' }), '/folder/page-with-spaces');
-    strictEqual(await defaultGenerateDocumentPath({ url: 'https://wwww.sample.com/folder/PagE_with_3xtr4_charactére.html' }), '/folder/page-with-3xtr4-charact-re');
-  });
-});
+const { createDocumentFromString } = TestUtils;
 
 describe('html2x parameters', () => {
   const URL = 'https://www.sample.com/page.html';
