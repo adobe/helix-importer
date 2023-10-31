@@ -379,8 +379,8 @@ describe('html2md tests', () => {
     const out = await html2md('https://www.sample.com/page.html', '<html><body><img src="data:abc" data-src="./image.jpg"></body></html>', null, {
       createDocumentFromString,
     });
-    strictEqual(out.html.trim(), '<body><img src="./image.jpg" data-src="./image.jpg"></body>');
-    strictEqual(out.md.trim(), '![][image0]\n\n[image0]: ./image.jpg');
+    strictEqual(out.html.trim(), '<body><img src="https://www.sample.com/image.jpg" data-src="./image.jpg"></body>');
+    strictEqual(out.md.trim(), '![][image0]\n\n[image0]: https://www.sample.com/image.jpg');
   });
 
   it('html2md allows to preprocess the document', async () => {
@@ -393,8 +393,8 @@ describe('html2md tests', () => {
     }, {
       createDocumentFromString,
     });
-    strictEqual(out.html.trim(), '<body><img src="./image.jpg"></body>');
-    strictEqual(out.md.trim(), '![][image0]\n\n[image0]: ./image.jpg');
+    strictEqual(out.html.trim(), '<body><img src="https://www.sample.com/image.jpg"></body>');
+    strictEqual(out.md.trim(), '![][image0]\n\n[image0]: https://www.sample.com/image.jpg');
   });
 
   it('html2md removes original hrs but keeps md section breaks', async () => {
