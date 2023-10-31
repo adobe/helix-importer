@@ -57,9 +57,14 @@ const adjustImageUrls = (main, url) => {
   [...main.querySelectorAll('img')].forEach((img) => {
     const src = img.getAttribute('src');
     if (src && (src.startsWith('./') || src.startsWith('/') || src.startsWith('../'))) {
-      const u = new URL(img.src, url);
-      // eslint-disable-next-line no-param-reassign
-      img.src = u.toString();
+      try {
+        const u = new URL(img.src, url);
+        // eslint-disable-next-line no-param-reassign
+        img.src = u.toString();
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log(`Unable to adjust image URL ${img.src}`);
+      }
     }
   });
 };
