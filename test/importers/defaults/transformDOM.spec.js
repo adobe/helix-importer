@@ -46,6 +46,18 @@ describe('defaultTransformDOM tests', () => {
     });
   });
 
+  it('default transformation handles identical metadata', async () => {
+    await runTest('metadata.all.same', {
+      url: 'https://wwww.sample.com/path/page.html',
+    });
+  });
+
+  it('default transformation handles different metadata', async () => {
+    await runTest('metadata.all.diff', {
+      url: 'https://wwww.sample.com/path/page.html',
+    });
+  });
+
   it('default transformation removes non content elements', async () => {
     await runTest('cleanup');
   });
