@@ -408,15 +408,15 @@ describe('DOMUtils#getImgFromBackground', () => {
 
   it('no background-image style', () => {
     test(createElement('p', {}, {}, 'Some content'), null);
-
     test(createElement('img', { src: 'https://www.server.com/image.jpg', title: 'Some title' }, {}, ''), null);
-
     test(createElement('p', {}, { 'background-image': 'none' }, 'Some content'), null);
   });
 
   it('with background-image style', () => {
     test(createElement('p', {}, { 'background-image': 'url(https://www.server.com/image.jpg)' }, 'Some content'), '<img src="https://www.server.com/image.jpg">');
-    test(createElement('div', { class: 'someclass' }, { 'background-image': 'url("https://www.server.com/image.jpg")', background: 'rgb(0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box' }, '<div><div>Some divs</div><div>More divs</div></div>'), '<img src="https://www.server.com/image.jpg">');
+    test(createElement('p', {}, { 'background-image': 'url("https://www.server.com/image.jpg")' }, 'Some content'), '<img src="https://www.server.com/image.jpg">');
+    test(createElement('p', {}, { 'background-image': 'url(\'https://www.server.com/image.jpg\')' }, 'Some content'), '<img src="https://www.server.com/image.jpg">');
+    test(createElement('p', {}, { 'background-image': 'url(http://localhost:3001/image.jpg)' }, 'Some content'), '<img src="http://localhost:3001/image.jpg">');
   });
 
   // `createElement` uses JSDOM to create the test-DOM
@@ -426,6 +426,5 @@ describe('DOMUtils#getImgFromBackground', () => {
   // disabling the test, keeping it as a reference
   xit('with background-image style containing whitespace in url()', () => {
     test(createElement('p', {}, { 'background-image': 'url( /image.jpg )' }, 'Some content'), '<img src="/image.jpg">');
-    test(createElement('div', { class: 'someclass' }, { 'background-image': 'url( https://www.server.com/image.jpg )', background: 'rgb(0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box' }, '<div><div>Some divs</div><div>More divs</div></div>'), '<img src="https://www.server.com/image.jpg">');
   });
 });

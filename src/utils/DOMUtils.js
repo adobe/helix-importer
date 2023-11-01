@@ -258,7 +258,9 @@ export default class DOMUtils {
     const styleAttr = element?.getAttribute('style')?.split(';');
     if (styleAttr) {
       styleAttr.forEach((style) => {
-        const [prop, value] = style.split(':');
+        const split = style.split(':');
+        const prop = split.shift();
+        const value = split.join(':').trim();
         if (prop === 'background-image') {
           const trimmedValue = value.replace(/\s/g, '');
           const elStyle = element.style;
@@ -267,7 +269,7 @@ export default class DOMUtils {
       });
       const url = element.style.backgroundImage;
       if (url && url.toLowerCase() !== 'none') {
-        const src = url.replace(/url\(/gm, '').replace(/'/gm, '').replace(/\)/gm, '');
+        const src = url.replace(/url\(/gm, '').replace(/'/gm, '').replace(/"/gm, '').replace(/\)/gm, '');
         const img = document.createElement('img');
         img.src = src;
         return img;
