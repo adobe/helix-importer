@@ -194,7 +194,7 @@ export default class PageImporter {
   }
 
   cleanup(document) {
-    DOMUtils.remove(document, ['script', 'hr']);
+    DOMUtils.remove(document, ['noscript', 'script', 'hr']);
     DOMUtils.removeComments(document);
     DOMUtils.removeSpans(document);
   }
@@ -298,7 +298,6 @@ export default class PageImporter {
 
     if (html) {
       const { document } = new JSDOM(DOMUtils.removeNoscripts(html.toString())).window;
-      this.preProcess(document);
       return {
         document,
         html,
@@ -315,6 +314,8 @@ export default class PageImporter {
 
     const results = [];
     if (document) {
+      this.preProcess(document);
+
       const entries = await this.process(document, url, entryParams, html);
 
       this.postProcess(document);
