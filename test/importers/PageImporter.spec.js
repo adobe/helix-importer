@@ -14,7 +14,7 @@
 
 import path from 'path';
 import fs from 'fs-extra';
-import { strictEqual, ok } from 'assert';
+import { strictEqual, ok, fail } from 'assert';
 import { describe, it } from 'mocha';
 import { Response } from 'node-fetch';
 import { dirname } from 'dirname-filename-esm';
@@ -51,7 +51,6 @@ describe('PageImporter tests', () => {
   const config = {
     storageHandler,
     logger,
-    createDocumentFromString,
   };
 
   it('import - do nothing', async () => {
@@ -61,10 +60,30 @@ describe('PageImporter tests', () => {
       }
     }
 
-    const se = new TestImporter(config);
+    const se = new TestImporter({
+      createDocumentFromString,
+      ...config,
+    });
     const results = await se.import('someurl');
 
     strictEqual(results.length, 0, 'expect no result');
+  });
+
+  it('import - not providing createDocumentFromString should fail in the test enviroment only', async () => {
+    class TestImporter extends PageImporter {
+      async fetch() {
+        return new Response('test');
+      }
+    }
+
+    const se = new TestImporter(config);
+
+    try {
+      await se.import('someurl');
+      fail('should have thrown an error: default createDocumentFromString works only in browser context');
+    } catch (e) {
+      ok(true);
+    }
   });
 });
 
