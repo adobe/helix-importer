@@ -12,7 +12,6 @@
 /* eslint-disable class-methods-use-this, no-console */
 
 import path from 'path';
-import { Response } from 'node-fetch';
 import PageImporter from './PageImporter.js';
 import PageImporterResource from './PageImporterResource.js';
 import MemoryHandler from '../storage/MemoryHandler.js';
@@ -93,8 +92,8 @@ async function html2x(
 
   const html = doc.documentElement.outerHTML;
   class InternalImporter extends PageImporter {
-    async fetch() {
-      return new Response(html);
+    async get() {
+      return { document: doc, html };
     }
 
     async process(document) {
