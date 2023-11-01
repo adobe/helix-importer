@@ -83,6 +83,14 @@ const convertIcons = (main, document) => {
   });
 };
 
+const transformBackgroundImages = (main, document) => {
+  [...main.querySelectorAll('[style*="background-image: url"]')].forEach((element) => {
+    const img = DOMUtils.getImgFromBackground(element, document);
+    element.prepend(img);
+    element.style.removeProperty('background-image');
+  });
+};
+
 export default async function transformDOM({
   // eslint-disable-next-line no-unused-vars
   url, document, html, params,
@@ -102,6 +110,7 @@ export default async function transformDOM({
   ]);
 
   createMetadata(main, document);
+  transformBackgroundImages(main, document);
   adjustImageUrls(main, url);
   convertIcons(main, document);
 

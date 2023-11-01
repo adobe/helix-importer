@@ -61,4 +61,10 @@ describe('defaultTransformDOM tests', () => {
       url: 'https://wwww.sample.com/path/page.html',
     });
   });
+
+  it('default transformation converts background-image styles into image element', async () => {
+    await runTest('background-image', {
+      url: 'https://wwww.sample.com/path/page.html',
+    });
+  });
 });
