@@ -305,7 +305,6 @@ export default class PageImporter {
       const cleanedHTML = DOMUtils.removeNoscripts(html.toString());
 
       const document = this.params.createDocumentFromString(cleanedHTML);
-      this.preProcess(document);
       return {
         document,
         html,
@@ -322,6 +321,8 @@ export default class PageImporter {
 
     const results = [];
     if (document) {
+      this.preProcess(document);
+
       const entries = await this.process(document, url, entryParams, html);
 
       this.postProcess(document);
