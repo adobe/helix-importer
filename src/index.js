@@ -27,6 +27,18 @@ import WPUtils from './wp/WPUtils.js';
 
 import { html2md, html2docx } from './importer/HTML2x.js';
 
+import createMetadata from './importer/defaults/rules/createMetadata.js';
+import adjustImageUrls from './importer/defaults/rules/adjustImageUrls.js';
+import convertIcons from './importer/defaults/rules/convertIcons.js';
+import transformBackgroundImages from './importer/defaults/rules/transformBackgroundImages.js';
+
+const rules = {
+  createMetadata,
+  adjustImageUrls,
+  convertIcons,
+  transformBackgroundImages,
+};
+
 export {
   PageImporter,
   PageImporterParams,
@@ -42,4 +54,5 @@ export {
   WPUtils,
   html2md,
   html2docx,
+  rules,
 };
