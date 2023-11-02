@@ -58,6 +58,18 @@ describe('defaultTransformDOM tests', () => {
     });
   });
 
+  it('default transformation handles falls back to og metadata', async () => {
+    await runTest('metadata.og', {
+      url: 'https://wwww.sample.com/path/page.html',
+    });
+  });
+
+  it('default transformation handles falls back to twitter metadata', async () => {
+    await runTest('metadata.twitter', {
+      url: 'https://wwww.sample.com/path/page.html',
+    });
+  });
+
   it('default transformation removes non content elements', async () => {
     await runTest('cleanup');
   });
