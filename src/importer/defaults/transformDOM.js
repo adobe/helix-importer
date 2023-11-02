@@ -111,7 +111,8 @@ const adjustImageUrls = (main, url) => {
         img.src = u.toString();
       } catch (e) {
         // eslint-disable-next-line no-console
-        console.log(`Unable to adjust image URL ${img.src}`);
+        console.log(`Unable to adjust image URL ${img.src} - removing image`);
+        img.remove();
       }
     }
   });
