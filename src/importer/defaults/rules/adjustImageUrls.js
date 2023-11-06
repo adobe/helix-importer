@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-const adjustImageUrls = (main, url) => {
+export default function adjustImageUrls(main, url) {
   [...main.querySelectorAll('img')].forEach((img) => {
     const src = img.getAttribute('src');
     if (src && (src.startsWith('./') || src.startsWith('/') || src.startsWith('../'))) {
@@ -25,6 +25,4 @@ const adjustImageUrls = (main, url) => {
       }
     }
   });
-};
-
-export default adjustImageUrls;
+}

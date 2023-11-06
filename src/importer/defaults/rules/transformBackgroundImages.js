@@ -12,12 +12,10 @@
 
 import DOMUtils from '../../../utils/DOMUtils.js';
 
-const transformBackgroundImages = (main, document) => {
+export default function transformBackgroundImages(main, document) {
   [...main.querySelectorAll('[style*="background-image: url"]')].forEach((element) => {
     const img = DOMUtils.getImgFromBackground(element, document);
     element.prepend(img);
     element.style.removeProperty('background-image');
   });
-};
-
-export default transformBackgroundImages;
+}

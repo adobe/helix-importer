@@ -20,7 +20,7 @@ function getMetadata(name, document) {
   return meta || '';
 }
 
-const createMetadata = (main, document) => {
+export default function createMetadata(main, document) {
   const meta = {};
 
   const title = document.querySelector('title');
@@ -99,6 +99,4 @@ const createMetadata = (main, document) => {
   }
 
   return meta;
-};
-
-export default createMetadata;
+}

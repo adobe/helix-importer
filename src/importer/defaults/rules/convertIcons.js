@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-const convertIcons = (main, document) => {
+export default function convertIcons(main, document) {
   [...main.querySelectorAll('img')].forEach((img) => {
     const src = img.getAttribute('src');
     if (src && src.endsWith('.svg')) {
@@ -22,6 +22,4 @@ const convertIcons = (main, document) => {
       }
     }
   });
-};
-
-export default convertIcons;
+}
