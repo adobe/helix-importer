@@ -1,3 +1,10 @@
+# [3.1.0](https://github.com/adobe/helix-importer/compare/v3.0.0...v3.1.0) (2023-11-13)
+
+
+### Features
+
+* improve default import ([#261](https://github.com/adobe/helix-importer/issues/261)) ([251cfcd](https://github.com/adobe/helix-importer/commit/251cfcdde7ac54525eef49341a9ede52d368cf71))
+
 # [3.0.0](https://github.com/adobe/helix-importer/compare/v2.9.41...v3.0.0) (2023-11-13)
 
 
