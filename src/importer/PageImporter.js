@@ -12,8 +12,6 @@
 
 /* eslint-disable class-methods-use-this */
 
-import { JSDOM } from 'jsdom';
-
 import path from 'path';
 import { unified } from 'unified';
 import parse from 'rehype-parse';
@@ -36,6 +34,7 @@ import DOMUtils from '../utils/DOMUtils.js';
 import FileUtils from '../utils/FileUtils.js';
 import MDUtils from '../utils/MDUtils.js';
 import formatPlugin from './mdast-to-md-format-plugin.js';
+import BrowserUtils from '../utils/BrowserUtils.js';
 
 function formatNode(type, state, node) {
   const result = {
@@ -55,6 +54,12 @@ export default class PageImporter {
 
   constructor(params) {
     this.params = params;
+
+    if (!this.params.createDocumentFromString) {
+      // default the string parsing using the browser DOMParser
+      this.params.createDocumentFromString = BrowserUtils.createDocumentFromString;
+    }
+
     this.logger = params.logger || console;
 
     this.useCache = !!params.cache;
@@ -297,8 +302,9 @@ export default class PageImporter {
     const html = await this.download(url);
 
     if (html) {
-      const { document } = new JSDOM(DOMUtils.removeNoscripts(html.toString())).window;
-      this.preProcess(document);
+      const cleanedHTML = DOMUtils.removeNoscripts(html.toString());
+
+      const document = this.params.createDocumentFromString(cleanedHTML);
       return {
         document,
         html,
@@ -315,6 +321,8 @@ export default class PageImporter {
 
     const results = [];
     if (document) {
+      this.preProcess(document);
+
       const entries = await this.process(document, url, entryParams, html);
 
       this.postProcess(document);

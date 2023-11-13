@@ -9,8 +9,6 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-import { JSDOM } from 'jsdom';
-
 import DOMUtils from '../utils/DOMUtils.js';
 
 export default class WPUtils {
@@ -27,7 +25,7 @@ export default class WPUtils {
           ? item.parentNode.nextElementSibling
           : item.nextElementSibling;
         const captionText = elem.textContent.trim();
-        elem.parentNode.insertBefore(JSDOM.fragment(`<p><em>${captionText}</em><p>`), elem);
+        elem.parentNode.insertBefore(DOMUtils.fragment(document, `<p><em>${captionText}</em><p>`), elem);
         elem.remove();
       }
     });

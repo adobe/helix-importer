@@ -14,12 +14,14 @@
 
 import path from 'path';
 import fs from 'fs-extra';
-import { strictEqual, ok } from 'assert';
+import { strictEqual, ok, fail } from 'assert';
 import { describe, it } from 'mocha';
 import { Response } from 'node-fetch';
 import { dirname } from 'dirname-filename-esm';
 
 import { docx2md } from '@adobe/helix-docx2md';
+
+import { JSDOM } from 'jsdom';
 
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
@@ -38,6 +40,12 @@ const __dirname = dirname(import.meta);
 
 const logger = new NoopLogger();
 
+// test environment createDocumentFromString version using JSDOM
+const createDocumentFromString = (html) => {
+  const { document } = new JSDOM(html, { runScripts: undefined }).window;
+  return document;
+};
+
 describe('PageImporter tests', () => {
   const storageHandler = new MemoryHandler(logger);
   const config = {
@@ -52,10 +60,30 @@ describe('PageImporter tests', () => {
       }
     }
 
-    const se = new TestImporter(config);
+    const se = new TestImporter({
+      createDocumentFromString,
+      ...config,
+    });
     const results = await se.import('someurl');
 
     strictEqual(results.length, 0, 'expect no result');
+  });
+
+  it('import - not providing createDocumentFromString should fail in the test enviroment only', async () => {
+    class TestImporter extends PageImporter {
+      async fetch() {
+        return new Response('test');
+      }
+    }
+
+    const se = new TestImporter(config);
+
+    try {
+      await se.import('someurl');
+      fail('should have thrown an error: default createDocumentFromString works only in browser context');
+    } catch (e) {
+      ok(true);
+    }
   });
 });
 
@@ -76,6 +104,7 @@ describe('PageImporter tests - various options', () => {
     const config = {
       storageHandler,
       logger,
+      createDocumentFromString,
     };
     const se = new Test(config);
     const results = await se.import('/someurl');
@@ -105,6 +134,7 @@ describe('PageImporter tests - various options', () => {
       mdast2Docx2Options: {
         stylesXML,
       },
+      createDocumentFromString,
     };
     const se = new Test(config);
     const results = await se.import('/someurl');
@@ -144,6 +174,7 @@ describe('PageImporter tests - fixtures', () => {
       storageHandler,
       skipDocxConversion: true,
       logger,
+      createDocumentFromString,
     };
     const se = new Test(config);
     const results = await se.import(`https://www.sample.com/${feature}`);

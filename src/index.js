@@ -9,9 +9,6 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-import PagingExplorer from './explorer/PagingExplorer.js';
-import PagingExplorerParams from './explorer/PagingExplorerParams.js';
-
 import PageImporter from './importer/PageImporter.js';
 import PageImporterParams from './importer/PageImporterParams.js';
 import PageImporterResource from './importer/PageImporterResource.js';
@@ -27,15 +24,10 @@ import Loader from './utils/Loader.js';
 import Utils from './utils/Utils.js';
 
 import WPUtils from './wp/WPUtils.js';
-import WPAdminAjaxPager from './wp/explorers/WPAdminAjaxPager.js';
-import WPContentPager from './wp/explorers/WPContentPager.js';
-import WPPostWrapPager from './wp/explorers/WPPostWrapPager.js';
 
 import { html2md, html2docx } from './importer/HTML2x.js';
 
 export {
-  PagingExplorer,
-  PagingExplorerParams,
   PageImporter,
   PageImporterParams,
   PageImporterResource,
@@ -48,9 +40,6 @@ export {
   Loader,
   Utils,
   WPUtils,
-  WPAdminAjaxPager,
-  WPContentPager,
-  WPPostWrapPager,
   html2md,
   html2docx,
 };

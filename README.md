@@ -2,43 +2,7 @@
 
 Foundation tools for importing website content into that can be consumed in an Helix project.
 
-helix-importer is composed of 2 main building blocks:
-
-1. explorer: crawl a website to construct a list of urls to be importer
-2. importer: construct an importer - for an input url, transform the DOM and convert it into a Markdown file
-
-The folder [./src/wp](./src/wp) contains WordPress specific utils and explorer methods.
-
-## Explorer
-
-Idea of an explorer is to crawl the site in order to collect a list of urls. This list of urls can then be imported.
-
-Here is a basic sample:
-
-```js
-
-import { WPContentPager, FSHandler, CSV } from '@adobe/helix-importer';
-
-async function main() {
-  const pager = new WPContentPager({
-    nbMaxPages: 1000,
-    url: 'url to a WordPress site'
-  });
-
-  const entries = await pager.explore();
-
-  const csv = CSV.toCSV(entries);
-
-  const handler = new FSHandler('output', console);
-  await handler.put('explorer_results.csv', csv);
-}
-```
-
-In this example, the [WPContentPager](./src/wp/explorers/WPContentPager.ts) extends the [PagingExplorer](src/explorer/PagingExplorer.ts) which implements the 2 methods:
-- `fetch` which defines how to fetch one page on results
-- `explore` which extracts the list of urls present on that page
-
-The final result is a list of urls that could be found on list of paged results given by the WordPress API `/page/${page_number}`.
+Basic concept of the importer: for an input url, transform the DOM and convert it into a Markdown / docx file.
 
 ## Importer
 
@@ -50,10 +14,13 @@ Goal of the importer is to get rid of the generic DOM elements like the header /
 
 [HTML2x](src/importer/HTML2x.js) methods (`HTML2md` and `HTML2docx`) are convienence methods to run an import. As input, they take:
 - `URL`: URL of the page to import
-- `document`: the DOM element to import
+- `document`: the DOM element to import - a Document object or a string (see `createDocumentFromString` for the string case)
 - `transformerCfg`: object with the transformation "rules". Object can be either:
   - `{ transformDOM: ({ url, document, html, params }) => { ... return element-to-convert  }, generateDocumentPath: ({ url, document, html, params }) => { ... return path-to-target; }}` for a single mapping between one input document / one output file
   - `{ transform: ({ url, document, html, params }) => { ... return [{ element: first-element-to-convert, path: first-path-to-target }, ...]  }` for a mapping one input document / multiple output files (useful to generate multiple docx from a single web page)
+- `config`: object with several config properties
+  - `createDocumentFromString`: this config is required if you use the methods in a non-browser context and want to pass `document` param as string. This method receives the HTML to parse as a string and must return a Document object.
+  - `setBackgroundImagesFromCSS`: set to false to disable the `background-image` inlining in the DOM.
 
 ### Importer UI
 

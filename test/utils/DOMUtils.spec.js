@@ -19,6 +19,26 @@ import { JSDOM } from 'jsdom';
 
 import DOMUtils from '../../src/utils/DOMUtils.js';
 
+describe('DOMUtils#fragment tests', () => {
+  const test = (input) => {
+    const { document } = (new JSDOM()).window;
+    const output = DOMUtils.fragment(document, input);
+    const div = document.createElement('div');
+    div.append(output);
+    const expected = document.createElement('div');
+    expected.innerHTML = input;
+    strictEqual(div.outerHTML, expected.outerHTML);
+  };
+
+  it('can create fragments from string', () => {
+    test('some text');
+    test(' some text with spaces ');
+    test('<a href="linkhref">linkcontent</a>');
+    test('<p><em>Caption Text</em></p>');
+    test('some text: <a href="linkhref">linkcontent</a> <a href="linkhref">another link</a>');
+  });
+});
+
 describe('DOMUtils#reviewInlineElement tests', () => {
   const test = (input, tag, expected) => {
     const { document } = (new JSDOM(input)).window;

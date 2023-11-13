@@ -12,12 +12,11 @@
 /* eslint-disable class-methods-use-this, no-console */
 
 import path from 'path';
-import { Response } from 'node-fetch';
-import { JSDOM } from 'jsdom';
 import PageImporter from './PageImporter.js';
 import PageImporterResource from './PageImporterResource.js';
 import MemoryHandler from '../storage/MemoryHandler.js';
 import Utils from '../utils/Utils.js';
+import BrowserUtils from '../utils/BrowserUtils.js';
 
 // import docxStylesXML from '../resources/styles.xml';
 
@@ -93,8 +92,8 @@ async function html2x(
 
   const html = doc.documentElement.outerHTML;
   class InternalImporter extends PageImporter {
-    async fetch() {
-      return new Response(html);
+    async get() {
+      return { document: doc, html };
     }
 
     async process(document) {
@@ -181,6 +180,7 @@ async function html2x(
       stylesXML: config.docxStylesXML,
       image2png: config.image2png,
     },
+    createDocumentFromString: config.createDocumentFromString,
   });
 
   const pirs = await importer.import(url);
@@ -224,10 +224,18 @@ async function html2x(
   }
 }
 
+const parseStringDocument = (html, config) => {
+  if (config?.createDocumentFromString) {
+    return config.createDocumentFromString(html);
+  } else {
+    return BrowserUtils.createDocumentFromString(html);
+  }
+};
+
 /**
  * Returns the result of the conversion from html to md.
  * @param {string} url URL of the document to convert
- * @param {HTMLElement|string} document Document to convert
+ * @param {Document} document Document to convert
  * @param {Object} transformCfg Conversion configuration
  * @param {Object} config Conversion configuration.
  * @param {Object} params Conversion params. Object will be pass to the transformer functions.
@@ -235,8 +243,8 @@ async function html2x(
  */
 async function html2md(url, document, transformCfg, config, params = {}) {
   let doc = document;
-  if (typeof document === 'string') {
-    doc = new JSDOM(document, { runScripts: undefined }).window.document;
+  if (typeof doc === 'string') {
+    doc = parseStringDocument(document, config);
   }
   return html2x(url, doc, transformCfg, { ...config, toMd: true, toDocx: false }, params);
 }
@@ -252,8 +260,8 @@ async function html2md(url, document, transformCfg, config, params = {}) {
  */
 async function html2docx(url, document, transformCfg, config, params = {}) {
   let doc = document;
-  if (typeof document === 'string') {
-    doc = new JSDOM(document, { runScripts: undefined }).window.document;
+  if (typeof doc === 'string') {
+    doc = parseStringDocument(document, config);
   }
   return html2x(url, doc, transformCfg, { ...config, toMd: true, toDocx: true }, params);
 }

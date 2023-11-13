@@ -10,7 +10,9 @@
  * governing permissions and limitations under the License.
  */
 
-import { deepStrictEqual, ok, strictEqual } from 'assert';
+import {
+  deepStrictEqual, ok, strictEqual, fail,
+} from 'assert';
 import { describe, it } from 'mocha';
 import { JSDOM } from 'jsdom';
 import { docx2md } from '@adobe/helix-docx2md';
@@ -24,9 +26,15 @@ import {
   defaultTransformDOM,
 } from '../../src/importer/HTML2x.js';
 
+// test environment createDocumentFromString version using JSDOM
+const createDocumentFromString = (html) => {
+  const { document } = new JSDOM(html, { runScripts: undefined }).window;
+  return document;
+};
+
 describe('defaultTransformDOM tests', () => {
   it('default transformation', async () => {
-    const { document } = new JSDOM('<html><body><h1>Hello World</h1></body></html>', { runScripts: undefined }).window;
+    const document = createDocumentFromString('<html><body><h1>Hello World</h1></body></html>');
     const out = await defaultTransformDOM({ document });
     strictEqual(out.outerHTML, '<body><h1>Hello World</h1></body>');
   });
@@ -73,7 +81,9 @@ describe('html2x parameters', () => {
       transformDOM: testParams,
       generateDocumentPath: testParams,
       preprocess: testParams,
-    }, null, {
+    }, {
+      createDocumentFromString,
+    }, {
       originalURL: ORIGNAL_URL,
     });
 
@@ -81,7 +91,9 @@ describe('html2x parameters', () => {
       transformDOM: testParams,
       generateDocumentPath: testParams,
       preprocess: testParams,
-    }, null, {
+    }, {
+      createDocumentFromString,
+    }, {
       originalURL: ORIGNAL_URL,
     });
   });
@@ -90,22 +102,94 @@ describe('html2x parameters', () => {
     await html2md(URL, HTML, {
       transform: testParams,
       preprocess: testParams,
-    }, null, {
+    }, {
+      createDocumentFromString,
+    }, {
       originalURL: ORIGNAL_URL,
     });
 
     await html2docx(URL, HTML, {
       transform: testParams,
       preprocess: testParams,
-    }, null, {
+    }, {
+      createDocumentFromString,
+    }, {
       originalURL: ORIGNAL_URL,
     });
+  });
+
+  it('document can be a Document', async () => {
+    const doc = createDocumentFromString(HTML);
+    await html2md(URL, doc, {
+      transformDOM: testParams,
+      generateDocumentPath: testParams,
+      preprocess: testParams,
+    }, {
+      createDocumentFromString,
+    }, {
+      originalURL: ORIGNAL_URL,
+    });
+
+    await html2docx(URL, doc, {
+      transformDOM: testParams,
+      generateDocumentPath: testParams,
+      preprocess: testParams,
+    }, {
+      createDocumentFromString,
+    }, {
+      originalURL: ORIGNAL_URL,
+    });
+  });
+
+  it('document cannot be a string in the testing context', async () => {
+    // we need JSDOM to create a document
+    // because importer default implementation relies on DOMParser
+    try {
+      await html2md(URL, HTML, {
+        transformDOM: testParams,
+        generateDocumentPath: testParams,
+        preprocess: testParams,
+      }, {
+        createDocumentFromString: null,
+      }, {
+        originalURL: ORIGNAL_URL,
+      });
+      fail('should have thrown an error: default createDocumentFromString works only in browser context');
+    } catch (e) {
+      ok(true);
+    }
+
+    try {
+      await html2docx(URL, HTML, {
+        transformDOM: testParams,
+        generateDocumentPath: testParams,
+        preprocess: testParams,
+      }, {
+        createDocumentFromString: null,
+      }, {
+        originalURL: ORIGNAL_URL,
+      });
+      fail('should have thrown an error: default createDocumentFromString works only in browser context');
+    } catch (e) {
+      ok(true);
+    }
   });
 });
 
 describe('html2md tests', () => {
   it('html2md provides a default transformation', async () => {
-    const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>');
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', null, {
+      createDocumentFromString,
+    });
+    strictEqual(out.html.trim(), '<body><h1>Hello World</h1></body>');
+    strictEqual(out.md.trim(), '# Hello World');
+    strictEqual(out.path, '/page');
+  });
+
+  it('html2md accepts a string', async () => {
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', null, {
+      createDocumentFromString,
+    });
     strictEqual(out.html.trim(), '<body><h1>Hello World</h1></body>');
     strictEqual(out.md.trim(), '# Hello World');
     strictEqual(out.path, '/page');
@@ -119,6 +203,8 @@ describe('html2md tests', () => {
         return p;
       },
       generateDocumentPath: () => '/folder/my-custom-path',
+    }, {
+      createDocumentFromString,
     });
     strictEqual(out.html.trim(), '<p>My Hello to the World</p>');
     strictEqual(out.md.trim(), 'My Hello to the World');
@@ -142,6 +228,8 @@ describe('html2md tests', () => {
           path: '/folder/my-custom-path-p2',
         }];
       },
+    }, {
+      createDocumentFromString,
     });
 
     const out1 = out[0];
@@ -169,6 +257,8 @@ describe('html2md tests', () => {
           path: '/my-custom-path-p1',
         };
       },
+    }, {
+      createDocumentFromString,
     });
 
     strictEqual(out.html.trim(), '<p>My Hello to the World 1</p>');
@@ -209,6 +299,8 @@ describe('html2md tests', () => {
           },
         }];
       },
+    }, {
+      createDocumentFromString,
     });
 
     const out1 = out[0];
@@ -247,6 +339,8 @@ describe('html2md tests', () => {
           },
         },
       }],
+    }, {
+      createDocumentFromString,
     });
 
     // if no element provided, no creation of html, md or docx
@@ -264,6 +358,8 @@ describe('html2md tests', () => {
   it('html2md does not crash if transform returns null', async () => {
     const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', {
       transform: () => null,
+    }, {
+      createDocumentFromString,
     });
 
     strictEqual(out.length, 0);
@@ -273,6 +369,8 @@ describe('html2md tests', () => {
     const out = await html2md('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', {
       transformDOM: () => null,
       generateDocumentPath: () => null,
+    }, {
+      createDocumentFromString,
     });
     strictEqual(out.html.trim(), '<body><h1>Hello World</h1></body>');
     strictEqual(out.md.trim(), '# Hello World');
@@ -291,18 +389,25 @@ describe('html2md tests', () => {
           return document.body;
         },
       },
+      {
+        createDocumentFromString,
+      },
     );
     strictEqual(out.html.trim(), '<body><img src="./image.png"></body>');
   });
 
   it('html2md removes images with src attributes', async () => {
-    const out = await html2md('https://www.sample.com/page.html', '<html><body><img src="data:abc"></body></html>');
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><img src="data:abc"></body></html>', null, {
+      createDocumentFromString,
+    });
     strictEqual(out.html.trim(), '<body></body>');
     strictEqual(out.md.trim(), '');
   });
 
   it('html2md set image src with data-src attribute value', async () => {
-    const out = await html2md('https://www.sample.com/page.html', '<html><body><img src="data:abc" data-src="./image.jpg"></body></html>');
+    const out = await html2md('https://www.sample.com/page.html', '<html><body><img src="data:abc" data-src="./image.jpg"></body></html>', null, {
+      createDocumentFromString,
+    });
     strictEqual(out.html.trim(), '<body><img src="./image.jpg" data-src="./image.jpg"></body>');
     strictEqual(out.md.trim(), '![][image0]\n\n[image0]: ./image.jpg');
   });
@@ -314,6 +419,8 @@ describe('html2md tests', () => {
         img.setAttribute('src', img.getAttribute('data-fancy-src'));
         img.removeAttribute('data-fancy-src');
       },
+    }, {
+      createDocumentFromString,
     });
     strictEqual(out.html.trim(), '<body><img src="./image.jpg"></body>');
     strictEqual(out.md.trim(), '![][image0]\n\n[image0]: ./image.jpg');
@@ -330,6 +437,8 @@ describe('html2md tests', () => {
         p.after(hr);
         return document.body;
       },
+    }, {
+      createDocumentFromString,
     });
     strictEqual(out.html.trim(), '<body><p>text 1</p><p>text 2</p><p>text 3</p><p>text 4</p><hr></body>');
     strictEqual(out.md.trim(), 'text 1\n\ntext 2\n\ntext 3\n\ntext 4\n\n---');
@@ -338,7 +447,9 @@ describe('html2md tests', () => {
 
 describe('html2docx tests', () => {
   it('html2docx provides a default transformation', async () => {
-    const out = await html2docx('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>');
+    const out = await html2docx('https://www.sample.com/page.html', '<html><body><h1>Hello World</h1></body></html>', null, {
+      createDocumentFromString,
+    });
     strictEqual(out.html.trim(), '<body><h1>Hello World</h1></body>');
     strictEqual(out.md.trim(), '# Hello World');
     strictEqual(out.path, '/page');
@@ -357,6 +468,8 @@ describe('html2docx tests', () => {
         return p;
       },
       generateDocumentPath: () => '/folder1/folder2/my-custom-path',
+    }, {
+      createDocumentFromString,
     });
     strictEqual(out.html.trim(), '<p>My Hello to the World</p>');
     strictEqual(out.md.trim(), 'My Hello to the World');
