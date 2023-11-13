@@ -1,3 +1,15 @@
+# [3.0.0](https://github.com/adobe/helix-importer/compare/v2.9.41...v3.0.0) (2023-11-13)
+
+
+### Features
+
+* get rid of JSDOM ([#260](https://github.com/adobe/helix-importer/issues/260)) ([2530363](https://github.com/adobe/helix-importer/commit/2530363c328958b2363f0f178b9b1ef7d7bb73b8))
+
+
+### BREAKING CHANGES
+
+* removing JSDOM
+
 ## [2.9.41](https://github.com/adobe/helix-importer/compare/v2.9.40...v2.9.41) (2023-11-05)
 
 
