@@ -237,4 +237,8 @@ describe('PageImporter tests - fixtures', () => {
   it('import - sub and sup', async () => {
     await featureTest('subsup');
   });
+
+  it('import - video', async () => {
+    await featureTest('video');
+  });
 });
