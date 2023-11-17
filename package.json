@@ -27,7 +27,7 @@
     "*.js": "eslint"
   },
   "devDependencies": {
-    "@adobe/eslint-config-helix": "2.0.4",
+    "@adobe/eslint-config-helix": "2.0.5",
     "@adobe/helix-docx2md": "1.5.0",
     "@adobe/helix-mediahandler": "2.3.3",
     "@esm-bundle/chai": "4.3.4-fix.0",
