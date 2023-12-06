@@ -1,6 +1,6 @@
 {
   "name": "@adobe/helix-importer",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Helix Importer tool: create md / docx from html",
   "main": "src/index.js",
   "type": "module",
