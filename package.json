@@ -40,7 +40,7 @@
     "c8": "8.0.1",
     "chai": "4.3.10",
     "dirname-filename-esm": "1.1.1",
-    "eslint": "8.55.0",
+    "eslint": "8.56.0",
     "husky": "8.0.3",
     "jsdom": "23.0.1",
     "lint-staged": "15.2.0",
@@ -48,7 +48,7 @@
     "mocha-multi-reporters": "1.5.1",
     "mock-fs": "5.2.0",
     "remark-parse": "11.0.0",
-    "semantic-release": "22.0.10",
+    "semantic-release": "22.0.12",
     "unist-util-inspect": "8.0.0"
   },
   "license": "Apache-2.0",
