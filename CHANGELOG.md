@@ -1,3 +1,10 @@
+## [3.1.2](https://github.com/adobe/helix-importer/compare/v3.1.1...v3.1.2) (2023-12-30)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#284](https://github.com/adobe/helix-importer/issues/284)) ([b028753](https://github.com/adobe/helix-importer/commit/b028753572afb7627f2f414c821bfb2e2a3cab8a))
+
 ## [3.1.1](https://github.com/adobe/helix-importer/compare/v3.1.0...v3.1.1) (2023-12-06)
 
 
