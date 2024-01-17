@@ -1,3 +1,10 @@
+## [3.1.4](https://github.com/adobe/helix-importer/compare/v3.1.3...v3.1.4) (2024-01-17)
+
+
+### Bug Fixes
+
+* import comments cleanup logic ([#290](https://github.com/adobe/helix-importer/issues/290)) ([deec675](https://github.com/adobe/helix-importer/commit/deec675c6e88f0035a3d5b3d88b4068f106a8f80))
+
 ## [3.1.3](https://github.com/adobe/helix-importer/compare/v3.1.2...v3.1.3) (2024-01-06)
 
 
