@@ -16,11 +16,7 @@ jobs:
           node-version: 20
       - run: npm install
       - run: npm run lint
-        env:
-          CI: true
       - run: npm test
-        env:
-          CI: true
       - run: npm run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
