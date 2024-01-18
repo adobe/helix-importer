@@ -13,8 +13,4 @@ jobs:
         node-version: 20
     - run: npm install
     - run: npm run lint
-      env:
-        CI: true
     - run: npm test
-      env:
-        CI: true
