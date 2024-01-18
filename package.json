@@ -13,7 +13,6 @@
     "test:web": "web-test-runner test/browser/*.test.js --node-resolve",
     "test:web:watch": "web-test-runner test/browser/*.test.js --node-resolve --watch",
     "test": "c8 mocha && npm run test:web",
-    "test-ci": "c8 mocha && npm run test:web",
     "semantic-release": "semantic-release",
     "prepare": "npx husky install"
   },
