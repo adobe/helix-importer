@@ -10,14 +10,29 @@
  * governing permissions and limitations under the License.
  */
 
-export default function adjustImageUrls(main, url) {
+export default function adjustImageUrls(main, url, current) {
   [...main.querySelectorAll('img')].forEach((img) => {
     const src = img.getAttribute('src');
-    if (src && (src.startsWith('./') || src.startsWith('/') || src.startsWith('../'))) {
+    if (src) {
       try {
-        const u = new URL(src, url);
-        // eslint-disable-next-line no-param-reassign
-        img.src = u.toString();
+        if (src.startsWith('./') || src.startsWith('/') || src.startsWith('../')) {
+          // transform relative URLs to absolute URLs
+          const targetUrl = new URL(src, url);
+          // eslint-disable-next-line no-param-reassign
+          img.src = targetUrl.toString();
+        } else if (current) {
+          // also transform absolute URLs to current host
+          const currentSrc = new URL(src);
+          const currentUrl = new URL(current);
+          if (currentSrc.host === currentUrl.host) {
+            // if current host is same than src host, switch src host with url host
+            // this is the case for absolutes URLs pointing to the same host
+            const targetUrl = new URL(url);
+            const newSrc = new URL(`${currentSrc.pathname}${currentSrc.search}${currentSrc.hash}`, `${targetUrl.protocol}//${targetUrl.host}`);
+            // eslint-disable-next-line no-param-reassign
+            img.src = newSrc.toString();
+          }
+        }
       } catch (e) {
         // eslint-disable-next-line no-console
         console.log(`Unable to adjust image URL ${img.src} - removing image`);

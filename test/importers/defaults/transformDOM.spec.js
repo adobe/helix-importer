@@ -77,6 +77,9 @@ describe('defaultTransformDOM tests', () => {
   it('default transformation adjusts image urls', async () => {
     await runTest('adjust-image-urls', {
       url: 'https://wwww.sample.com/path/page.html',
+      params: {
+        originalURL: 'https://wwww.currenthost.com/path/page.html',
+      },
     });
   });
 

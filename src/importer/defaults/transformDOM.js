@@ -17,7 +17,7 @@ import transformBackgroundImages from './rules/transformBackgroundImages.js';
 
 export default async function transformDOM({
   // eslint-disable-next-line no-unused-vars
-  url, document, html, params,
+  url, document, html, params = {},
 }) {
   const main = document.body;
 
@@ -35,7 +35,7 @@ export default async function transformDOM({
 
   createMetadata(main, document);
   transformBackgroundImages(main, document);
-  adjustImageUrls(main, url);
+  adjustImageUrls(main, url, params.originalURL);
   convertIcons(main, document);
 
   return main;
