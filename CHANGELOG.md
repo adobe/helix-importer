@@ -1,3 +1,10 @@
+# [3.2.0](https://github.com/adobe/helix-importer/compare/v3.1.4...v3.2.0) (2024-01-29)
+
+
+### Features
+
+* manage absolute images adjustment ([#296](https://github.com/adobe/helix-importer/issues/296)) ([abd19ae](https://github.com/adobe/helix-importer/commit/abd19aeb59a8d00574762d477f012c38e996e869))
+
 ## [3.1.4](https://github.com/adobe/helix-importer/compare/v3.1.3...v3.1.4) (2024-01-17)
 
 
