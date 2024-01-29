@@ -14,20 +14,14 @@ export default function adjustImageUrls(main, url, current) {
   [...main.querySelectorAll('img')].forEach((img) => {
     const src = img.getAttribute('src');
     if (src) {
-      if (src.startsWith('./') || src.startsWith('/') || src.startsWith('../')) {
-        // transform relative URLs to absolute URLs
-        try {
+      try {
+        if (src.startsWith('./') || src.startsWith('/') || src.startsWith('../')) {
+          // transform relative URLs to absolute URLs
           const targetUrl = new URL(src, url);
           // eslint-disable-next-line no-param-reassign
           img.src = targetUrl.toString();
-        } catch (e) {
-          // eslint-disable-next-line no-console
-          console.log(`Unable to adjust image URL ${img.src} - removing image`);
-          img.remove();
-        }
-      } else if (current) {
-        // also transform absolute URLs to current host
-        try {
+        } else if (current) {
+          // also transform absolute URLs to current host
           const currentSrc = new URL(src);
           const currentUrl = new URL(current);
           if (currentSrc.host === currentUrl.host) {
@@ -38,11 +32,11 @@ export default function adjustImageUrls(main, url, current) {
             // eslint-disable-next-line no-param-reassign
             img.src = newSrc.toString();
           }
-        } catch (e) {
-          // eslint-disable-next-line no-console
-          console.log(`Unable to adjust image URL ${img.src} - removing image`);
-          img.remove();
         }
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log(`Unable to adjust image URL ${img.src} - removing image`);
+        img.remove();
       }
     }
   });
