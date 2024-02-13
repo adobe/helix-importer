@@ -140,7 +140,7 @@ export default class DOMUtils {
     document.body.innerHTML = document.body.innerHTML
       // remove html comments
       .replace(/(>\s*)<!--(?!>)[\S\s]*?-->/gm, '$1')
-      .replace(/\n<!--(?!>)[\S\s]*?-->/gm, '\n');
+      .replace(/<!--(?!>)[\S\s]*?-->/gm, '');
   }
 
   static removeSpans(document) {
