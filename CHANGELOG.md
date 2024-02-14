@@ -1,3 +1,11 @@
+## [3.2.3](https://github.com/adobe/helix-importer/compare/v3.2.2...v3.2.3) (2024-02-14)
+
+
+### Bug Fixes
+
+* improve comment cleanup regex ([0a16dc5](https://github.com/adobe/helix-importer/commit/0a16dc527d792f2f1485abf550367ce5deaf3216))
+* improve comment cleanup regex ([8f1a7cd](https://github.com/adobe/helix-importer/commit/8f1a7cd0658ae85e084b557480c576b2624c5a6f))
+
 ## [3.2.2](https://github.com/adobe/helix-importer/compare/v3.2.1...v3.2.2) (2024-01-30)
 
 
