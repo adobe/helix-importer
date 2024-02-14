@@ -139,8 +139,8 @@ export default class DOMUtils {
     // eslint-disable-next-line no-param-reassign
     document.body.innerHTML = document.body.innerHTML
       // remove html comments
-      .replace(/><!--(?!>)[\S\s]*?-->/gm, '>')
-      .replace(/\n<!--(?!>)[\S\s]*?-->/gm, '\n');
+      .replace(/(>\s*)<!--(?!>)[\S\s]*?-->/gm, '$1')
+      .replace(/<!--(?!>)[\S\s]*?-->/gm, '');
   }
 
   static removeSpans(document) {

@@ -182,6 +182,8 @@ describe('DOMUtils#removeCommments tests', () => {
     test('<p><!-- useless comment \n multiline --></p>', '<p></p>');
     test('<p><!-- useless comment \n multiline \n multiline --></p>', '<p></p>');
     test('<!-- useless comment --><p>The content stays</p><!-- another useless comment with \n line break -->', '<p>The content stays</p>');
+    test('<p>The content stays<!-- useless comment inside an element --></p>', '<p>The content stays</p>');
+    test('<p>The content and spaces stay</p>  <!-- a useless comment preceded by spaces -->', '<p>The content and spaces stay</p>  ');
     test('<p>This is a paragraph.</p>\n\x3C!--\n<p>Look at this cool image:</p>\n<img border="0" src="pic_trulli.jpg" alt="Trulli">\n-->\n<p>This is a paragraph too.</p>\x3C!-- same line -->\n\x3C!-- single line -->', '<p>This is a paragraph.</p>\n\n<p>This is a paragraph too.</p>\n');
     test('<div some-crazy-attribute="" <!--=""><!-- useless comment --></div>', '<div some-crazy-attribute="" <!--=""></div>');
   });
