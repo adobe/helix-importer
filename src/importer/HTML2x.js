@@ -41,7 +41,7 @@ async function html2x(
   url,
   doc,
   transformCfg,
-  config = { toMd: true, toDocx: false },
+  config = { toMd: true, toDocx: false, toJcr: false },
   params = {},
 ) {
   const transformer = transformCfg || {};
@@ -156,12 +156,14 @@ async function html2x(
     storageHandler,
     skipDocxConversion: !config.toDocx,
     skipMDFileCreation: !config.toMd,
+    skipJcrFileCreation: !config.toJcr,
     logger,
     mdast2docxOptions: {
       stylesXML: config.docxStylesXML,
       image2png: config.image2png,
     },
     createDocumentFromString: config.createDocumentFromString,
+    components: params.components,
   });
 
   const pirs = await importer.import(url);
@@ -190,6 +192,10 @@ async function html2x(
     if (config.toDocx && pir.docx) {
       const docx = await storageHandler.get(pir.docx);
       res.docx = docx;
+    }
+    if (config.toJcr && pir.jcr) {
+      const jcr = await storageHandler.get(pir.jcr);
+      res.jcr = jcr;
     }
     return res;
   };
@@ -227,7 +233,9 @@ async function html2md(url, document, transformCfg, config, params = {}) {
   if (typeof doc === 'string') {
     doc = parseStringDocument(document, config);
   }
-  return html2x(url, doc, transformCfg, { ...config, toMd: true, toDocx: false }, params);
+  return html2x(url, doc, transformCfg, {
+    ...config, toMd: true, toDocx: false, toJcr: false,
+  }, params);
 }
 
 /**
@@ -244,12 +252,25 @@ async function html2docx(url, document, transformCfg, config, params = {}) {
   if (typeof doc === 'string') {
     doc = parseStringDocument(document, config);
   }
-  return html2x(url, doc, transformCfg, { ...config, toMd: true, toDocx: true }, params);
+  return html2x(url, doc, transformCfg, {
+    ...config, toMd: true, toDocx: true, toJcr: false,
+  }, params);
+}
+
+async function html2jcr(url, document, transformCfg, config, params = {}) {
+  let doc = document;
+  if (typeof doc === 'string') {
+    doc = parseStringDocument(document, config);
+  }
+  return html2x(url, doc, transformCfg, {
+    ...config, toMd: true, toDocx: false, toJcr: true,
+  }, params);
 }
 
 export {
   html2md,
   html2docx,
+  html2jcr,
   defaultTransformDOM,
   defaultGenerateDocumentPath,
 };

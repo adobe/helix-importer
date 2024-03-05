@@ -19,6 +19,7 @@ import { defaultHandlers, toMdast } from 'hast-util-to-mdast';
 import stringify from 'remark-stringify';
 import fs from 'fs-extra';
 import { md2docx } from '@adobe/helix-md2docx';
+import { md2jcr } from 'html2jcr';
 import remarkGridTable from '@adobe/remark-gridtables';
 import {
   imageReferences,
@@ -71,6 +72,11 @@ export default class PageImporter {
       ...this.params.mdast2docxOptions,
     });
     return this.params.storageHandler.put(docxPath, buffer);
+  }
+
+  async convertToJcr(jcrPath, content) {
+    const buffer = await md2jcr(content, this.params.components);
+    return this.params.storageHandler.put(jcrPath, buffer);
   }
 
   async createMarkdown(resource, url) {
@@ -352,6 +358,13 @@ export default class PageImporter {
               await this.convertToDocx(docxPath, res.content);
               // eslint-disable-next-line no-param-reassign
               entry.docx = docxPath;
+            }
+
+            if (!this.params.skipJcrFileCreation) {
+              const jcrPath = `${res.path}.xml`;
+              await this.convertToJcr(jcrPath, res.content);
+              // eslint-disable-next-line no-param-reassign
+              entry.jcr = jcrPath;
             }
           }
 
