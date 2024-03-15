@@ -186,7 +186,7 @@ describe('PageImporter tests - fixtures', () => {
 
     const md = await storageHandler.get(results[0].md);
     const expectedMD = await fs.readFile(path.resolve(__dirname, 'fixtures', `${feature}.spec.md`), 'utf-8');
-    strictEqual(md.trim(), expectedMD.trim(), 'imported md is expected one');
+    assertFn(md.trim(), expectedMD.trim(), 'imported md is expected one');
 
     // parse md to verify mdast
     const mdast = unified()
@@ -247,6 +247,7 @@ describe('PageImporter tests - fixtures', () => {
         throw new Error('imported md is not expected one');
       }
     });
+  });
 
   it('import - video', async () => {
     await featureTest('video');
