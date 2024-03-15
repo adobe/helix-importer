@@ -1,3 +1,17 @@
+# [3.3.0](https://github.com/adobe/helix-importer/compare/v3.2.4...v3.3.0) (2024-03-15)
+
+
+### Bug Fixes
+
+* add image type in blob used in getDataUrlFromB64Img ([4fa0937](https://github.com/adobe/helix-importer/commit/4fa093723dba506b5abfde6a3eddc34aa14c6d36))
+* do not use node.js buffer package for blob to get code working in browser ([d6da86d](https://github.com/adobe/helix-importer/commit/d6da86d6c4715346035a2dff549d4291adc4e150))
+* fix tests after online merge resolution ([cbc326d](https://github.com/adobe/helix-importer/commit/cbc326dfe43b96f7d09e895867fff398f044c74d))
+
+
+### Features
+
+* add support for base64 images ([966c807](https://github.com/adobe/helix-importer/commit/966c807a5ebc404ee9729286d2864c968a612120))
+
 ## [3.2.4](https://github.com/adobe/helix-importer/compare/v3.2.3...v3.2.4) (2024-02-28)
 
 
