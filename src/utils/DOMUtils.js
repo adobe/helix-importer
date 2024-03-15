@@ -293,4 +293,22 @@ export default class DOMUtils {
       }, interval);
     });
   }
+
+  static getDataUrlFromB64Img(src) {
+    try {
+      const arr = src.split(',');
+      const type = arr[0].split(':')[1];
+      const b64Str = atob(arr[1]);
+      const bytesArray = new Uint8Array(b64Str.length);
+      for (let i = 0; i < b64Str.length; i += 1) {
+        bytesArray[i] = b64Str.charCodeAt(i);
+      }
+      const blob = new Blob([bytesArray], { type });
+      return URL.createObjectURL(blob);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(`get data url from a base64 image (${src}):`, e);
+      return null;
+    }
+  }
 }

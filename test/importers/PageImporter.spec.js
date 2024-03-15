@@ -156,7 +156,10 @@ describe('PageImporter tests - various options', () => {
 });
 
 describe('PageImporter tests - fixtures', () => {
-  const featureTest = async (feature) => {
+  const featureTest = async (feature, assertFn) => {
+    // eslint-disable-next-line no-param-reassign
+    assertFn = assertFn || ((got, want) => strictEqual(got, want, 'imported md is expected one'));
+
     class Test extends PageImporter {
       async fetch() {
         const html = await fs.readFile(path.resolve(__dirname, 'fixtures', `${feature}.spec.html`), 'utf-8');
@@ -183,7 +186,7 @@ describe('PageImporter tests - fixtures', () => {
 
     const md = await storageHandler.get(results[0].md);
     const expectedMD = await fs.readFile(path.resolve(__dirname, 'fixtures', `${feature}.spec.md`), 'utf-8');
-    strictEqual(md.trim(), expectedMD.trim(), 'imported md is expected one');
+    assertFn(md.trim(), expectedMD.trim(), 'imported md is expected one');
 
     // parse md to verify mdast
     const mdast = unified()
@@ -236,6 +239,14 @@ describe('PageImporter tests - fixtures', () => {
 
   it('import - sub and sup', async () => {
     await featureTest('subsup');
+  });
+
+  it('import - images', async () => {
+    await featureTest('img', (got, want) => {
+      if (got.indexOf(want) !== 0) {
+        throw new Error('imported md is not expected one');
+      }
+    });
   });
 
   it('import - video', async () => {

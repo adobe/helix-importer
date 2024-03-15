@@ -432,3 +432,22 @@ describe('DOMUtils#getImgFromBackground', () => {
     test(createElement('p', {}, { 'background-image': 'url( /image.jpg )' }, 'Some content'), '<img src="/image.jpg">');
   });
 });
+
+describe('DOMUtils#getDataUrlFromB64Img', () => {
+  const test = (img, expected) => {
+    const dataUrl = DOMUtils.getDataUrlFromB64Img(img.src);
+    return expected(dataUrl) === true;
+  };
+
+  it('no data url in original image', () => {
+    test(createElement('img', { src: 'https://www.server.com/image.jpg' }, {}, ''), (res) => res === null);
+  });
+
+  it('malformed base64 data url in original image', () => {
+    test(createElement('img', { src: 'data:image/png;base64,--dummy--' }, {}, ''), (res) => res === null);
+  });
+
+  it('base64 data url in original image', () => {
+    test(createElement('img', { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==' }, {}, ''), (res) => res.indexOf('blob:nodedata:') === 0);
+  });
+});
