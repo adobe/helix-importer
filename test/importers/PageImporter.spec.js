@@ -14,13 +14,20 @@
 
 import path from 'path';
 import fs from 'fs-extra';
-import { strictEqual, ok } from 'assert';
+import { strictEqual, ok, fail } from 'assert';
 import { describe, it } from 'mocha';
 import { Response } from 'node-fetch';
 import { dirname } from 'dirname-filename-esm';
 
 import { docx2md } from '@adobe/helix-docx2md';
 
+import { JSDOM } from 'jsdom';
+
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGridTable from '@adobe/remark-gridtables';
+// eslint-disable-next-line no-unused-vars
+import { inspect, inspectNoColor } from 'unist-util-inspect';
 import PageImporter from '../../src/importer/PageImporter.js';
 import PageImporterResource from '../../src/importer/PageImporterResource.js';
 import MemoryHandler from '../../src/storage/MemoryHandler.js';
@@ -32,6 +39,12 @@ import NoopLogger from '../mocks/NoopLogger.js';
 const __dirname = dirname(import.meta);
 
 const logger = new NoopLogger();
+
+// test environment createDocumentFromString version using JSDOM
+const createDocumentFromString = (html) => {
+  const { document } = new JSDOM(html, { runScripts: undefined }).window;
+  return document;
+};
 
 describe('PageImporter tests', () => {
   const storageHandler = new MemoryHandler(logger);
@@ -47,10 +60,30 @@ describe('PageImporter tests', () => {
       }
     }
 
-    const se = new TestImporter(config);
+    const se = new TestImporter({
+      createDocumentFromString,
+      ...config,
+    });
     const results = await se.import('someurl');
 
     strictEqual(results.length, 0, 'expect no result');
+  });
+
+  it('import - not providing createDocumentFromString should fail in the test enviroment only', async () => {
+    class TestImporter extends PageImporter {
+      async fetch() {
+        return new Response('test');
+      }
+    }
+
+    const se = new TestImporter(config);
+
+    try {
+      await se.import('someurl');
+      fail('should have thrown an error: default createDocumentFromString works only in browser context');
+    } catch (e) {
+      ok(true);
+    }
   });
 });
 
@@ -71,6 +104,7 @@ describe('PageImporter tests - various options', () => {
     const config = {
       storageHandler,
       logger,
+      createDocumentFromString,
     };
     const se = new Test(config);
     const results = await se.import('/someurl');
@@ -100,6 +134,7 @@ describe('PageImporter tests - various options', () => {
       mdast2Docx2Options: {
         stylesXML,
       },
+      createDocumentFromString,
     };
     const se = new Test(config);
     const results = await se.import('/someurl');
@@ -142,6 +177,7 @@ describe('PageImporter tests - fixtures', () => {
       storageHandler,
       skipDocxConversion: true,
       logger,
+      createDocumentFromString,
     };
     const se = new Test(config);
     const results = await se.import(`https://www.sample.com/${feature}`);
@@ -150,7 +186,23 @@ describe('PageImporter tests - fixtures', () => {
 
     const md = await storageHandler.get(results[0].md);
     const expectedMD = await fs.readFile(path.resolve(__dirname, 'fixtures', `${feature}.spec.md`), 'utf-8');
-    assertFn(md.trim(), expectedMD.trim());
+    strictEqual(md.trim(), expectedMD.trim(), 'imported md is expected one');
+
+    // parse md to verify mdast
+    const mdast = unified()
+      .use(remarkParse)
+      .use(remarkGridTable)
+      .use()
+      .parse(md);
+
+    // process.stdout.write(inspect(mdast, { showPositions: false }));
+    // process.stdout.write('\n');
+
+    if (await fs.pathExistsSync(path.resolve(__dirname, 'fixtures', `${feature}.spec.mdast`))) {
+      const actualMdast = inspectNoColor(mdast, { showPositions: false });
+      const expectedMdast = await fs.readFile(path.resolve(__dirname, 'fixtures', `${feature}.spec.mdast`), 'utf-8');
+      strictEqual(actualMdast.trim(), expectedMdast.trim(), 'imported mdast is expected one');
+    }
   };
 
   it('import - tables', async () => {
@@ -181,6 +233,10 @@ describe('PageImporter tests - fixtures', () => {
     await featureTest('space');
   });
 
+  it('import - s', async () => {
+    await featureTest('s');
+  });
+
   it('import - sub and sup', async () => {
     await featureTest('subsup');
   });
@@ -191,5 +247,8 @@ describe('PageImporter tests - fixtures', () => {
         throw new Error('imported md is not expected one');
       }
     });
+
+  it('import - video', async () => {
+    await featureTest('video');
   });
 });

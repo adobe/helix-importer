@@ -13,11 +13,31 @@
 /* eslint-disable no-shadow */
 
 import { strictEqual } from 'assert';
-import { describe, it } from 'mocha';
+import { describe, it, xit } from 'mocha';
 
 import { JSDOM } from 'jsdom';
 
 import DOMUtils from '../../src/utils/DOMUtils.js';
+
+describe('DOMUtils#fragment tests', () => {
+  const test = (input) => {
+    const { document } = (new JSDOM()).window;
+    const output = DOMUtils.fragment(document, input);
+    const div = document.createElement('div');
+    div.append(output);
+    const expected = document.createElement('div');
+    expected.innerHTML = input;
+    strictEqual(div.outerHTML, expected.outerHTML);
+  };
+
+  it('can create fragments from string', () => {
+    test('some text');
+    test(' some text with spaces ');
+    test('<a href="linkhref">linkcontent</a>');
+    test('<p><em>Caption Text</em></p>');
+    test('some text: <a href="linkhref">linkcontent</a> <a href="linkhref">another link</a>');
+  });
+});
 
 describe('DOMUtils#reviewInlineElement tests', () => {
   const test = (input, tag, expected) => {
@@ -130,18 +150,6 @@ describe('DOMUtils#reviewHeadings tests', () => {
   });
 });
 
-describe('DOMUtils#escapeSpecialCharacters tests', () => {
-  const test = (input, expected) => {
-    const { document } = (new JSDOM(input)).window;
-    DOMUtils.escapeSpecialCharacters(document);
-    strictEqual(document.body.innerHTML, expected);
-  };
-
-  it('escapeSpecialCharacters escape tidles', () => {
-    test('<p>Paragraph with 2 tildes: 20~30 and 40~50</p>', '<p>Paragraph with 2 tildes: 20\\~30 and 40\\~50</p>');
-  });
-});
-
 describe('DOMUtils#remove tests', () => {
   const test = (input, selectors, expected) => {
     const { document } = (new JSDOM(input)).window;
@@ -174,6 +182,10 @@ describe('DOMUtils#removeCommments tests', () => {
     test('<p><!-- useless comment \n multiline --></p>', '<p></p>');
     test('<p><!-- useless comment \n multiline \n multiline --></p>', '<p></p>');
     test('<!-- useless comment --><p>The content stays</p><!-- another useless comment with \n line break -->', '<p>The content stays</p>');
+    test('<p>The content stays<!-- useless comment inside an element --></p>', '<p>The content stays</p>');
+    test('<p>The content and spaces stay</p>  <!-- a useless comment preceded by spaces -->', '<p>The content and spaces stay</p>  ');
+    test('<p>This is a paragraph.</p>\n\x3C!--\n<p>Look at this cool image:</p>\n<img border="0" src="pic_trulli.jpg" alt="Trulli">\n-->\n<p>This is a paragraph too.</p>\x3C!-- same line -->\n\x3C!-- single line -->', '<p>This is a paragraph.</p>\n\n<p>This is a paragraph too.</p>\n');
+    test('<div some-crazy-attribute="" <!--=""><!-- useless comment --></div>', '<div some-crazy-attribute="" <!--=""></div>');
   });
 });
 
@@ -400,15 +412,24 @@ describe('DOMUtils#getImgFromBackground', () => {
 
   it('no background-image style', () => {
     test(createElement('p', {}, {}, 'Some content'), null);
-
     test(createElement('img', { src: 'https://www.server.com/image.jpg', title: 'Some title' }, {}, ''), null);
-
     test(createElement('p', {}, { 'background-image': 'none' }, 'Some content'), null);
   });
 
   it('with background-image style', () => {
     test(createElement('p', {}, { 'background-image': 'url(https://www.server.com/image.jpg)' }, 'Some content'), '<img src="https://www.server.com/image.jpg">');
-    test(createElement('div', { class: 'someclass' }, { 'background-image': 'url("https://www.server.com/image.jpg")', background: 'rgb(0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box' }, '<div><div>Some divs</div><div>More divs</div></div>'), '<img src="https://www.server.com/image.jpg">');
+    test(createElement('p', {}, { 'background-image': 'url("https://www.server.com/image.jpg")' }, 'Some content'), '<img src="https://www.server.com/image.jpg">');
+    test(createElement('p', {}, { 'background-image': 'url(\'https://www.server.com/image.jpg\')' }, 'Some content'), '<img src="https://www.server.com/image.jpg">');
+    test(createElement('p', {}, { 'background-image': 'url(http://localhost:3001/image.jpg)' }, 'Some content'), '<img src="http://localhost:3001/image.jpg">');
+  });
+
+  // `createElement` uses JSDOM to create the test-DOM
+  // the workaround in DOMUtils#getImgFromBackground exists _precisely_
+  // because of a potential bug in JSDOM due to which it doesn't
+  // parse `url()` with whitespaces correctly
+  // disabling the test, keeping it as a reference
+  xit('with background-image style containing whitespace in url()', () => {
+    test(createElement('p', {}, { 'background-image': 'url( /image.jpg )' }, 'Some content'), '<img src="/image.jpg">');
   });
 });
 

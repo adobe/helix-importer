@@ -1,0 +1,33 @@
+root[5]
+├─0 heading[1]
+│   │ depth: 1
+│   └─0 text "EM sample"
+├─1 paragraph[1]
+│   └─0 text "usefull"
+├─2 paragraph[1]
+│   └─0 strong[7]
+│       ├─0 emphasis[1]
+│       │   └─0 text "emphasis"
+│       ├─1 text " "
+│       ├─2 emphasis[1]
+│       │   └─0 text "space"
+│       ├─3 text " "
+│       ├─4 emphasis[1]
+│       │   └─0 text "another emphasis"
+│       ├─5 text " "
+│       └─6 emphasis[1]
+│           └─0 text "last emphasis"
+├─3 paragraph[2]
+│   ├─0 link[1]
+│   │   │ title: null
+│   │   │ url: "https://www.sample.com"
+│   │   └─0 text "linkcontent"
+│   └─1 text "."
+└─4 paragraph[4]
+    ├─0 strong[1]
+    │   └─0 emphasis[1]
+    │       └─0 text "Side shuffle"
+    ├─1 text " "
+    ├─2 emphasis[1]
+    │   └─0 text "–"
+    └─3 text " Quadriceps, glutes, hamstrings, calves"

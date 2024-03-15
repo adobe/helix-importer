@@ -1,3 +1,324 @@
+## [3.2.4](https://github.com/adobe/helix-importer/compare/v3.2.3...v3.2.4) (2024-02-28)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/mdast-util-gridtables to v4.0.1 ([#316](https://github.com/adobe/helix-importer/issues/316)) ([9b7aff5](https://github.com/adobe/helix-importer/commit/9b7aff5d83498aa7f63bf7e1f87cfeae8bf8435d))
+
+## [3.2.3](https://github.com/adobe/helix-importer/compare/v3.2.2...v3.2.3) (2024-02-14)
+
+
+### Bug Fixes
+
+* improve comment cleanup regex ([0a16dc5](https://github.com/adobe/helix-importer/commit/0a16dc527d792f2f1485abf550367ce5deaf3216))
+* improve comment cleanup regex ([8f1a7cd](https://github.com/adobe/helix-importer/commit/8f1a7cd0658ae85e084b557480c576b2624c5a6f))
+
+## [3.2.2](https://github.com/adobe/helix-importer/compare/v3.2.1...v3.2.2) (2024-01-30)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.41 ([#302](https://github.com/adobe/helix-importer/issues/302)) ([3feed69](https://github.com/adobe/helix-importer/commit/3feed6927ac4ef29f107eb97740ef32427cce223))
+
+## [3.2.1](https://github.com/adobe/helix-importer/compare/v3.2.0...v3.2.1) (2024-01-30)
+
+
+### Bug Fixes
+
+* **deps:** update adobe major ([#300](https://github.com/adobe/helix-importer/issues/300)) ([ed04784](https://github.com/adobe/helix-importer/commit/ed04784b230784bd41b4208e011e71850a7b3644))
+
+# [3.2.0](https://github.com/adobe/helix-importer/compare/v3.1.4...v3.2.0) (2024-01-29)
+
+
+### Features
+
+* manage absolute images adjustment ([#296](https://github.com/adobe/helix-importer/issues/296)) ([abd19ae](https://github.com/adobe/helix-importer/commit/abd19aeb59a8d00574762d477f012c38e996e869))
+
+## [3.1.4](https://github.com/adobe/helix-importer/compare/v3.1.3...v3.1.4) (2024-01-17)
+
+
+### Bug Fixes
+
+* import comments cleanup logic ([#290](https://github.com/adobe/helix-importer/issues/290)) ([deec675](https://github.com/adobe/helix-importer/commit/deec675c6e88f0035a3d5b3d88b4068f106a8f80))
+
+## [3.1.3](https://github.com/adobe/helix-importer/compare/v3.1.2...v3.1.3) (2024-01-06)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#286](https://github.com/adobe/helix-importer/issues/286)) ([27acb37](https://github.com/adobe/helix-importer/commit/27acb37aacf312dfbbaca8338bddec7e5a69e46e))
+
+## [3.1.2](https://github.com/adobe/helix-importer/compare/v3.1.1...v3.1.2) (2023-12-30)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#284](https://github.com/adobe/helix-importer/issues/284)) ([b028753](https://github.com/adobe/helix-importer/commit/b028753572afb7627f2f414c821bfb2e2a3cab8a))
+
+## [3.1.1](https://github.com/adobe/helix-importer/compare/v3.1.0...v3.1.1) (2023-12-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.37 ([#276](https://github.com/adobe/helix-importer/issues/276)) ([4d2ff99](https://github.com/adobe/helix-importer/commit/4d2ff996c34c7217391b91d6d7f121a908560e14))
+
+# [3.1.0](https://github.com/adobe/helix-importer/compare/v3.0.0...v3.1.0) (2023-11-13)
+
+
+### Features
+
+* improve default import ([#261](https://github.com/adobe/helix-importer/issues/261)) ([251cfcd](https://github.com/adobe/helix-importer/commit/251cfcdde7ac54525eef49341a9ede52d368cf71))
+
+# [3.0.0](https://github.com/adobe/helix-importer/compare/v2.9.41...v3.0.0) (2023-11-13)
+
+
+### Features
+
+* get rid of JSDOM ([#260](https://github.com/adobe/helix-importer/issues/260)) ([2530363](https://github.com/adobe/helix-importer/commit/2530363c328958b2363f0f178b9b1ef7d7bb73b8))
+
+
+### BREAKING CHANGES
+
+* removing JSDOM
+
+## [2.9.41](https://github.com/adobe/helix-importer/compare/v2.9.40...v2.9.41) (2023-11-05)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#264](https://github.com/adobe/helix-importer/issues/264)) ([0ba4a63](https://github.com/adobe/helix-importer/commit/0ba4a6356cded67677b05bd4008864a1e0c938ee))
+
+## [2.9.40](https://github.com/adobe/helix-importer/compare/v2.9.39...v2.9.40) (2023-10-30)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.34 ([#257](https://github.com/adobe/helix-importer/issues/257)) ([9a7a214](https://github.com/adobe/helix-importer/commit/9a7a214a81da7d1f2901562be741a14c1ff4e18a))
+
+## [2.9.39](https://github.com/adobe/helix-importer/compare/v2.9.38...v2.9.39) (2023-10-28)
+
+
+### Bug Fixes
+
+* **deps:** update dependency unified to v11.0.4 ([#254](https://github.com/adobe/helix-importer/issues/254)) ([c15e9ef](https://github.com/adobe/helix-importer/commit/c15e9eff94fe60d229511d5ea7ea4106d221aeb4))
+
+## [2.9.38](https://github.com/adobe/helix-importer/compare/v2.9.37...v2.9.38) (2023-10-11)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.33 ([#248](https://github.com/adobe/helix-importer/issues/248)) ([a1b4afb](https://github.com/adobe/helix-importer/commit/a1b4afb68f753bda4c7d86693a7dc94814b7ce16))
+
+## [2.9.37](https://github.com/adobe/helix-importer/compare/v2.9.36...v2.9.37) (2023-10-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/mdast-util-gridtables to v3.0.2 ([#246](https://github.com/adobe/helix-importer/issues/246)) ([ebc288e](https://github.com/adobe/helix-importer/commit/ebc288efeb876ab762b5f705170758afca7ed07c))
+
+## [2.9.36](https://github.com/adobe/helix-importer/compare/v2.9.35...v2.9.36) (2023-10-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.32 ([#243](https://github.com/adobe/helix-importer/issues/243)) ([3938b44](https://github.com/adobe/helix-importer/commit/3938b4480ca4282b74b0b2952b0104f0e725d78e))
+
+## [2.9.35](https://github.com/adobe/helix-importer/compare/v2.9.34...v2.9.35) (2023-10-01)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.31 ([#241](https://github.com/adobe/helix-importer/issues/241)) ([324e71b](https://github.com/adobe/helix-importer/commit/324e71b2c8c92c7612742b68f3c51e146ecbf54a))
+
+## [2.9.34](https://github.com/adobe/helix-importer/compare/v2.9.33...v2.9.34) (2023-09-30)
+
+
+### Bug Fixes
+
+* **deps:** update dependency hast-util-to-mdast to v10.1.0 ([#240](https://github.com/adobe/helix-importer/issues/240)) ([4d024e8](https://github.com/adobe/helix-importer/commit/4d024e89575acf4c58348fe416c940a9be1f104b))
+
+## [2.9.33](https://github.com/adobe/helix-importer/compare/v2.9.32...v2.9.33) (2023-09-30)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#238](https://github.com/adobe/helix-importer/issues/238)) ([7bdd8c4](https://github.com/adobe/helix-importer/commit/7bdd8c492a04fd00c0dc2795dbd08a06ef7729df))
+
+## [2.9.32](https://github.com/adobe/helix-importer/compare/v2.9.31...v2.9.32) (2023-09-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.27 ([#236](https://github.com/adobe/helix-importer/issues/236)) ([a05fa57](https://github.com/adobe/helix-importer/commit/a05fa57185e927081a801fc43c29cc54e20cd58d))
+
+## [2.9.31](https://github.com/adobe/helix-importer/compare/v2.9.30...v2.9.31) (2023-09-26)
+
+
+### Bug Fixes
+
+* update unified dependencies ([#235](https://github.com/adobe/helix-importer/issues/235)) ([e7f8441](https://github.com/adobe/helix-importer/commit/e7f84414aba484cf3873ee81a635f2ddb8bfebd3))
+
+## [2.9.30](https://github.com/adobe/helix-importer/compare/v2.9.29...v2.9.30) (2023-09-13)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#226](https://github.com/adobe/helix-importer/issues/226)) ([bf68111](https://github.com/adobe/helix-importer/commit/bf68111284ac5bfe25879022c25f55bcee94386e))
+
+## [2.9.29](https://github.com/adobe/helix-importer/compare/v2.9.28...v2.9.29) (2023-09-07)
+
+
+### Bug Fixes
+
+* cleanup mdast tree before writing as md ([#223](https://github.com/adobe/helix-importer/issues/223)) ([49f88ce](https://github.com/adobe/helix-importer/commit/49f88cec0bbc30cbf8e5806b1467a21f05ab9814)), closes [#217](https://github.com/adobe/helix-importer/issues/217) [#214](https://github.com/adobe/helix-importer/issues/214) [#166](https://github.com/adobe/helix-importer/issues/166) [#213](https://github.com/adobe/helix-importer/issues/213)
+
+## [2.9.28](https://github.com/adobe/helix-importer/compare/v2.9.27...v2.9.28) (2023-09-02)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#222](https://github.com/adobe/helix-importer/issues/222)) ([107aab2](https://github.com/adobe/helix-importer/commit/107aab2c8a96af9b1e1822fea3eddb97329e3b97))
+
+## [2.9.27](https://github.com/adobe/helix-importer/compare/v2.9.26...v2.9.27) (2023-09-02)
+
+
+### Bug Fixes
+
+* **deps:** update dependency hast-util-to-mdast to v10.0.1 ([#221](https://github.com/adobe/helix-importer/issues/221)) ([d068df4](https://github.com/adobe/helix-importer/commit/d068df45b7928641f13d09402bb3c87baf5fe9ce))
+
+## [2.9.26](https://github.com/adobe/helix-importer/compare/v2.9.25...v2.9.26) (2023-08-25)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.23 ([#218](https://github.com/adobe/helix-importer/issues/218)) ([6cac890](https://github.com/adobe/helix-importer/commit/6cac890a96c18e3b1ad4d6726b7d0cbd05cae34b))
+
+## [2.9.25](https://github.com/adobe/helix-importer/compare/v2.9.24...v2.9.25) (2023-08-24)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#216](https://github.com/adobe/helix-importer/issues/216)) ([d3b055d](https://github.com/adobe/helix-importer/commit/d3b055d0b46ca8cf79cb71cd46e551f0f32bda68))
+
+## [2.9.24](https://github.com/adobe/helix-importer/compare/v2.9.23...v2.9.24) (2023-08-24)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-markdown-support to v6.3.1 ([#215](https://github.com/adobe/helix-importer/issues/215)) ([135b679](https://github.com/adobe/helix-importer/commit/135b67906184590299621c63f4fc37bf824c6814))
+
+## [2.9.23](https://github.com/adobe/helix-importer/compare/v2.9.22...v2.9.23) (2023-08-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency rehype-parse to v8.0.5 ([#209](https://github.com/adobe/helix-importer/issues/209)) ([d0c7e3b](https://github.com/adobe/helix-importer/commit/d0c7e3b2a29503edd535af97dce3bfa19402e10e))
+
+## [2.9.22](https://github.com/adobe/helix-importer/compare/v2.9.21...v2.9.22) (2023-08-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.21 ([#207](https://github.com/adobe/helix-importer/issues/207)) ([fa7b302](https://github.com/adobe/helix-importer/commit/fa7b3028a6789d152ae3fe4863d2acb0c7f5640e))
+
+## [2.9.21](https://github.com/adobe/helix-importer/compare/v2.9.20...v2.9.21) (2023-08-14)
+
+
+### Bug Fixes
+
+* **deps:** update external major ([#208](https://github.com/adobe/helix-importer/issues/208)) ([e6942fa](https://github.com/adobe/helix-importer/commit/e6942fa709b5541aa2e240e50705040125a7de17))
+
+## [2.9.20](https://github.com/adobe/helix-importer/compare/v2.9.19...v2.9.20) (2023-08-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.20 ([#205](https://github.com/adobe/helix-importer/issues/205)) ([f466759](https://github.com/adobe/helix-importer/commit/f466759cf38994692e5dba86e32a0565d77fe821))
+
+## [2.9.19](https://github.com/adobe/helix-importer/compare/v2.9.18...v2.9.19) (2023-08-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.19 ([#200](https://github.com/adobe/helix-importer/issues/200)) ([e647807](https://github.com/adobe/helix-importer/commit/e647807ea39c981a16bc0f6b8dcf8ecbf91cd8b1))
+
+## [2.9.18](https://github.com/adobe/helix-importer/compare/v2.9.17...v2.9.18) (2023-08-02)
+
+
+### Bug Fixes
+
+* properly escape tilde ([#190](https://github.com/adobe/helix-importer/issues/190)) ([9853f17](https://github.com/adobe/helix-importer/commit/9853f17b9feeba52f910baeb6834f8c08ea5df08)), closes [#189](https://github.com/adobe/helix-importer/issues/189)
+
+## [2.9.17](https://github.com/adobe/helix-importer/compare/v2.9.16...v2.9.17) (2023-07-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.17 ([#195](https://github.com/adobe/helix-importer/issues/195)) ([bd7d92e](https://github.com/adobe/helix-importer/commit/bd7d92e0ad744688a5ab6f421194945a461a3611))
+
+## [2.9.16](https://github.com/adobe/helix-importer/compare/v2.9.15...v2.9.16) (2023-07-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-markdown-support to v6.3.0 ([#194](https://github.com/adobe/helix-importer/issues/194)) ([a0344f0](https://github.com/adobe/helix-importer/commit/a0344f03bde0128dfd53a779cc7c8ab07312e67a))
+
+## [2.9.15](https://github.com/adobe/helix-importer/compare/v2.9.14...v2.9.15) (2023-07-11)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/mdast-util-gridtables to v2 ([#181](https://github.com/adobe/helix-importer/issues/181)) ([4f9acb9](https://github.com/adobe/helix-importer/commit/4f9acb982f426c73601cf732e1bf6af151b8c6fb))
+
+## [2.9.14](https://github.com/adobe/helix-importer/compare/v2.9.13...v2.9.14) (2023-07-11)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.14 ([#185](https://github.com/adobe/helix-importer/issues/185)) ([89aaa7f](https://github.com/adobe/helix-importer/commit/89aaa7f3d561febf88d6b99dc3c9b865accf99a3))
+
+## [2.9.13](https://github.com/adobe/helix-importer/compare/v2.9.12...v2.9.13) (2023-07-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.13 ([#183](https://github.com/adobe/helix-importer/issues/183)) ([9fb36aa](https://github.com/adobe/helix-importer/commit/9fb36aaef51f658abf5767d4c2f791410875c15d))
+
+## [2.9.12](https://github.com/adobe/helix-importer/compare/v2.9.11...v2.9.12) (2023-07-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.12 ([#178](https://github.com/adobe/helix-importer/issues/178)) ([fc471a3](https://github.com/adobe/helix-importer/commit/fc471a364ecdc932ac37ec2acfbad8eca12854c9))
+
+## [2.9.11](https://github.com/adobe/helix-importer/compare/v2.9.10...v2.9.11) (2023-06-28)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.11 ([#175](https://github.com/adobe/helix-importer/issues/175)) ([6f3d7c1](https://github.com/adobe/helix-importer/commit/6f3d7c1bbb4100cd5c614d31278a74a08e49c0e8))
+
+## [2.9.10](https://github.com/adobe/helix-importer/compare/v2.9.9...v2.9.10) (2023-06-28)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.10 ([#173](https://github.com/adobe/helix-importer/issues/173)) ([cfd9603](https://github.com/adobe/helix-importer/commit/cfd9603e63698f437449a7ef8de49d2c033ad60d))
+
+## [2.9.9](https://github.com/adobe/helix-importer/compare/v2.9.8...v2.9.9) (2023-06-28)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/remark-gridtables to v1.0.4 ([#172](https://github.com/adobe/helix-importer/issues/172)) ([36203b1](https://github.com/adobe/helix-importer/commit/36203b1b29bc333c0cad9813ca6dac7814ad434c))
+
+## [2.9.8](https://github.com/adobe/helix-importer/compare/v2.9.7...v2.9.8) (2023-06-26)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.6 ([#169](https://github.com/adobe/helix-importer/issues/169)) ([232cb97](https://github.com/adobe/helix-importer/commit/232cb97011a4210fad6f240e9cd2e25886279b62))
+
 ## [2.9.7](https://github.com/adobe/helix-importer/compare/v2.9.6...v2.9.7) (2023-05-19)
 
 

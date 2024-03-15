@@ -12,40 +12,37 @@
 
 /* eslint-disable class-methods-use-this */
 
-import { JSDOM } from 'jsdom';
-
 import path from 'path';
 import { unified } from 'unified';
 import parse from 'rehype-parse';
-import rehype2remark from 'rehype-remark';
+import { defaultHandlers, toMdast } from 'hast-util-to-mdast';
 import stringify from 'remark-stringify';
 import fs from 'fs-extra';
 import { md2docx } from '@adobe/helix-md2docx';
 import remarkGridTable from '@adobe/remark-gridtables';
-import { imageReferences, remarkGfmNoLink } from '@adobe/helix-markdown-support';
+import {
+  imageReferences,
+  remarkGfmNoLink,
+  sanitizeHeading,
+  sanitizeLinks,
+  sanitizeTextAndFormats,
+  suppressSpaceCode,
+} from '@adobe/helix-markdown-support';
 import gridtableHandlers from './hast-to-mdast-gridtable-handlers.js';
 import Utils from '../utils/Utils.js';
 import DOMUtils from '../utils/DOMUtils.js';
 import FileUtils from '../utils/FileUtils.js';
 import MDUtils from '../utils/MDUtils.js';
+import formatPlugin from './mdast-to-md-format-plugin.js';
+import BrowserUtils from '../utils/BrowserUtils.js';
 
-function remarkImageReferences() {
-  return imageReferences;
-}
-
-function htmlElementNode(element, state, node) {
-  if (node.children && node.children.length > 0) {
-    return [{
-      type: 'html',
-      value: `<${element}>`,
-    },
-    ...state.all(node),
-    {
-      type: 'html',
-      value: `</${element}>`,
-    }];
-  }
-  return '';
+function formatNode(type, state, node) {
+  const result = {
+    type,
+    children: state.all(node),
+  };
+  state.patch(node, result);
+  return result;
 }
 
 export default class PageImporter {
@@ -57,6 +54,12 @@ export default class PageImporter {
 
   constructor(params) {
     this.params = params;
+
+    if (!this.params.createDocumentFromString) {
+      // default the string parsing using the browser DOMParser
+      this.params.createDocumentFromString = BrowserUtils.createDocumentFromString;
+    }
+
     this.logger = params.logger || console;
 
     this.useCache = !!params.cache;
@@ -76,20 +79,32 @@ export default class PageImporter {
     const sanitizedName = FileUtils.sanitizeFilename(name);
     this.logger.log(`Computing Markdown for ${directory}/${sanitizedName}`);
 
-    const processor = unified()
+    const html = resource.document.innerHTML;
+    const hast = await unified()
       .use(parse, { emitParseErrors: true })
-      .use(rehype2remark, {
-        handlers: {
-          u: (state, node) => htmlElementNode('u', state, node),
-          sub: (state, node) => htmlElementNode('sub', state, node),
-          sup: (state, node) => htmlElementNode('sup', state, node),
-          ...gridtableHandlers,
-        },
-      })
-      .use(remarkImageReferences)
-      .use(remarkGridTable)
-      .use(remarkGfmNoLink)
+      .parse(html);
+
+    const mdast = toMdast(hast, {
+      handlers: {
+        ...defaultHandlers,
+        u: (state, node) => formatNode('underline', state, node),
+        sub: (state, node) => formatNode('subscript', state, node),
+        sup: (state, node) => formatNode('superscript', state, node),
+        ...gridtableHandlers,
+      },
+    });
+
+    // cleanup mdast similar to docx2md
+    await sanitizeHeading(mdast);
+    await sanitizeLinks(mdast);
+    await sanitizeTextAndFormats(mdast);
+    await suppressSpaceCode(mdast);
+    await imageReferences(mdast);
+
+    let md = await unified()
       .use(stringify, {
+        strong: '*',
+        emphasis: '_',
         bullet: '-',
         fence: '`',
         fences: true,
@@ -97,19 +112,21 @@ export default class PageImporter {
         rule: '-',
         ruleRepetition: 3,
         ruleSpaces: false,
-      });
-
-    const file = await processor.process(resource.document.innerHTML);
-    let contents = String(file);
+      })
+      .use(remarkGridTable)
+      .use(remarkGfmNoLink)
+      .use(formatPlugin) // this converts the `underline` and `subscript` back to tags in the md.
+      .stringify(mdast);
 
     // process image links
+    // TODO: this can be done easier in the MDAST tree
     const { document } = resource;
     const assets = [];
     const imgs = document.querySelectorAll('img');
     imgs.forEach((img) => {
       const { src } = img;
       const isEmbed = img.classList.contains('hlx-embed');
-      if (!isEmbed && src && src !== '' && (contents.indexOf(src) !== -1 || contents.indexOf(decodeURI(src)) !== -1)) {
+      if (!isEmbed && src && src !== '' && (md.indexOf(src) !== -1 || md.indexOf(decodeURI(src)) !== -1)) {
         assets.push({
           url: src,
           append: '#image.png',
@@ -121,7 +138,7 @@ export default class PageImporter {
     as.forEach((a) => {
       const { href } = a;
       try {
-        if ((href && href !== '' && contents.indexOf(href) !== -1) || contents.indexOf(decodeURI(href)) !== -1) {
+        if ((href && href !== '' && md.indexOf(href) !== -1) || md.indexOf(decodeURI(href)) !== -1) {
           const u = new URL(href, url);
           const ext = path.extname(u.href);
           if (ext === '.mp4') {
@@ -140,7 +157,7 @@ export default class PageImporter {
     const vs = document.querySelectorAll('video source');
     vs.forEach((s) => {
       const { src } = s;
-      if ((src && src !== '' && contents.indexOf(src) !== -1) || contents.indexOf(decodeURI(src)) !== -1) {
+      if ((src && src !== '' && md.indexOf(src) !== -1) || md.indexOf(decodeURI(src)) !== -1) {
         try {
           const u = new URL(src, url);
           const ext = path.extname(u.href);
@@ -166,18 +183,18 @@ export default class PageImporter {
     // adjust assets url (from relative to absolute)
     assets.forEach((asset) => {
       const u = new URL(decodeURI(asset.url), url);
-      contents = MDUtils.replaceSrcInMarkdown(contents, asset.url, u.toString());
+      md = MDUtils.replaceSrcInMarkdown(md, asset.url, u.toString());
     });
 
     if (resource.prepend) {
-      contents = resource.prepend + contents;
+      md = resource.prepend + md;
     }
 
-    contents = this.postProcessMD(contents);
+    md = this.postProcessMD(md);
 
     return {
       path: path.join(directory, sanitizedName),
-      content: contents,
+      content: md,
     };
   }
 
@@ -191,7 +208,6 @@ export default class PageImporter {
     this.cleanup(document);
     DOMUtils.reviewHeadings(document);
     DOMUtils.reviewParagraphs(document);
-    DOMUtils.escapeSpecialCharacters(document);
     [
       'b',
       'a',
@@ -291,8 +307,9 @@ export default class PageImporter {
     const html = await this.download(url);
 
     if (html) {
-      const { document } = new JSDOM(DOMUtils.removeNoscripts(html.toString())).window;
-      this.preProcess(document);
+      const cleanedHTML = DOMUtils.removeNoscripts(html.toString());
+
+      const document = this.params.createDocumentFromString(cleanedHTML);
       return {
         document,
         html,
@@ -309,6 +326,8 @@ export default class PageImporter {
 
     const results = [];
     if (document) {
+      this.preProcess(document);
+
       const entries = await this.process(document, url, entryParams, html);
 
       this.postProcess(document);
