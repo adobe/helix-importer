@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:sling="http://sling.apache.org/jcr/sling/1.0" jcr:primaryType="cq:Page">
+    <jcr:content cq:template="/libs/core/franklin/templates/page" jcr:primaryType="cq:PageContent" jcr:title="Sites Franklin Example" sling:resourceType="core/franklin/components/page/v1/page">
+        <root jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/root/v1/root">
+            <section sling:resourceType="core/franklin/components/section/v1/section" jcr:primaryType="nt:unstructured">
+                <columns sling:resourceType="core/franklin/components/columns/v1/columns" jcr:primaryType="nt:unstructured" columns="2" rows="2">
+                    <row1 jcr:primaryType="nt:unstructured">
+                        <col1 jcr:primaryType="nt:unstructured">
+                            <title sling:resourceType="core/franklin/components/title/v1/title" jcr:primaryType="nt:unstructured" jcr:title="What is Lorem Ipsum?" type="h2"/>
+                        </col1>
+                        <col2 jcr:primaryType="nt:unstructured">
+                            <title sling:resourceType="core/franklin/components/title/v1/title" jcr:primaryType="nt:unstructured" jcr:title="What is Lorem Ipsum?" type="h2"/>
+                        </col2>
+                    </row1>
+                    <row2 jcr:primaryType="nt:unstructured">
+                        <col1 jcr:primaryType="nt:unstructured">
+                            <title sling:resourceType="core/franklin/components/title/v1/title" jcr:primaryType="nt:unstructured" jcr:title="What is Lorem Ipsum?" type="h2"/>
+                        </col1>
+                        <col2 jcr:primaryType="nt:unstructured">
+                            <title sling:resourceType="core/franklin/components/title/v1/title" jcr:primaryType="nt:unstructured" jcr:title="What is Lorem Ipsum?" type="h2"/>
+                        </col2>
+                    </row2>
+                </columns>
+            </section>
+        </root>
+    </jcr:content>
+</jcr:root>

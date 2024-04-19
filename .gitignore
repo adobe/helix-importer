@@ -8,4 +8,5 @@ logs
 .DS_Store
 test-results.xml
 .env
+.node-version
 lib

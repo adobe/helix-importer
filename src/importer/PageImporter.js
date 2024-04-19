@@ -19,7 +19,6 @@ import { defaultHandlers, toMdast } from 'hast-util-to-mdast';
 import stringify from 'remark-stringify';
 import fs from 'fs-extra';
 import { md2docx } from '@adobe/helix-md2docx';
-import { md2jcr } from 'html2jcr';
 import remarkGridTable from '@adobe/remark-gridtables';
 import {
   imageReferences,
@@ -29,6 +28,7 @@ import {
   sanitizeTextAndFormats,
   suppressSpaceCode,
 } from '@adobe/helix-markdown-support';
+import { md2jcr } from './html2jcr/index.js';
 import gridtableHandlers from './hast-to-mdast-gridtable-handlers.js';
 import Utils from '../utils/Utils.js';
 import DOMUtils from '../utils/DOMUtils.js';
