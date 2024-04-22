@@ -13,7 +13,7 @@ import { select, selectAll } from 'hast-util-select';
 import { toString } from 'hast-util-to-string';
 import { toHtml } from 'hast-util-to-html';
 import button, { getType } from './button.js';
-import { encodeHTMLEntities, getHandler } from '../utils.js';
+import { encodeHTMLEntities, getHandler, findFieldsById } from '../utils.js';
 
 function findNameFilterById(componentDefinition, id) {
   let name = null;
@@ -39,17 +39,6 @@ function findFilterById(filters, id) {
     }
   });
   return filter;
-}
-
-function findFieldsById(componentModels, id) {
-  let fields = null;
-  componentModels.forEach((item) => {
-    if (item.id === id) {
-      fields = item.fields;
-    }
-  });
-
-  return fields;
 }
 
 function encodeHtml(str) {
