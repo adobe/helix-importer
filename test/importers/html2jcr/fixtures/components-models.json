@@ -53,6 +53,28 @@
         "value": "",
         "label": "Text",
         "valueType": "string"
+      },
+      {
+        "component": "multiselect",
+        "name": "keywords",
+        "value": "",
+        "label": "Keywords",
+        "description": "Card Keywords",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Word",
+            "value": "word"
+          },
+          {
+            "name": "Google",
+            "value": "google"
+          },
+          {
+            "name": "AEM",
+            "value": "aem"
+          }
+        ]
       }
     ]
   },
@@ -236,6 +258,24 @@
         "name": "teaserText_cta2Title",
         "value": "",
         "valueType": "string"
+      },
+      {
+        "component": "multiselect",
+        "name": "teaserText_keywords",
+        "value": "",
+        "label": "Keywords",
+        "description": "Teaser Keywords",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "One",
+            "value": "one"
+          },
+          {
+            "name": "Two",
+            "value": "two"
+          }
+        ]
       }
     ]
   },
