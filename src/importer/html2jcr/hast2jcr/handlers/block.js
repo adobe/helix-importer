@@ -13,7 +13,7 @@ import { select, selectAll } from 'hast-util-select';
 import { toString } from 'hast-util-to-string';
 import { toHtml } from 'hast-util-to-html';
 import button, { getType } from './button.js';
-import { encodeHTMLEntities, getHandler } from '../utils.js';
+import { encodeHTMLEntities, getHandler, findFieldsById } from '../utils.js';
 
 function findNameFilterById(componentDefinition, id) {
   let name = null;
@@ -39,17 +39,6 @@ function findFilterById(filters, id) {
     }
   });
   return filter;
-}
-
-function findFieldsById(componentModels, id) {
-  let fields = null;
-  componentModels.forEach((item) => {
-    if (item.id === id) {
-      fields = item.fields;
-    }
-  });
-
-  return fields;
 }
 
 function encodeHtml(str) {
@@ -141,6 +130,7 @@ function findFieldByType(handler, groupFields, fields, idx) {
     if (field.component === handler.name
       || isHeadline(handler, field, fields)
       || (field.component === 'richtext' && handler.name === 'text')
+      || (field.component === 'multiselect' && handler.name === 'text')
       || (field.component === 'reference' && handler.name === 'button')) {
       groupField = field;
       if (field.component === 'richtext' && handler.name === 'text') {
@@ -181,7 +171,10 @@ function extractProperties(node, id, ctx, mode = 'container') {
             groupField,
           } = findFieldByType(handler, groupFields, field.fields, groupFieldIdx);
           if (groupField) {
-            const value = groupField.component === 'richtext' ? encodeHtml(toHtml(containerChild).trim()) : toString(containerChild).trim();
+            let value = groupField.component === 'richtext' ? encodeHtml(toHtml(containerChild).trim()) : toString(containerChild).trim();
+            if (groupField.component === 'multiselect') {
+              value = `[${value.split(',').map((v) => v.trim()).join(', ')}]`;
+            }
             if (properties[groupField.name]) {
               properties[groupField.name] = `${properties[groupField.name]}${value}`;
             } else {
@@ -215,7 +208,11 @@ function extractProperties(node, id, ctx, mode = 'container') {
         properties[field.name] = toString(select(headlineNode.tagName, children[idx])).trim();
         collapseField(field.name, fields, properties, headlineNode);
       } else {
-        properties[field.name] = encodeHTMLEntities(toString(select('div', children[idx])).trim());
+        let value = encodeHTMLEntities(toString(select('div', children[idx])).trim());
+        if (field.component === 'multiselect') {
+          value = `[${value.split(',').map((v) => v.trim()).join(', ')}]`;
+        }
+        properties[field.name] = value;
       }
     }
   });

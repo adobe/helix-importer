@@ -9,9 +9,11 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+import { findFieldsById } from '../utils.js';
+
 const resourceType = 'core/franklin/components/section/v1/section';
 
-function createMetadata(node) {
+function createMetadata(node, ctx) {
   const data = {};
   const rows = node.children.filter((row) => row.tagName === 'div');
   // eslint-disable-next-line no-restricted-syntax
@@ -27,11 +29,25 @@ function createMetadata(node) {
       data[key] = value;
     }
   }
+  if (data.model) {
+    const { model } = data;
+    const { componentModels } = ctx;
+    const fields = findFieldsById(componentModels, model);
+    if (fields) {
+      for (const field of fields) {
+        if (field.component === 'multiselect' && data[field.name]) {
+          const multiselectValues = data[field.name].split(',');
+          data[field.name] = `[${multiselectValues.map((value) => `${value.trim()}`).join(', ')}]`;
+        }
+      }
+    }
+  }
   return data;
 }
 
-function getMetaData(node, parents) {
+function getMetaData(node, ctx) {
   const data = {};
+  const { parents } = ctx;
   if (!parents) {
     return data;
   }
@@ -48,7 +64,7 @@ function getMetaData(node, parents) {
     return false;
   });
 
-  return result ? createMetadata(result) : data;
+  return result ? createMetadata(result, ctx) : data;
 }
 
 const section = {
@@ -63,7 +79,7 @@ const section = {
     return false;
   },
   getAttributes: (node, ctx) => {
-    const metaData = getMetaData(node, ctx.parents);
+    const metaData = getMetaData(node, ctx);
     return {
       rt: resourceType,
       ...metaData,
