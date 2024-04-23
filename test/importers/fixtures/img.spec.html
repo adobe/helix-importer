@@ -1,0 +1,11 @@
+<html>
+  <body>
+    <h1>Images sample</h1>
+    <h3>Standard Image - should be imported as is</h3>
+    <img src="https://www.server.com/image.jpg" alt="empty alt" />
+    <h3>Image with wrong Base64 data - should be removed</h3>
+    <img src="data:image/png;base64,--dummy--" alt="empty alt" />
+    <h3>Image with correct Base64 data - should be transformed into Object Url data</h3>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="empty alt" />
+  </body>
+</html>

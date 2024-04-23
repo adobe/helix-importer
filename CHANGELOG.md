@@ -1,3 +1,66 @@
+## [3.3.6](https://github.com/adobe/helix-importer/compare/v3.3.5...v3.3.6) (2024-04-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.54 ([#340](https://github.com/adobe/helix-importer/issues/340)) ([1e3c118](https://github.com/adobe/helix-importer/commit/1e3c118834d892984a786b82211d6309220f8b55))
+
+## [3.3.5](https://github.com/adobe/helix-importer/compare/v3.3.4...v3.3.5) (2024-04-11)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#335](https://github.com/adobe/helix-importer/issues/335)) ([93515ae](https://github.com/adobe/helix-importer/commit/93515aeaf5be9f28270befa9547424017646a684))
+
+## [3.3.4](https://github.com/adobe/helix-importer/compare/v3.3.3...v3.3.4) (2024-04-06)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#333](https://github.com/adobe/helix-importer/issues/333)) ([270e412](https://github.com/adobe/helix-importer/commit/270e4128e4a5a20271640af38a4b443b62c5bc3c))
+
+## [3.3.3](https://github.com/adobe/helix-importer/compare/v3.3.2...v3.3.3) (2024-04-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2docx to v2.1.49 ([#332](https://github.com/adobe/helix-importer/issues/332)) ([37bf7b1](https://github.com/adobe/helix-importer/commit/37bf7b1c8a926f58838db2c2e1fe2cf64c3e3f32))
+
+## [3.3.2](https://github.com/adobe/helix-importer/compare/v3.3.1...v3.3.2) (2024-04-02)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#330](https://github.com/adobe/helix-importer/issues/330)) ([b9a101e](https://github.com/adobe/helix-importer/commit/b9a101ece12335b9e335f0a010c8cd0c7eac990d))
+
+## [3.3.1](https://github.com/adobe/helix-importer/compare/v3.3.0...v3.3.1) (2024-03-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/mdast-util-gridtables to v4.0.2 ([#325](https://github.com/adobe/helix-importer/issues/325)) ([1126aa2](https://github.com/adobe/helix-importer/commit/1126aa2e6d47dd356839d834118d7c167a54e985))
+
+# [3.3.0](https://github.com/adobe/helix-importer/compare/v3.2.4...v3.3.0) (2024-03-15)
+
+
+### Bug Fixes
+
+* add image type in blob used in getDataUrlFromB64Img ([4fa0937](https://github.com/adobe/helix-importer/commit/4fa093723dba506b5abfde6a3eddc34aa14c6d36))
+* do not use node.js buffer package for blob to get code working in browser ([d6da86d](https://github.com/adobe/helix-importer/commit/d6da86d6c4715346035a2dff549d4291adc4e150))
+* fix tests after online merge resolution ([cbc326d](https://github.com/adobe/helix-importer/commit/cbc326dfe43b96f7d09e895867fff398f044c74d))
+
+
+### Features
+
+* add support for base64 images ([966c807](https://github.com/adobe/helix-importer/commit/966c807a5ebc404ee9729286d2864c968a612120))
+
+## [3.2.4](https://github.com/adobe/helix-importer/compare/v3.2.3...v3.2.4) (2024-02-28)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/mdast-util-gridtables to v4.0.1 ([#316](https://github.com/adobe/helix-importer/issues/316)) ([9b7aff5](https://github.com/adobe/helix-importer/commit/9b7aff5d83498aa7f63bf7e1f87cfeae8bf8435d))
+
 ## [3.2.3](https://github.com/adobe/helix-importer/compare/v3.2.2...v3.2.3) (2024-02-14)
 
 
