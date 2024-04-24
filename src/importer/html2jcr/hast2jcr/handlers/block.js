@@ -15,18 +15,25 @@ import { toHtml } from 'hast-util-to-html';
 import button, { getType } from './button.js';
 import { encodeHTMLEntities, getHandler } from '../utils.js';
 
-function findNameFilterById(componentDefinition, id) {
-  let name = null;
+function findNameFilterById(componentDefinition, nameClass) {
+  let model = null;
   let filterId = null;
+  let name = null;
   componentDefinition.groups.forEach((group) => {
     group.components.forEach((component) => {
-      if (component.id === id) {
-        name = component.plugins.xwalk.page.template.name;
-        filterId = component.plugins.xwalk.page.template.filter;
+      const templateName = component?.plugins?.xwalk?.page?.template?.name;
+      if (templateName && templateName.toLowerCase()
+        .trim()
+        .replace(/[^0-9a-z]+/g, '-')
+        .replace(/^-+/, '')
+        .replace(/-+$/, '') === nameClass) {
+        filterId = component?.plugins?.xwalk?.page?.template?.filter;
+        model = component?.plugins?.xwalk?.page?.template?.model;
+        name = templateName;
       }
     });
   });
-  return { name, filterId };
+  return { name, filterId, model };
 }
 
 function findFilterById(filters, id) {
@@ -109,6 +116,9 @@ function getMainFields(fields) {
 
 function createComponentGroups(fields) {
   const components = [];
+  if (!fields) {
+    return components;
+  }
   fields.forEach((obj) => {
     if (obj.name.includes('_')) {
       const groupName = obj.name.split('_')[0];
@@ -181,7 +191,12 @@ function extractProperties(node, id, ctx, mode = 'container') {
             groupField,
           } = findFieldByType(handler, groupFields, field.fields, groupFieldIdx);
           if (groupField) {
-            const value = groupField.component === 'richtext' ? encodeHtml(toHtml(containerChild).trim()) : toString(containerChild).trim();
+            let value = '';
+            if (handler.name === 'button') {
+              value = select('a', containerChild)?.properties?.href;
+            } else {
+              value = groupField.component === 'richtext' ? encodeHtml(toHtml(containerChild).trim()) : toString(containerChild).trim();
+            }
             if (properties[groupField.name]) {
               properties[groupField.name] = `${properties[groupField.name]}${value}`;
             } else {
@@ -250,8 +265,8 @@ function getBlockItems(node, filter, ctx) {
 
 function generateProperties(node, ctx) {
   /* eslint-disable no-console */
-  const id = node?.properties?.className[0] || undefined;
-  if (!id) {
+  const nameClass = node?.properties?.className[0] || undefined;
+  if (!nameClass) {
     console.warn('Block component not found');
     return {};
   }
@@ -260,9 +275,9 @@ function generateProperties(node, ctx) {
     console.warn('Block component not found');
     return {};
   }
-  const { name, filterId } = findNameFilterById(componentDefinition, id);
+  const { name, model, filterId } = findNameFilterById(componentDefinition, nameClass);
   const filter = findFilterById(filters, filterId);
-  const attributes = extractProperties(node, id, ctx, 'simple');
+  const attributes = extractProperties(node, model, ctx, 'simple');
   const blockItems = getBlockItems(node, filter, ctx);
   const properties = {
     name,
