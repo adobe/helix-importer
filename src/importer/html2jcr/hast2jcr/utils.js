@@ -135,3 +135,14 @@ export function createComponentTree() {
     return updateNestedTree(tree, path);
   };
 }
+
+export function findFieldsById(componentModels, id) {
+  let fields = null;
+  componentModels.forEach((item) => {
+    if (item.id === id) {
+      fields = item.fields;
+    }
+  });
+
+  return fields;
+}
