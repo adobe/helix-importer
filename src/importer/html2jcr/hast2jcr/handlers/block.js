@@ -128,8 +128,8 @@ function createComponentGroups(fields) {
   return components;
 }
 
-function isHeadline(handler, field, fields) {
-  return handler.name === 'title' && field.component === 'text' && fields.find((f) => f.name === `${field.name}Type`);
+function isHeadline(field, fields) {
+  return field.component === 'text' && fields.find((f) => f.name === `${field.name}Type`);
 }
 
 function findFieldByType(handler, groupFields, fields, idx) {
@@ -137,11 +137,12 @@ function findFieldByType(handler, groupFields, fields, idx) {
   let gIdx = idx;
   for (let index = gIdx; index < groupFields.length; index += 1) {
     const field = groupFields[index];
-    if (field.component === handler.name
-      || isHeadline(handler, field, fields)
+    if ((field.component === handler.name && !isHeadline(field, fields))
+      || (isHeadline(field, fields) && handler.name === 'title')
       || (field.component === 'richtext' && handler.name === 'text')
       || (field.component === 'multiselect' && handler.name === 'text')
-      || (field.component === 'reference' && handler.name === 'button')) {
+      || (field.component === 'reference' && handler.name === 'button')
+      || (field.component === 'reference' && handler.name === 'image')) {
       groupField = field;
       if (field.component === 'richtext' && handler.name === 'text') {
         gIdx = index;
@@ -184,6 +185,9 @@ function extractProperties(node, id, ctx, mode = 'container') {
             let value = '';
             if (handler.name === 'button') {
               value = select('a', containerChild)?.properties?.href;
+            } else if (handler.name === 'image') {
+              value = select('img', containerChild)?.properties?.src;
+              containerChild = select('img', containerChild);
             } else {
               value = groupField.component === 'richtext' ? encodeHtml(toHtml(containerChild).trim()) : toString(containerChild).trim();
             }
@@ -192,7 +196,7 @@ function extractProperties(node, id, ctx, mode = 'container') {
             } else {
               properties[groupField.name] = value;
             }
-            collapseField(groupField.name, field.fields, properties, containerChild);
+            collapseField(groupField.name, field.fields, properties, containerChild, handler);
           }
           groupFieldIdx = gIdx;
         }

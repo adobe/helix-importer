@@ -280,6 +280,55 @@
     ]
   },
   {
+    "id": "image-grouping",
+    "fields": [
+      {
+        "component": "reference",
+        "name": "teaser_image",
+        "label": "Image",
+        "value": "",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "label": "Alt",
+        "name": "teaser_imageAlt",
+        "value": "",
+        "valueType": "string"
+      },
+      {
+        "component": "reference",
+        "label": "CTA 1",
+        "name": "teaser_cta1",
+        "valueType": "string"
+      },
+      {
+        "component": "select",
+        "label": "Link Type",
+        "name": "teaser_cta1Type",
+        "valueType": "string",
+        "options" : [
+          { "name": "Default", "value": "default" },
+          { "name": "Primary", "value": "primary" },
+          { "name": "Secondary", "value": "secondary" }          
+        ]
+      },
+      {
+        "component": "text",
+        "label": "Link Text",
+        "name": "teaser_cta1Text",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "label": "Text",
+        "name": "teaser_cta1Title",
+        "value": "",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "section",
     "fields": [
       {
