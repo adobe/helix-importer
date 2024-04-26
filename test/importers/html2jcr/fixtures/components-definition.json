@@ -64,8 +64,23 @@
               "page": {
                 "resourceType": "core/franklin/components/block/v1/block",
                 "template": {
-                  "name": "Teaser Grouping",
+                  "name": "Teaser with Grouping",
                   "model": "teaser-grouping"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Image Grouping",
+          "id": "image-grouping",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "Image Grouping",
+                  "model": "image-grouping"
                 }
               }
             }
@@ -80,7 +95,8 @@
                 "resourceType": "core/franklin/components/block/v1/block",
                 "template": {
                   "name": "Cards",
-                  "filter": "cards"
+                  "filter": "cards",
+                  "model": "cards"
                 }
               }
             }
