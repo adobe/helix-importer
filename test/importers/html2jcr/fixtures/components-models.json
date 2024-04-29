@@ -1,5 +1,22 @@
 [
   {
+    "id": "page-metadata",
+    "fields": [
+      {
+        "component": "container",
+        "label": "Fieldset",
+        "fields": [
+          {
+            "component": "text",
+            "name": "template",
+            "label": "Template",
+            "required": true
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "simple-block",
     "fields": [
       {

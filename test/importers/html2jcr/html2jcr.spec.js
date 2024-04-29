@@ -78,4 +78,8 @@ describe('HTML to JCR converter', () => {
   it('converts buttons', async () => {
     await test('button');
   });
+
+  it('converts page metadata', async () => {
+    await test('page-metadata');
+  });
 });

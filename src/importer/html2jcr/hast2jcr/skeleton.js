@@ -34,7 +34,6 @@ const skeleton = {
           attributes: {
             'cq:template': '/libs/core/franklin/templates/page',
             'jcr:primaryType': 'cq:PageContent',
-            'jcr:title': 'Sites Franklin Example',
             'sling:resourceType': 'core/franklin/components/page/v1/page',
           },
           elements: [

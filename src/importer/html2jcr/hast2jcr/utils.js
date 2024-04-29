@@ -35,6 +35,9 @@ function hasOwnProperty(obj, prop) {
 }
 
 export function findMatchingPath(obj, path) {
+  if (path === '/jcr:root') {
+    return obj;
+  }
   const keys = path.split('/');
 
   const isMatchingPath = (currentKeys, targetKeys) => currentKeys.length === targetKeys.length
@@ -145,4 +148,17 @@ export function findFieldsById(componentModels, id) {
   });
 
   return fields;
+}
+
+export function reduceModelContainer(modelDefinition) {
+  return modelDefinition.map((item) => {
+    const fields = item.fields.flatMap((field) => {
+      if (field.component === 'container') {
+        return field.fields;
+      } else {
+        return field;
+      }
+    });
+    return { ...item, fields };
+  });
 }
