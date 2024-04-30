@@ -1,5 +1,34 @@
 [
   {
+    "id": "page-metadata",
+    "fields": [
+      {
+        "component": "container",
+        "label": "Fieldset",
+        "fields": [
+          {
+            "component": "text",
+            "name": "template",
+            "label": "Template",
+            "required": true
+          },
+          {
+            "component": "richtext",
+            "name": "abstract",
+            "label": "Absrtact",
+            "description": "Enter an abstract for site search"
+          },
+          {
+            "component": "date-time",
+            "name": "datetime",
+            "label": "Date Time",
+            "required": true
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "simple-block",
     "fields": [
       {

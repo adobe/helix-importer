@@ -14,12 +14,13 @@ import convert from 'xml-js';
 import skeleton from './skeleton.js';
 import {
   createComponentTree, getHandler, findMatchingPath, insertComponent,
+  reduceModelContainer,
 } from './utils.js';
 import handlers from './handlers/index.js';
 
 function buildPath(parents, { pathMap, handler }) {
-  const path = '/jcr:root/jcr:content/root';
-  if (handler.name !== 'section') {
+  const path = handler.name === 'metadata' ? '/jcr:root' : '/jcr:root/jcr:content/root';
+  if (handler.name !== 'section' && handler.name !== 'metadata') {
     for (let i = parents.length - 1; i >= 0; i -= 1) {
       const currentNode = parents[i];
       if (pathMap.has(currentNode)) {
@@ -37,10 +38,17 @@ function buildPath(parents, { pathMap, handler }) {
 }
 
 function getNodeName(name, path, { componentTree }) {
+  if (name === 'metadata') {
+    return 'jcr:content';
+  }
   const index = componentTree(`${path}/${name}`);
   return (index === 0) ? name : `${name}_${index - 1}`;
 }
 export default async function hast2jcr(hast, opts = {}) {
+  if (opts.componentModels) {
+    // eslint-disable-next-line no-param-reassign
+    opts.componentModels = reduceModelContainer(opts.componentModels);
+  }
   const json = JSON.parse(JSON.stringify(skeleton));
   const [jcrRoot] = json.elements;
   const componentTree = createComponentTree();

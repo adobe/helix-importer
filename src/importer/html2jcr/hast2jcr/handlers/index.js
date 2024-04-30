@@ -16,6 +16,7 @@ import image from './image.js';
 import section from './section.js';
 import text from './text.js';
 import title from './title.js';
+import metadata from './metadata.js';
 
 export default {
   block,
@@ -25,4 +26,5 @@ export default {
   section,
   text,
   title,
+  metadata,
 };
