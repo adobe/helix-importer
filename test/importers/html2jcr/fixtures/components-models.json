@@ -11,6 +11,18 @@
             "name": "template",
             "label": "Template",
             "required": true
+          },
+          {
+            "component": "richtext",
+            "name": "abstract",
+            "label": "Absrtact",
+            "description": "Enter an abstract for site search"
+          },
+          {
+            "component": "date-time",
+            "name": "datetime",
+            "label": "Date Time",
+            "required": true
           }
         ]
       }
