@@ -11,15 +11,17 @@
  */
 import { select } from 'unist-util-select';
 import { h } from 'hastscript';
-import { encodeHTMLEntities, hasSingleChildElement, matchStructure } from '../utils.js';
+import { encodeHTMLEntities, matchStructure } from '../utils.js';
 
 const resourceType = 'core/franklin/components/image/v1/image';
 
 function getImage(node) {
   const $image = select('element[tagName=img]', node);
+  const $caption = select('element[tagName=em]', node);
   const { alt, src } = $image.properties;
   return {
     alt: encodeHTMLEntities(alt),
+    title: $caption ? encodeHTMLEntities($caption.children[0].value) : '',
     src: encodeHTMLEntities(src),
   };
 }
@@ -27,20 +29,22 @@ function getImage(node) {
 const image = {
   use: (node) => {
     if (node.tagName === 'p') {
-      if (hasSingleChildElement(node)) {
-        if (matchStructure(node, h('p', [h('picture', [h('img')])]))
-          || matchStructure(node, h('p', [h('img')]))) {
-          return true;
-        }
+      if (matchStructure(node, h('p', [h('picture', [h('img')])]))
+        || matchStructure(node, h('p', [h('picture', [h('img'), h('em')])]))
+        || matchStructure(node, h('p', [h('img')]))
+        || matchStructure(node, h('p', [h('img'), h('em')]))
+      ) {
+        return true;
       }
     }
     return false;
   },
   getAttributes: (node) => {
-    const { alt, src: fileReference } = getImage(node);
+    const { alt, title, src: fileReference } = getImage(node);
     return {
       rt: resourceType,
       alt,
+      ...(title !== '' ? { title } : {}),
       fileReference,
     };
   },

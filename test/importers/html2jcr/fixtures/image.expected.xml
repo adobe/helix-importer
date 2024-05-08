@@ -4,6 +4,7 @@
         <root jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/root/v1/root">
             <section sling:resourceType="core/franklin/components/section/v1/section" jcr:primaryType="nt:unstructured">
                 <image sling:resourceType="core/franklin/components/image/v1/image" jcr:primaryType="nt:unstructured" alt="People sitting in the garden &amp; relaxing" fileReference="/content/dam/asset.jpg"/>
+                <image_0 sling:resourceType="core/franklin/components/image/v1/image" jcr:primaryType="nt:unstructured" alt="People sitting in the garden &amp; relaxing" title="Spring time is garden time" fileReference="/content/dam/asset.jpg"/>
             </section>
         </root>
     </jcr:content>
