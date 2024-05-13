@@ -27,10 +27,22 @@ function getRichText(node) {
   return encodeHTMLEntities(richText);
 }
 
+function isList(node) {
+  return node.tagName === 'ul' || node.tagName === 'ol';
+}
+
+function isCode(node) {
+  return node.tagName === 'pre';
+}
+
+function isBlockquote(node) {
+  return node.tagName === 'blockquote';
+}
+
 const text = {
   use: (node) => {
     // Ignore paragraphs that only contain a single button or single image
-    if (node.tagName === 'p') {
+    if (node.tagName === 'p' || isList(node) || isBlockquote(node) || isCode(node)) {
       if (hasSingleChildElement(node)) {
         if (matchStructure(node, h('p', [h('strong', [h('a')])]))
           || matchStructure(node, h('p', [h('a')]))
