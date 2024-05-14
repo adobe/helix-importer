@@ -301,6 +301,7 @@ function use(node, parents) {
     && parents[parents.length - 2].tagName === 'main'
     && node.properties?.className?.length > 0
     && node.properties?.className[0] !== 'columns'
+    && node.properties?.className[0] !== 'metadata'
     && node.properties?.className[0] !== 'section-metadata';
 }
 

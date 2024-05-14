@@ -162,3 +162,13 @@ export function reduceModelContainer(modelDefinition) {
     return { ...item, fields };
   });
 }
+
+export function toMetaName(text) {
+  return text
+    .toLowerCase()
+    .replace(/[^0-9a-z:_]/gi, '-');
+}
+
+export function childNodes(node) {
+  return node.children.filter((n) => n.type === 'element');
+}

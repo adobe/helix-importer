@@ -10,9 +10,15 @@
  * governing permissions and limitations under the License.
  */
 
+import { select } from 'hast-util-select';
+import { toString } from 'hast-util-to-string';
+
 const metadataFields = ['description'];
 
 function addMetadataFields(componentModels) {
+  if (!componentModels) {
+    return;
+  }
   const pageMetadata = componentModels.find((component) => component.id === 'page-metadata');
   if (pageMetadata) {
     metadataFields.push(...pageMetadata.fields.map((field) => field.name));
@@ -23,9 +29,9 @@ const metadata = {
   getAttributes: (node, ctx) => {
     const { componentModels } = ctx;
     addMetadataFields(componentModels);
-    const title = node.children.find((child) => child.tagName === 'title');
+    const $title = select('title', node);
     const meta = node.children.filter((child) => child.tagName === 'meta');
-    const metaAttributes = meta.reduce((acc, child) => {
+    let metaAttributes = meta.reduce((acc, child) => {
       const { name, property, content } = child.properties;
       if (metadataFields.indexOf(name) === -1 && metadataFields.indexOf(property) === -1) {
         return acc;
@@ -35,8 +41,10 @@ const metadata = {
       }
       return { ...acc, [name || property]: content };
     }, {});
+    if ($title) {
+      metaAttributes = { 'jcr:title': toString($title), ...metaAttributes };
+    }
     return {
-      'jcr:title': title ? title.children[0].value : '',
       ...metaAttributes,
     };
   },

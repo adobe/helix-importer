@@ -22,6 +22,7 @@ import createPageBlocks from '@adobe/helix-html-pipeline/src/steps/create-page-b
 import { h } from 'hastscript';
 import fixSections from '@adobe/helix-html-pipeline/src/steps/fix-sections.js';
 import hast2jcr from './hast2jcr/index.js';
+import createHead from './hast2jcr/hast-head.js';
 
 async function html2jcr(html, opts) {
   const hast = unified()
@@ -50,8 +51,10 @@ async function md2jcr(md, opts) {
 
   fixSections({ content });
   createPageBlocks({ content });
+  const $head = createHead({ content });
 
   const doc = h('html', [
+    $head,
     h('body', [
       h('header', []),
       h('main', content.hast),
