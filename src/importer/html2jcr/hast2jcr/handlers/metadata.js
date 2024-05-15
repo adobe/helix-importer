@@ -12,6 +12,7 @@
 
 import { select } from 'hast-util-select';
 import { toString } from 'hast-util-to-string';
+import { toMetaName } from '../utils.js';
 
 const metadataFields = ['description'];
 
@@ -29,11 +30,12 @@ const metadata = {
   getAttributes: (node, ctx) => {
     const { componentModels } = ctx;
     addMetadataFields(componentModels);
+    const metaNameFields = metadataFields.map((field) => toMetaName(field));
     const $title = select('title', node);
     const meta = node.children.filter((child) => child.tagName === 'meta');
     let metaAttributes = meta.reduce((acc, child) => {
       const { name, property, content } = child.properties;
-      if (metadataFields.indexOf(name) === -1 && metadataFields.indexOf(property) === -1) {
+      if (metaNameFields.indexOf(name) === -1 && metaNameFields.indexOf(property) === -1) {
         return acc;
       }
       if (name === 'description') {
