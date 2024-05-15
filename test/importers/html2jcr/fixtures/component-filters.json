@@ -1,8 +1,25 @@
 [
   {
+    "id": "section",
+    "components": [
+      "text",
+      "image",
+      "button",
+      "title",
+      "columns",
+      "teaser-grouping"
+    ]
+  },
+  {
     "id": "cards",
     "components": [
       "card"
+    ]
+  },
+  {
+    "id": "teaser-grouping",
+    "components": [
+      "teaser-grouping-item"
     ]
   }
 ]

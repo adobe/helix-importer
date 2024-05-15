@@ -171,7 +171,8 @@ function extractProperties(node, id, ctx, mode = 'container') {
     }
     if (field.component === 'group') {
       const groupFields = getMainFields(field.fields);
-      const containerNode = select('div > div', children[idx]);
+      const selector = mode === 'container' ? ':scope' : 'div > div';
+      const containerNode = select(selector, children[idx]);
       const containerChildren = containerNode.children.filter((child) => child.type === 'element');
       let groupFieldIdx = 0;
       containerChildren.forEach((containerChild) => {
@@ -253,6 +254,7 @@ function getBlockItems(node, filter, ctx) {
       name: i > 0 ? `item_${i - 1}` : 'item',
       attributes: {
         'jcr:primaryType': 'nt:unstructured',
+        'sling:resourceType': 'core/franklin/components/block/v1/block/item',
         name,
         ...properties,
       },
