@@ -140,3 +140,34 @@ describe('Blocks#getMetadataBlock tests', () => {
     test({ title: 'Some title', Tags: ['Creative', 'Experience Cloud', 'Photography'] }, '<table><tr><th colspan="2">Metadata</th></tr><tr><td>title</td><td>Some title</td></tr><tr><td>Tags</td><td><p>Creative</p><p>Experience Cloud</p><p>Photography</p></td></tr></table>');
   });
 });
+
+describe('Blocks#createBlock tests', () => {
+  const test = (name, variants = [], cells = [], expected = '') => {
+    const { document } = (new JSDOM()).window;
+    const table = Blocks.createBlock(document, { name, variants, cells });
+    strictEqual(trim(table.outerHTML), trim(expected));
+  };
+
+  it('createBlock empty block', () => {
+    test('test block', [], [], '<table><tr><th>Test Block</th></tr></table>');
+    test('Test Block', [], [], '<table><tr><th>Test Block</th></tr></table>');
+  });
+
+  it('createBlock with variants', () => {
+    test('test block', ['variant-1'], [], '<table><tr><th>Test Block (variant-1)</th></tr></table>');
+    test('test block', ['variant-1', 'variant-2'], [], '<table><tr><th>Test Block (variant-1, variant-2)</th></tr></table>');
+  });
+
+  it('createBlock block config', () => {
+    test('Test Block', [], { title: 'Some title' }, '<table><tr><th colspan="2">Test Block</th></tr><tr><td>title</td><td>Some title</td></tr></table>');
+    test('Test Block', [], { Author: 'Name of the author', 'Creation Date': '2022/01/01' }, '<table><tr><th colspan="2">Test Block</th></tr><tr><td>Author</td><td>Name of the author</td></tr><tr><td>Creation Date</td><td>2022/01/01</td></tr></table>');
+  });
+
+  it('createBlock cell array', () => {
+    const cells = [
+      ['Row 1 - Col 1', 'Row 1 - Col 2'],
+      ['Row 2 - Col 1', 'Row 2 - Col 2'],
+    ];
+    test('Test Block', [], cells, '<table><tr><th colspan="2">Test Block</th></tr><tr><td>Row 1 - Col 1</td><td>Row 1 - Col 2</td></tr><tr><td>Row 2 - Col 1</td><td>Row 2 - Col 2</td></tr></table>');
+  });
+});

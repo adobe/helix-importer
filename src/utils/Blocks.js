@@ -11,47 +11,117 @@
  */
 import DOMUtils from './DOMUtils.js';
 
-const DEFAULT_COLSPAN = 2;
+function getDocumentMetadata(name, document) {
+  const attr = name && name.includes(':') ? 'property' : 'name';
+  const meta = [...document.head.querySelectorAll(`meta[${attr}="${name}"]`)]
+    .map((m) => m.content)
+    .join(', ');
+  return meta || '';
+}
 
 export default class Blocks {
-  static getMetadataBlock(document, metadata) {
-    const table = document.createElement('table');
-
-    let row = document.createElement('tr');
-    table.append(row);
-
-    const hCell = document.createElement('th');
-    row.append(hCell);
-
-    hCell.innerHTML = 'Metadata';
-    hCell.setAttribute('colspan', DEFAULT_COLSPAN);
-
-    // eslint-disable-next-line no-restricted-syntax, guard-for-in
-    for (const key in metadata) {
-      row = document.createElement('tr');
-      table.append(row);
-      const keyCell = document.createElement('td');
-      row.append(keyCell);
-      keyCell.textContent = key;
-      const valueCell = document.createElement('td');
-      row.append(valueCell);
-      const value = metadata[key];
-      if (value) {
+  static createBlock(document, { name, variants = [], cells: data }) {
+    const headerRow = variants.length ? [`${Blocks.computeBlockName(name)} (${variants.join(', ')})`] : [Blocks.computeBlockName(name)];
+    let blockRows = data;
+    if (!Array.isArray(data)) {
+      blockRows = Object.entries(data).map(([key, value]) => {
+        let colItems = [];
         if (Array.isArray(value)) {
-          value.forEach((v) => {
+          colItems = value.map((v) => {
             const p = document.createElement('p');
             p.innerHTML = v;
-            valueCell.append(p);
+            return p;
           });
-        } else if (typeof value === 'string') {
-          valueCell.textContent = value;
         } else {
-          valueCell.append(value);
+          colItems = [value];
         }
+        return [key, colItems];
+      });
+    }
+    return DOMUtils.createTable([headerRow, ...blockRows], document);
+  }
+
+  static getMetadataBlock(document, metadata) {
+    return Blocks.createBlock(document, {
+      name: 'Metadata',
+      cells: metadata,
+    });
+  }
+
+  static getMetadata(document) {
+    const meta = {};
+
+    const title = document.querySelector('title');
+    if (title) {
+      meta.Title = title.textContent.replace(/[\n\t]/gm, '');
+    }
+
+    const desc = getDocumentMetadata('description', document);
+    if (desc) {
+      meta.Description = desc;
+    }
+
+    const img = getDocumentMetadata('og:image', document);
+    if (img) {
+      const el = document.createElement('img');
+      el.src = img;
+      meta.Image = el;
+
+      const imgAlt = getDocumentMetadata('og:image:alt', document);
+      if (imgAlt) {
+        el.alt = imgAlt;
       }
     }
 
-    return table;
+    const ogtitle = getDocumentMetadata('og:title', document);
+    if (ogtitle && ogtitle !== meta.Title) {
+      if (meta.Title) {
+        meta['og:title'] = ogtitle;
+      } else {
+        meta.Title = ogtitle;
+      }
+    }
+
+    const ogdesc = getDocumentMetadata('og:description', document);
+    if (ogdesc && ogdesc !== meta.Description) {
+      if (meta.Description) {
+        meta['og:description'] = ogdesc;
+      } else {
+        meta.Description = ogdesc;
+      }
+    }
+
+    const ttitle = getDocumentMetadata('twitter:title', document);
+    if (ttitle && ttitle !== meta.Title) {
+      if (meta.Title) {
+        meta['twitter:title'] = ttitle;
+      } else {
+        meta.Title = ttitle;
+      }
+    }
+
+    const tdesc = getDocumentMetadata('twitter:description', document);
+    if (tdesc && tdesc !== meta.Description) {
+      if (meta.Description) {
+        meta['twitter:description'] = tdesc;
+      } else {
+        meta.Description = tdesc;
+      }
+    }
+
+    const timg = getDocumentMetadata('twitter:image', document);
+    if (timg && timg !== img) {
+      const el = document.createElement('img');
+      el.src = timg;
+      meta['twitter:image'] = el;
+
+      const imgAlt = getDocumentMetadata('twitter:image:alt', document);
+      if (imgAlt) {
+        el.alt = imgAlt;
+      }
+    }
+
+    return meta;
   }
 
   static computeBlockName(str) {
