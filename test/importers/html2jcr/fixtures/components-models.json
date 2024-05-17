@@ -229,7 +229,7 @@
         "valueType": "string"
       },
       {
-        "component": "reference",
+        "component": "aem-content",
         "label": "CTA 1",
         "name": "teaserText_cta1",
         "valueType": "string"
@@ -259,7 +259,7 @@
         "valueType": "string"
       },
       {
-        "component": "reference",
+        "component": "aem-content",
         "label": "CTA 2",
         "name": "teaserText_cta2",
         "valueType": "string"
