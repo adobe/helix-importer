@@ -15,6 +15,11 @@ import { toString } from 'hast-util-to-string';
 import { toMetaName } from '../utils.js';
 
 const metadataFields = ['description'];
+const aemMapping = {
+  'jcr:description': 'description',
+  'cq:canonicalUrl': 'canonical',
+  'cq:robotsTags': 'robots',
+};
 
 function addMetadataFields(componentModels) {
   if (!componentModels) {
@@ -38,10 +43,17 @@ const metadata = {
       if (metaNameFields.indexOf(name) === -1 && metaNameFields.indexOf(property) === -1) {
         return acc;
       }
-      if (name === 'description') {
-        return { ...acc, 'jcr:description': content };
+      let finalContent = content;
+      if (name === 'robots' || name === 'keywords') {
+        finalContent = content.split(',').map((value) => value.trim());
+        finalContent = finalContent.length > 0 ? `[${finalContent.join(',')}]` : '';
       }
-      return { ...acc, [name || property]: content };
+      for (const [key, value] of Object.entries(aemMapping)) {
+        if (name === value || property === value) {
+          return { ...acc, [key]: finalContent };
+        }
+      }
+      return { ...acc, [name || property]: finalContent };
     }, {});
     if ($title) {
       metaAttributes = { 'jcr:title': toString($title), ...metaAttributes };

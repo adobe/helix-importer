@@ -23,6 +23,18 @@
             "name": "datetime",
             "label": "Date Time",
             "required": true
+          },
+          {
+            "component": "text",
+            "name": "keywords",
+            "value": "",
+            "valueType": "string"
+          },
+          {
+            "component": "text",
+            "name": "robots",
+            "value": "",
+            "valueType": "string"
           }
         ]
       }
