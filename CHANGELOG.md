@@ -1,3 +1,10 @@
+# [3.4.0](https://github.com/adobe/helix-importer/compare/v3.3.8...v3.4.0) (2024-05-22)
+
+
+### Features
+
+* simplify block creation [#350](https://github.com/adobe/helix-importer/issues/350) ([#351](https://github.com/adobe/helix-importer/issues/351)) ([b766954](https://github.com/adobe/helix-importer/commit/b766954210d30bd9385ea7a785dee006efcd625a))
+
 ## [3.3.8](https://github.com/adobe/helix-importer/compare/v3.3.7...v3.3.8) (2024-04-27)
 
 
