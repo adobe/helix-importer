@@ -180,9 +180,7 @@ export default class DOMUtils {
         if (typeof cell === 'string') {
           t.innerHTML = cell;
         } else if (Array.isArray(cell)) {
-          cell.forEach((c) => {
-            t.append(c);
-          });
+          t.append(...cell);
         } else {
           t.append(cell);
         }
