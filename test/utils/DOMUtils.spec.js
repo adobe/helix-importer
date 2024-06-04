@@ -423,6 +423,10 @@ describe('DOMUtils#getImgFromBackground', () => {
     test(createElement('p', {}, { 'background-image': 'url(http://localhost:3001/image.jpg)' }, 'Some content'), '<img src="http://localhost:3001/image.jpg">');
   });
 
+  it('with complex background-image style', () => {
+    test(createElement('p', { style: 'background-image:url("https://www.server.com/image.jpg"), linear-gradient(transparent, transparent);' }, {}, 'Some content'), '<img src="https://www.server.com/image.jpg">');
+  });
+
   // `createElement` uses JSDOM to create the test-DOM
   // the workaround in DOMUtils#getImgFromBackground exists _precisely_
   // because of a potential bug in JSDOM due to which it doesn't
