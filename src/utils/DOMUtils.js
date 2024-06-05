@@ -261,9 +261,9 @@ export default class DOMUtils {
         const prop = split.shift();
         const value = split.join(':').trim();
         if (prop === 'background-image') {
-          const trimmedValue = value.replace(/\s/g, '');
+          const sanitizedValue = value.replace(/\s/g, '').split(',').shift();
           const elStyle = element.style;
-          elStyle.backgroundImage = trimmedValue;
+          elStyle.backgroundImage = sanitizedValue;
         }
       });
       const url = element.style.backgroundImage;
