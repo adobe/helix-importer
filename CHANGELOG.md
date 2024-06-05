@@ -1,3 +1,10 @@
+## [3.4.2](https://github.com/adobe/helix-importer/compare/v3.4.1...v3.4.2) (2024-06-05)
+
+
+### Bug Fixes
+
+* handle complex background image css property ([551289b](https://github.com/adobe/helix-importer/commit/551289b6ab40bec5eb5101c642759cbc47e8e0e6))
+
 ## [3.4.1](https://github.com/adobe/helix-importer/compare/v3.4.0...v3.4.1) (2024-06-02)
 
 
