@@ -21,6 +21,15 @@ const aemMapping = {
   'cq:robotsTags': 'robots',
 };
 
+function toPropertyName(name) {
+  const lowerCaseName = name.toLowerCase();
+  const index = metadataFields.findIndex((field) => field.toLowerCase() === lowerCaseName);
+  if (index !== -1) {
+    return metadataFields[index];
+  }
+  return name;
+}
+
 function addMetadataFields(componentModels) {
   if (!componentModels) {
     return;
@@ -53,7 +62,8 @@ const metadata = {
           return { ...acc, [key]: finalContent };
         }
       }
-      return { ...acc, [name || property]: finalContent };
+      const propertyName = toPropertyName(name || property);
+      return { ...acc, [propertyName]: finalContent };
     }, {});
     if ($title) {
       metaAttributes = { 'jcr:title': toString($title), ...metaAttributes };

@@ -35,6 +35,12 @@
             "name": "robots",
             "value": "",
             "valueType": "string"
+          },
+          {
+            "component": "text",
+            "name": "authorTitle",
+            "value": "",
+            "valueType": "string"
           }
         ]
       }
