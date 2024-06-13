@@ -19,6 +19,7 @@ function findNameFilterById(componentDefinition, nameClass) {
   let model = null;
   let filterId = null;
   let name = null;
+  let keyValue = null;
   componentDefinition.groups.forEach((group) => {
     group.components.forEach((component) => {
       const templateName = component?.plugins?.xwalk?.page?.template?.name;
@@ -29,11 +30,14 @@ function findNameFilterById(componentDefinition, nameClass) {
         .replace(/-+$/, '') === nameClass) {
         filterId = component?.plugins?.xwalk?.page?.template?.filter;
         model = component?.plugins?.xwalk?.page?.template?.model;
+        keyValue = component?.plugins?.xwalk?.page?.template['key-value'] || false;
         name = templateName;
       }
     });
   });
-  return { name, filterId, model };
+  return {
+    name, filterId, model, keyValue,
+  };
 }
 
 function findFilterById(filters, id) {
@@ -225,8 +229,9 @@ function extractProperties(node, id, ctx, mode = 'container') {
         properties[field.name] = toString(select(headlineNode.tagName, children[idx])).trim();
         collapseField(field.name, fields, properties, headlineNode);
       } else {
-        let value = encodeHTMLEntities(toString(select('div', children[idx])).trim());
-        if (field.component === 'multiselect') {
+        const selector = mode === 'keyValue' ? 'div > div:nth-last-child(1)' : 'div';
+        let value = encodeHTMLEntities(toString(select(selector, children[idx])).trim());
+        if (field.component === 'multiselect' || field.component === 'aem-tag') {
           value = `[${value.split(',').map((v) => v.trim()).join(', ')}]`;
         }
         properties[field.name] = value;
@@ -275,9 +280,11 @@ function generateProperties(node, ctx) {
     console.warn('Block component not found');
     return {};
   }
-  const { name, model, filterId } = findNameFilterById(componentDefinition, nameClass);
+  const {
+    name, model, filterId, keyValue,
+  } = findNameFilterById(componentDefinition, nameClass);
   const filter = findFilterById(filters, filterId);
-  const attributes = extractProperties(node, model, ctx, 'simple');
+  const attributes = extractProperties(node, model, ctx, keyValue ? 'keyValue' : 'simple');
   const blockItems = getBlockItems(node, filter, ctx);
   const properties = {
     name,

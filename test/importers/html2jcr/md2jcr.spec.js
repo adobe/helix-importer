@@ -45,4 +45,7 @@ describe('MD to JCR converter', () => {
   it('converts a text with page metadata', async () => {
     await test('metadata');
   });
+  it('converts a block with key-value pairs', async () => {
+    await test('key-value');
+  });
 });
