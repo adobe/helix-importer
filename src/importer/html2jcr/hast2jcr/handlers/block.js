@@ -53,7 +53,9 @@ function findFilterById(filters, id) {
 }
 
 function encodeHtml(str) {
-  return str.replace(/&(?!amp;|lt;|gt;|quot;|apos;|#\d+;)/g, '&amp;')
+  /* eslint-disable no-param-reassign */
+  str = str.replace(/<code>(.*?)<\/code>/gs, (match) => match.replace(/\n/g, '&#xa;'));
+  return str.replace(/&(?!amp;|lt;|gt;|quot;|apos;|#xa|#\d+;)/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/(\r\n|\n|\r)/gm, '')
     .replace(/>[\s]*&lt;/g, '>&lt;');
