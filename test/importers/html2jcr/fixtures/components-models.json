@@ -59,6 +59,43 @@
     ]    
   },
   {
+    "id": "relatedposts",
+    "fields": [
+      {
+        "component": "text",
+        "name": "title",
+        "label": "Title"
+      },
+      {
+        "component": "aem-tag",
+        "name": "category",
+        "label": "Category",
+        "valueType": "string",
+        "multi": true
+      },
+      {
+        "component": "number",
+        "name": "maxItems",
+        "label": "Max Items"
+      },
+      {
+        "component": "select",
+        "name": "sortOrder",
+        "label": "Sort Order",
+        "options": [
+          {
+            "name": "Descending",
+            "value": "descending"
+          },
+          {
+            "name": "Ascending",
+            "value": "ascending"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "cards",
     "fields": [
       {
