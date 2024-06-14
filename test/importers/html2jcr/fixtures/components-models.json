@@ -59,6 +59,18 @@
     ]    
   },
   {
+    "id": "code",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "relatedposts",
     "fields": [
       {
