@@ -12,7 +12,7 @@
 
 import { select } from 'hast-util-select';
 import { toString } from 'hast-util-to-string';
-import { toMetaName } from '../utils.js';
+import { encodeHTMLEntities, toMetaName } from '../utils.js';
 
 const metadataFields = ['description'];
 const aemMapping = {
@@ -52,9 +52,9 @@ const metadata = {
       if (metaNameFields.indexOf(name) === -1 && metaNameFields.indexOf(property) === -1) {
         return acc;
       }
-      let finalContent = content;
+      let finalContent = encodeHTMLEntities(content);
       if (name === 'robots' || name === 'keywords') {
-        finalContent = content.split(',').map((value) => value.trim());
+        finalContent = content.split(',').map((value) => encodeHTMLEntities(value.trim()));
         finalContent = finalContent.length > 0 ? `[${finalContent.join(',')}]` : '';
       }
       for (const [key, value] of Object.entries(aemMapping)) {
