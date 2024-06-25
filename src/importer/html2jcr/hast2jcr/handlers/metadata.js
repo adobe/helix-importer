@@ -30,6 +30,15 @@ function toPropertyName(name) {
   return name;
 }
 
+function isMultiValueField(name, componentModels) {
+  const pageMetadata = componentModels.find((component) => component.id === 'page-metadata');
+  if (pageMetadata) {
+    const field = pageMetadata.fields.find((f) => f.name === name);
+    return field && (field.component === 'multiselect' || field.component === 'aem-tag' || field.component === 'checkbox' || field.multi);
+  }
+  return false;
+}
+
 function addMetadataFields(componentModels) {
   if (!componentModels) {
     return;
@@ -53,7 +62,7 @@ const metadata = {
         return acc;
       }
       let finalContent = encodeHTMLEntities(content);
-      if (name === 'robots' || name === 'keywords') {
+      if (isMultiValueField(name || property, componentModels)) {
         finalContent = content.split(',').map((value) => encodeHTMLEntities(value.trim()));
         finalContent = finalContent.length > 0 ? `[${finalContent.join(',')}]` : '';
       }
@@ -66,7 +75,7 @@ const metadata = {
       return { ...acc, [propertyName]: finalContent };
     }, {});
     if ($title) {
-      metaAttributes = { 'jcr:title': toString($title), ...metaAttributes };
+      metaAttributes = { 'jcr:title': encodeHTMLEntities(toString($title)), ...metaAttributes };
     }
     return {
       ...metaAttributes,
