@@ -28,13 +28,23 @@
             "component": "text",
             "name": "keywords",
             "value": "",
-            "valueType": "string"
+            "valueType": "string",
+            "multi": true
           },
           {
             "component": "text",
             "name": "robots",
             "value": "",
-            "valueType": "string"
+            "valueType": "string",
+            "multi": true
+          },
+          {
+            "component": "text",
+            "name": "topics",
+            "label": "Topics",
+            "value": "",
+            "valueType": "string",
+            "multi": true
           },
           {
             "component": "text",
