@@ -17,6 +17,12 @@
     ]
   },
   {
+    "id": "styled-cards",
+    "components": [
+      "styled-card"
+    ]
+  },
+  {
     "id": "teaser-grouping",
     "components": [
       "teaser-grouping-item"

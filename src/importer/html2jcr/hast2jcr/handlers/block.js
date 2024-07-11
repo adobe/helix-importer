@@ -162,7 +162,7 @@ function findFieldByType(handler, groupFields, fields, idx) {
   return { gIdx, groupField };
 }
 
-function extractProperties(node, id, ctx, mode = 'container') {
+function extractProperties(node, id, ctx, mode) {
   const children = node.children.filter((child) => child.type === 'element');
   const properties = {};
   const { componentModels } = ctx;
@@ -177,7 +177,7 @@ function extractProperties(node, id, ctx, mode = 'container') {
     }
     if (field.component === 'group') {
       const groupFields = getMainFields(field.fields);
-      const selector = mode === 'container' ? ':scope' : 'div > div';
+      const selector = mode === 'blockItem' ? ':scope' : 'div > div';
       const containerNode = select(selector, children[idx]);
       const containerChildren = containerNode.children.filter((child) => child.type === 'element');
       let groupFieldIdx = 0;
@@ -208,13 +208,14 @@ function extractProperties(node, id, ctx, mode = 'container') {
           groupFieldIdx = gIdx;
         }
       });
-    } else if (field.name === 'classes') {
+    } else if (field.name === 'classes' && mode !== 'blockItem') {
+      // handle the classes as className only for blocks, not block items
       const classNames = node?.properties?.className;
       if (classNames?.length > 1) {
         properties[field.name] = `[${classNames.slice(1).join(', ')}]`;
       }
     } else if (field?.component === 'richtext') {
-      const selector = mode === 'container' ? 'div > *' : 'div > div > * ';
+      const selector = mode === 'blockItem' ? 'div > *' : 'div > div > * ';
       properties[field.name] = encodeHtml(toHtml(selectAll(selector, children[idx])).trim());
     } else if (field?.component === 'image' || field?.component === 'reference') {
       const imageNode = select('img', children[idx]);
@@ -234,7 +235,7 @@ function extractProperties(node, id, ctx, mode = 'container') {
         const selector = mode === 'keyValue' ? 'div > div:nth-last-child(1)' : 'div';
         let value = encodeHTMLEntities(toString(select(selector, children[idx])).trim());
         if (field.component === 'multiselect' || field.component === 'aem-tag') {
-          value = `[${value.split(',').map((v) => v.trim()).join(', ')}]`;
+          value = `[${value.split(',').map((v) => v.trim()).join(',')}]`;
         }
         properties[field.name] = value;
       }
@@ -255,7 +256,7 @@ function getBlockItems(node, filter, ctx) {
   for (let i = 0; i < rows.length; i += 1) {
     const itemPath = `${path}/item${i + 1}`;
     pathMap.set(rows[i], itemPath);
-    const properties = extractProperties(rows[i], filter, ctx);
+    const properties = extractProperties(rows[i], filter, ctx, 'blockItem');
     elements.push({
       type: 'element',
       name: i > 0 ? `item_${i - 1}` : 'item',
