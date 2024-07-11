@@ -4,7 +4,7 @@
         <root jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/root/v1/root">
             <section sling:resourceType="core/franklin/components/section/v1/section" jcr:primaryType="nt:unstructured">
                 <block sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="Simple Block" text="This is a simple block." model="simple-block"/>
-                <block_0 sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="Cards" filter="card" classes="[alpha]" model="cards">
+                <block_0 sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="Cards" filter="card" classes="alpha" model="cards">
                     <item jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/block/v1/block/item" name="Card" image="/content/dam/test12/unmatched-speed.png" text="&lt;p>&lt;strong>Content at scale&lt;/strong>&lt;/p>&lt;p>AEM allows you to publish more content in shorter time with smaller teams&lt;/p>" keywords="[Google Docs,AEM]" model="card"/>
                     <item_0 jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/block/v1/block/item" name="Card" image="/content/dam/test12/content-at-scale.png" text="&lt;p>&lt;strong>Unmatched speed&lt;/strong>&lt;/p>&lt;p>AEM is the fastest way to publish, create, and serve websites&lt;/p>" keywords="[Word,Google Docs,AEM]" model="card"/>
                     <item_1 jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/block/v1/block/item" name="Card" image="/content/dam/test12/uncertainty-eliminated.png" text="&lt;p>&lt;strong>Uncertainty eliminated&lt;/strong>&lt;/p>&lt;p>Preview content at 100% fidelity, get predictable content velocity, and shorten project durations&lt;/p>" keywords="[Word,AEM]" model="card"/>
@@ -15,7 +15,7 @@
                 </block_0>
             </section>
             <section_0 sling:resourceType="core/franklin/components/section/v1/section" jcr:primaryType="nt:unstructured">
-                <block sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="Styled Cards" filter="styled-card" classes="[alpha]" model="cards">
+                <block sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="Styled Cards" filter="styled-card" classes="alpha" model="cards">
                     <item jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/block/v1/block/item" name="Styled Card" classes="[a,c]" image="/content/dam/test12/unmatched-speed.png" text="&lt;p>&lt;strong>Content at scale&lt;/strong>&lt;/p>&lt;p>AEM allows you to publish more content in shorter time with smaller teams&lt;/p>" model="styled-card"/>
                 </block>
             </section_0>

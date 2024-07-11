@@ -212,7 +212,11 @@ function extractProperties(node, id, ctx, mode) {
       // handle the classes as className only for blocks, not block items
       const classNames = node?.properties?.className;
       if (classNames?.length > 1) {
-        properties[field.name] = `[${classNames.slice(1).join(', ')}]`;
+        let value = classNames.slice(1).map((v) => v.trim()).join(',');
+        if (field.component === 'multiselect' || field.component === 'aem-tag') {
+          value = `[${value}]`;
+        }
+        properties[field.name] = value;
       }
     } else if (field?.component === 'richtext') {
       const selector = mode === 'blockItem' ? 'div > *' : 'div > div > * ';
