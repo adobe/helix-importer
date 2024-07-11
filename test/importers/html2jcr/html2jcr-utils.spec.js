@@ -101,6 +101,11 @@ describe('Utils', () => {
         id: 'page-metadata',
         fields: [
           {
+            component: 'tab',
+            name: 'common',
+            label: 'Commons',
+          },
+          {
             component: 'richtext',
             name: 'abstract',
             label: 'Absrtact',
@@ -111,15 +116,21 @@ describe('Utils', () => {
             label: 'Fieldset',
             fields: [
               {
-                component: 'text',
-                name: 'theme',
-                label: 'Theme',
-                required: true,
-              },
-              {
-                component: 'aem-content',
-                name: 'author',
-                label: 'Author',
+                component: 'container',
+                label: 'Nested Fieldset',
+                fields: [
+                  {
+                    component: 'text',
+                    name: 'theme',
+                    label: 'Theme',
+                    required: true,
+                  },
+                  {
+                    component: 'aem-content',
+                    name: 'author',
+                    label: 'Author',
+                  },
+                ],
               },
             ],
           },

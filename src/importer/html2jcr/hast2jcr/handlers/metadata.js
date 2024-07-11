@@ -31,7 +31,7 @@ function toPropertyName(name) {
 }
 
 function isMultiValueField(name, componentModels) {
-  const pageMetadata = componentModels.find((component) => component.id === 'page-metadata');
+  const pageMetadata = componentModels?.find((component) => component.id === 'page-metadata');
   if (pageMetadata) {
     const field = pageMetadata.fields.find((f) => f.name === name);
     return field && (field.component === 'multiselect' || field.component === 'aem-tag' || field.component === 'checkbox' || field.multi);

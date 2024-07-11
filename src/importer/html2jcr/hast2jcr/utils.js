@@ -140,25 +140,28 @@ export function createComponentTree() {
 }
 
 export function findFieldsById(componentModels, id) {
-  let fields = null;
-  componentModels.forEach((item) => {
-    if (item.id === id) {
-      fields = item.fields;
-    }
-  });
-
-  return fields;
+  return componentModels?.find((item) => item.id === id)?.fields || [];
 }
 
 export function reduceModelContainer(modelDefinition) {
+  function flatten(field) {
+    if (field.component === 'container') {
+      return field.fields.flatMap(flatten);
+    }
+    return field;
+  }
+
   return modelDefinition.map((item) => {
-    const fields = item.fields.flatMap((field) => {
-      if (field.component === 'container') {
-        return field.fields;
-      } else {
-        return field;
-      }
-    });
+    const fields = item.fields
+      .flatMap((field) => {
+        if (field.component === 'tab') {
+          return null;
+        } else {
+          return flatten(field);
+        }
+      })
+      .filter((field) => field !== null);
+
     return { ...item, fields };
   });
 }
