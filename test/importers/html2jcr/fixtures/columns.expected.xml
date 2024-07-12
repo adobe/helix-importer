@@ -3,7 +3,7 @@
     <jcr:content cq:template="/libs/core/franklin/templates/page" jcr:primaryType="cq:PageContent" sling:resourceType="core/franklin/components/page/v1/page" jcr:title="Sites Franklin Example" jcr:description="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit... There is no one who loves pain itself, who seeks after ...">
         <root jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/root/v1/root">
             <section sling:resourceType="core/franklin/components/section/v1/section" jcr:primaryType="nt:unstructured">
-                <columns sling:resourceType="core/franklin/components/columns/v1/columns" jcr:primaryType="nt:unstructured" columns="2" rows="2">
+                <columns sling:resourceType="core/franklin/components/columns/v1/columns" jcr:primaryType="nt:unstructured" columns="2" rows="3">
                     <row1 jcr:primaryType="nt:unstructured">
                         <col1 jcr:primaryType="nt:unstructured">
                             <title sling:resourceType="core/franklin/components/title/v1/title" jcr:primaryType="nt:unstructured" jcr:title="What is Lorem Ipsum?" type="h2"/>
@@ -20,6 +20,14 @@
                             <title sling:resourceType="core/franklin/components/title/v1/title" jcr:primaryType="nt:unstructured" jcr:title="What is Lorem Ipsum?" type="h2"/>
                         </col2>
                     </row2>
+                    <row3 jcr:primaryType="nt:unstructured">
+                        <col1 jcr:primaryType="nt:unstructured">
+                            <title sling:resourceType="core/franklin/components/title/v1/title" jcr:primaryType="nt:unstructured" jcr:title="What is Lorem Ipsum?" type="h2"/>
+                        </col1>
+                        <col2 jcr:primaryType="nt:unstructured">
+                            <title sling:resourceType="core/franklin/components/title/v1/title" jcr:primaryType="nt:unstructured" jcr:title="What is Lorem Ipsum?" type="h2"/>
+                        </col2>
+                    </row3>
                 </columns>
             </section>
         </root>
