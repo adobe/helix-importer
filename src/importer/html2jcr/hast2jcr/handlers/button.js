@@ -38,11 +38,11 @@ function getLink(node) {
   }
   if (getType(node)) {
     const { href, title } = buttonNode.children[0].properties;
-    const text = buttonNode.children[0].children[0].value;
+    const text = buttonNode.children[0]?.children[0]?.value;
     return { href: encodeHTMLEntities(removeExtension(href)), text, title };
   }
-  const { href, title } = buttonNode.properties;
-  const text = buttonNode.children[0].value;
+  const { href = '', title = '' } = buttonNode.properties;
+  const text = buttonNode.children[0]?.value || '';
   return { href: encodeHTMLEntities(removeExtension(href)), text, title };
 }
 
