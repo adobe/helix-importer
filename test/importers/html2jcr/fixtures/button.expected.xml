@@ -6,6 +6,7 @@
                 <button sling:resourceType="core/franklin/components/button/v1/button" jcr:primaryType="nt:unstructured" type="primary" href="/content/franklin-components/button" text="Primary Button" title="This is a Primary Button"/>
                 <button_0 sling:resourceType="core/franklin/components/button/v1/button" jcr:primaryType="nt:unstructured" type="secondary" href="https://www.adobe.com/express/?promoid=DZTGZSWP&amp;mv=other" text="Secondary Button" title="This is a Secondary Button"/>
                 <button_1 sling:resourceType="core/franklin/components/button/v1/button" jcr:primaryType="nt:unstructured" href="/foo/bar" text="Default Button" title="This is a Default Button"/>
+                <button_2 sling:resourceType="core/franklin/components/button/v1/button" jcr:primaryType="nt:unstructured" href="#" text="" title=""/>
             </section>
         </root>
     </jcr:content>
