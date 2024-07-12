@@ -52,8 +52,8 @@ const columns = {
     return {
       rt: resourceType,
       children,
-      columns: children.length,
-      rows: children[0]?.elements?.length || 0,
+      columns: children[0]?.elements?.length || 0,
+      rows: children.length,
     };
   },
 };
