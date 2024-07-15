@@ -186,7 +186,7 @@ function extractGroupProperties(node, group, elements, properties, ctx) {
         const href = select('a', element)?.properties?.href;
         const firstField = getSpecificFieldByCondition(href, element, isLinkField);
         if (firstField) {
-          properties[firstField.field.name] = href;
+          properties[firstField.field.name] = encodeHTMLEntities(href);
           collapseField(firstField.field.name, groupFields, element, properties);
           remainingFields = remainingFields.slice(firstField.index + 1);
           return;
@@ -196,7 +196,7 @@ function extractGroupProperties(node, group, elements, properties, ctx) {
         const src = select('img', element)?.properties?.src;
         const firstField = getSpecificFieldByCondition(src, element, isImageField);
         if (firstField) {
-          properties[firstField.field.name] = src;
+          properties[firstField.field.name] = encodeHTMLEntities(src);
           collapseField(firstField.field.name, groupFields, element, properties);
           remainingFields = remainingFields.slice(firstField.index + 1);
           return;
@@ -206,7 +206,7 @@ function extractGroupProperties(node, group, elements, properties, ctx) {
         const text = toString(element).trim();
         const firstField = getSpecificFieldByCondition(text, element, isHeadlineField);
         if (firstField) {
-          properties[firstField.field.name] = text;
+          properties[firstField.field.name] = encodeHTMLEntities(text);
           collapseField(firstField.field.name, groupFields, element, properties);
           remainingFields = remainingFields.slice(firstField.index + 1);
           return;
@@ -221,7 +221,9 @@ function extractGroupProperties(node, group, elements, properties, ctx) {
           return !isHeadlineField(field, groupFields) && !isImageField(field, groupFields);
         });
         const isNextRichText = nextField.component === 'richtext';
-        const text = isNextRichText ? encodeHtml(toHtml(element).trim()) : toString(element).trim();
+        const text = isNextRichText
+          ? encodeHtml(toHtml(element).trim())
+          : encodeHTMLEntities(toString(element).trim());
         if (properties[nextField.name]) {
           properties[nextField.name] += text;
         } else {
@@ -282,13 +284,14 @@ function extractProperties(node, id, ctx, mode) {
       const linkNode = select('a', children[idx]);
       const headlineNode = select('h1, h2, h3, h4, h5, h6', children[idx]);
       if (imageNode && isImageField(field, fields)) {
-        properties[field.name] = imageNode.properties?.src;
+        properties[field.name] = encodeHTMLEntities(imageNode.properties?.src);
         collapseField(field.name, fields, imageNode, properties);
       } else if (linkNode && isLinkField(field, fields)) {
-        properties[field.name] = linkNode.properties?.href;
+        properties[field.name] = encodeHTMLEntities(linkNode.properties?.href);
         collapseField(field.name, fields, select('p', children[idx]), properties);
       } else if (headlineNode) {
-        properties[field.name] = toString(select(headlineNode.tagName, children[idx])).trim();
+        const text = toString(select(headlineNode.tagName, children[idx])).trim();
+        properties[field.name] = encodeHTMLEntities(text);
         collapseField(field.name, fields, headlineNode, properties);
       } else {
         const selector = mode === 'keyValue' ? 'div > div:nth-last-child(1)' : 'div';
