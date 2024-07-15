@@ -28,21 +28,21 @@ function getRichText(node) {
 }
 
 function isList(node) {
-  return node.tagName === 'ul' || node.tagName === 'ol';
+  return node?.tagName === 'ul' || node.tagName === 'ol';
 }
 
 function isCode(node) {
-  return node.tagName === 'pre';
+  return node?.tagName === 'pre';
 }
 
 function isBlockquote(node) {
-  return node.tagName === 'blockquote';
+  return node?.tagName === 'blockquote';
 }
 
 const text = {
   use: (node) => {
     // Ignore paragraphs that only contain a single button or single image
-    if (node.tagName === 'p' || isList(node) || isBlockquote(node) || isCode(node)) {
+    if (node?.tagName === 'p' || isList(node) || isBlockquote(node) || isCode(node)) {
       if (hasSingleChildElement(node)) {
         if (matchStructure(node, h('p', [h('strong', [h('a')])]))
           || matchStructure(node, h('p', [h('a')]))
@@ -71,6 +71,7 @@ const text = {
       insertComponent(parent, nodeName, component);
     }
   },
+  leaf: true,
 };
 
 export default text;

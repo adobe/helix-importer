@@ -277,7 +277,7 @@
         "options" : [
           { "name": "Default", "value": "default" },
           { "name": "Primary", "value": "primary" },
-          { "name": "Secondary", "value": "secondary" }          
+          { "name": "Secondary", "value": "secondary" }
         ]
       },
       {
@@ -360,7 +360,7 @@
         "options" : [
           { "name": "Default", "value": "default" },
           { "name": "Primary", "value": "primary" },
-          { "name": "Secondary", "value": "secondary" }          
+          { "name": "Secondary", "value": "secondary" }
         ]
       },
       {
@@ -390,7 +390,7 @@
         "options" : [
           { "name": "Default", "value": "default" },
           { "name": "Primary", "value": "primary" },
-          { "name": "Secondary", "value": "secondary" }          
+          { "name": "Secondary", "value": "secondary" }
         ]
       },
       {
@@ -430,7 +430,7 @@
     "id": "image-grouping",
     "fields": [
       {
-        "component": "reference",
+        "component": "custom-asset-picker:reference",
         "name": "teaser_image",
         "label": "Image",
         "value": "",
@@ -441,6 +441,12 @@
         "label": "Alt",
         "name": "teaser_imageAlt",
         "value": "",
+        "valueType": "string"
+      },
+
+      {
+        "component": "custom-asset-picker:mimeType",
+        "name": "teaser_imageMimeType",
         "valueType": "string"
       },
       {
@@ -457,7 +463,7 @@
         "options" : [
           { "name": "Default", "value": "default" },
           { "name": "Primary", "value": "primary" },
-          { "name": "Secondary", "value": "secondary" }          
+          { "name": "Secondary", "value": "secondary" }
         ]
       },
       {

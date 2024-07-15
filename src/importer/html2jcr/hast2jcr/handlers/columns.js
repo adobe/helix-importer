@@ -42,7 +42,7 @@ function getRows(node, ctx) {
 }
 
 const columns = {
-  use: (node, parents) => node.tagName === 'div'
+  use: (node, parents) => node?.tagName === 'div'
       && parents.length > 2
       && parents[parents.length - 2].tagName === 'main'
       && node.properties?.className?.length > 0

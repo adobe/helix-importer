@@ -84,7 +84,7 @@ export default async function hast2jcr(hast, opts = {}) {
       } else {
         insertComponent(parentComponent, nodeName, attributes);
       }
-      if (handler.name === 'block') {
+      if (handler.leaf) {
         return 'skip';
       }
 

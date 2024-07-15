@@ -16,12 +16,13 @@ function getText(node) {
 }
 
 const title = {
-  use: (node) => node.tagName.match(/h[1-6]/),
+  use: (node) => node?.tagName.match(/h[1-6]/),
   getAttributes: (node) => ({
     rt: 'core/franklin/components/title/v1/title',
     'jcr:title': encodeHTMLEntities(getText(node)),
     type: node.tagName,
   }),
+  leaf: true,
 };
 
 export default title;

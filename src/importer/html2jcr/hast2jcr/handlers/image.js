@@ -16,8 +16,17 @@ import { encodeHTMLEntities, matchStructure } from '../utils.js';
 const resourceType = 'core/franklin/components/image/v1/image';
 
 function getImage(node) {
-  const $image = select('element[tagName=img]', node);
-  const $caption = select('element[tagName=em]', node);
+  let $image;
+  let $caption;
+
+  if (node.tagName === 'img') {
+    $image = node;
+    $caption = null;
+  } else {
+    $image = select('element[tagName=img]', node);
+    $caption = select('element[tagName=em]', node);
+  }
+
   const { alt, src } = $image.properties;
   return {
     alt: encodeHTMLEntities(alt),
@@ -28,7 +37,10 @@ function getImage(node) {
 
 const image = {
   use: (node) => {
-    if (node.tagName === 'p') {
+    if (node?.tagName === 'img') {
+      return true;
+    }
+    if (node?.tagName === 'p') {
       if (matchStructure(node, h('p', [h('picture', [h('img')])]))
         || matchStructure(node, h('p', [h('picture', [h('img'), h('em')])]))
         || matchStructure(node, h('p', [h('img')]))
@@ -48,6 +60,7 @@ const image = {
       fileReference,
     };
   },
+  leaf: true,
 };
 
 export default image;

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:sling="http://sling.apache.org/jcr/sling/1.0" jcr:primaryType="cq:Page">
+    <jcr:content cq:template="/libs/core/franklin/templates/page" jcr:primaryType="cq:PageContent" sling:resourceType="core/franklin/components/page/v1/page">
+        <root jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/root/v1/root">
+            <section sling:resourceType="core/franklin/components/section/v1/section" jcr:primaryType="nt:unstructured">
+                <block sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="Teaser with Grouping" filter="teaser-grouping">
+                    <item jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/block/v1/block/item" name="Teaser Grouping Item" model="teaser-grouping-item"/>
+                    <item_0 jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/block/v1/block/item" name="Teaser Grouping Item" image="https://fastly.picsum.photos/id/85/200/300.jpg?hmac=_MELEMGQCalX-bflh-qD89Z5VjdVMfVXD68WblQSLM8" imageAlt="Image 0 alt text" teaserText_cta1="htttps://www.adobe.com" teaserText_cta1Text="CTA 1" model="teaser-grouping-item"/>
+                    <item_1 jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/block/v1/block/item" name="Teaser Grouping Item" image="https://fastly.picsum.photos/id/85/200/300.jpg?hmac=_MELEMGQCalX-bflh-qD89Z5VjdVMfVXD68WblQSLM8" imageAlt="Image 0 alt text" teaserText_subtitle="subtitle" teaserText_title="Heading" teaserText_titleType="h3" teaserText_cta1="htttps://www.adobe.com" teaserText_cta1Text="CTA 1" model="teaser-grouping-item"/>
+                </block>
+            </section>
+        </root>
+    </jcr:content>
+</jcr:root>

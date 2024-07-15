@@ -51,4 +51,7 @@ describe('MD to JCR converter', () => {
   it('converts a block with code', async () => {
     await test('code');
   });
+  it('converts a teaser block with grouping', async () => {
+    await test('teaser-with-grouping');
+  });
 });

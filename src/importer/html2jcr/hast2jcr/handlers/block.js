@@ -9,6 +9,8 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+/* eslint-disable no-use-before-define */
+
 import { select, selectAll } from 'hast-util-select';
 import { toString } from 'hast-util-to-string';
 import { toHtml } from 'hast-util-to-html';
@@ -40,18 +42,6 @@ function findNameFilterById(componentDefinition, nameClass) {
   };
 }
 
-function findFilterById(filters, id) {
-  let filter = null;
-  filters.forEach((item) => {
-    if (item.id === id) {
-      if (item?.components?.length > 0) {
-        filter = item?.components[0];
-      }
-    }
-  });
-  return filter;
-}
-
 function encodeHtml(str) {
   /* eslint-disable no-param-reassign */
   str = str.replace(/<code>(.*?)<\/code>/gs, (match) => match.replace(/\n/g, '&#xa;'));
@@ -61,7 +51,7 @@ function encodeHtml(str) {
     .replace(/>[\s]*&lt;/g, '>&lt;');
 }
 
-function collapseField(id, fields, properties, node) {
+function collapseField(id, fields, node, properties = {}) {
   /* eslint-disable no-param-reassign */
   const suffixes = ['Alt', 'Type', 'MimeType', 'Text', 'Title'];
   suffixes.forEach((suffix) => {
@@ -79,9 +69,14 @@ function collapseField(id, fields, properties, node) {
         } else {
           properties[field.name] = encodeHTMLEntities(select('a', node)?.properties?.[suffix.toLowerCase()]);
         }
+      } else if (suffix === 'MimeType') {
+        // TODO: can we guess the mime type from the src?
+        properties[field.name] = 'image/unknown';
       } else {
         properties[field.name] = encodeHTMLEntities(node?.properties?.[suffix.toLowerCase()]);
       }
+      // remove falsy names
+      if (!properties[field.name]) delete properties[field.name];
       fields.filter((value, index, array) => {
         if (value.name === `${id}${suffix}`) {
           array.splice(index, 1);
@@ -91,6 +86,7 @@ function collapseField(id, fields, properties, node) {
       });
     }
   });
+  return properties;
 }
 
 function getMainFields(fields) {
@@ -111,9 +107,6 @@ function getMainFields(fields) {
 
 function createComponentGroups(fields) {
   const components = [];
-  if (!fields) {
-    return components;
-  }
   fields.forEach((obj) => {
     if (obj.name.includes('_')) {
       const groupName = obj.name.split('_')[0];
@@ -134,32 +127,114 @@ function createComponentGroups(fields) {
   return components;
 }
 
-function isHeadline(field, fields) {
-  return field.component === 'text' && fields.find((f) => f.name === `${field.name}Type`);
+function isHeadlineField(field, fields) {
+  if (field.component === 'text') {
+    const typeField = fields.find((f) => f.name === `${field.name}Type`);
+    const textField = fields.find((f) => f.name === `${field.name}Text`);
+    return typeField && !textField; // that would otherwise be a link
+  }
+  return false;
 }
 
-function findFieldByType(handler, groupFields, fields, idx) {
-  let groupField = null;
-  let gIdx = idx;
-  for (let index = gIdx; index < groupFields.length; index += 1) {
-    const field = groupFields[index];
-    if ((field.component === handler.name && !isHeadline(field, fields))
-      || (isHeadline(field, fields) && handler.name === 'title')
-      || (field.component === 'richtext' && handler.name === 'text')
-      || (field.component === 'multiselect' && handler.name === 'text')
-      || (field.component === 'aem-content' && handler.name === 'button')
-      || (field.component === 'reference' && handler.name === 'image')) {
-      groupField = field;
-      if (field.component === 'richtext' && handler.name === 'text') {
-        gIdx = index;
-      } else {
-        gIdx = index + 1;
+function isLinkField(field, fields) {
+  // any text field or a any field that has a Text subfield can be a link
+  // TODO: actually any field can be a link but we have to start somewhere
+  return field.component === 'text' || fields.find((f) => f.name === `${field.name}Text`);
+}
+
+function isImageField(field, fields) {
+  // a reference field is usually an image, cusotm fields may as well but need the MimeType subfield
+  return field.component === 'reference' || fields.find((f) => f.name === `${field.name}MimeType`);
+}
+
+function extractGroupProperties(node, group, elements, properties, ctx) {
+  const groupFields = group.fields;
+  const groupMainFields = getMainFields(groupFields);
+  let remainingFields = groupMainFields;
+
+  function getSpecificFieldByCondition(value, element, condition) {
+    // parse the additional properties for field collapsing and select the first field
+    // that matches most properties
+    const parsedLinkFields = remainingFields
+      .map((field, index) => ({ field, index }))
+      .filter(({ field }) => condition(field, groupFields))
+      .map(({ field, index }) => ({
+        field,
+        index,
+        properties: {
+          [field.name]: value,
+          ...collapseField(field.name, [...groupFields], element),
+        },
+      }));
+    const rankedParsedLinkFields = parsedLinkFields.sort((a, b) => {
+      const aProps = Object.keys(a.properties).length;
+      const bProps = Object.keys(b.properties).length;
+      if (aProps === bProps) {
+        return a.index - b.index;
+      }
+      return bProps - aProps;
+    });
+    const [firstField] = rankedParsedLinkFields;
+    return firstField;
+  }
+
+  elements.forEach((element) => {
+    const handler = getHandler(element, [node], ctx);
+
+    if (handler) {
+      if (handler.name === 'button') {
+        const href = select('a', element)?.properties?.href;
+        const firstField = getSpecificFieldByCondition(href, element, isLinkField);
+        if (firstField) {
+          properties[firstField.field.name] = href;
+          collapseField(firstField.field.name, groupFields, element, properties);
+          remainingFields = remainingFields.slice(firstField.index + 1);
+          return;
+        }
+      }
+      if (handler.name === 'image') {
+        const src = select('img', element)?.properties?.src;
+        const firstField = getSpecificFieldByCondition(src, element, isImageField);
+        if (firstField) {
+          properties[firstField.field.name] = src;
+          collapseField(firstField.field.name, groupFields, element, properties);
+          remainingFields = remainingFields.slice(firstField.index + 1);
+          return;
+        }
+      }
+      if (handler.name === 'title') {
+        const text = toString(element).trim();
+        const firstField = getSpecificFieldByCondition(text, element, isHeadlineField);
+        if (firstField) {
+          properties[firstField.field.name] = text;
+          collapseField(firstField.field.name, groupFields, element, properties);
+          remainingFields = remainingFields.slice(firstField.index + 1);
+          return;
+        }
       }
 
-      break;
+      if (handler.name === 'text') {
+        // fill in the next field
+        // eslint-disable-next-line arrow-body-style
+        const nextField = remainingFields.find((field) => {
+          // ignore heading and image fields. link field is too generic and cannot be skipped here
+          return !isHeadlineField(field, groupFields) && !isImageField(field, groupFields);
+        });
+        const isNextRichText = nextField.component === 'richtext';
+        const text = isNextRichText ? encodeHtml(toHtml(element).trim()) : toString(element).trim();
+        if (properties[nextField.name]) {
+          properties[nextField.name] += text;
+        } else {
+          properties[nextField.name] = text;
+        }
+        if (!isNextRichText) {
+          // update remaining fields only if not richtext.
+          // richtext is greedy
+          remainingFields = remainingFields.slice(1);
+        }
+      }
     }
-  }
-  return { gIdx, groupField };
+  });
 }
 
 function extractProperties(node, id, ctx, mode) {
@@ -167,47 +242,14 @@ function extractProperties(node, id, ctx, mode) {
   const properties = {};
   const { componentModels } = ctx;
   const fields = createComponentGroups(findFieldsById(componentModels, id));
-  if (!fields) {
-    return properties;
-  }
   const mainFields = getMainFields(fields);
   mainFields.forEach((field, idx) => {
-    if (children.length <= idx) {
-      return;
-    }
+    if (children.length <= idx) return;
     if (field.component === 'group') {
-      const groupFields = getMainFields(field.fields);
       const selector = mode === 'blockItem' ? ':scope' : 'div > div';
       const containerNode = select(selector, children[idx]);
       const containerChildren = containerNode.children.filter((child) => child.type === 'element');
-      let groupFieldIdx = 0;
-      containerChildren.forEach((containerChild) => {
-        const handler = getHandler(containerChild, [node], ctx);
-        if (handler) {
-          const {
-            gIdx,
-            groupField,
-          } = findFieldByType(handler, groupFields, field.fields, groupFieldIdx);
-          if (groupField) {
-            let value = '';
-            if (handler.name === 'button') {
-              value = select('a', containerChild)?.properties?.href;
-            } else if (handler.name === 'image') {
-              value = select('img', containerChild)?.properties?.src;
-              containerChild = select('img', containerChild);
-            } else {
-              value = groupField.component === 'richtext' ? encodeHtml(toHtml(containerChild).trim()) : toString(containerChild).trim();
-            }
-            if (properties[groupField.name]) {
-              properties[groupField.name] = `${properties[groupField.name]}${value}`;
-            } else {
-              properties[groupField.name] = value;
-            }
-            collapseField(groupField.name, field.fields, properties, containerChild, handler);
-          }
-          groupFieldIdx = gIdx;
-        }
-      });
+      extractGroupProperties(node, field, containerChildren, properties, ctx);
     } else if (field.name === 'classes' && mode !== 'blockItem') {
       // handle the classes as className only for blocks, not block items
       const classNames = node?.properties?.className;
@@ -219,60 +261,74 @@ function extractProperties(node, id, ctx, mode) {
         properties[field.name] = value;
       }
     } else if (field?.component === 'richtext') {
-      const selector = mode === 'blockItem' ? 'div > *' : 'div > div > * ';
-      properties[field.name] = encodeHtml(toHtml(selectAll(selector, children[idx])).trim());
-    } else if (field?.component === 'image' || field?.component === 'reference') {
-      const imageNode = select('img', children[idx]);
-      if (imageNode) {
-        properties[field.name] = select('img', children[idx])?.properties?.src;
-        collapseField(field.name, fields, properties, imageNode);
-      } else if (button.use(select('p', children[idx]))) {
-        properties[field.name] = select('a', children[idx])?.properties?.href;
-        collapseField(field.name, fields, properties, select('p', children[idx]));
+      const selector = mode === 'blockItem' ? ':scope > *' : ':scope > div > * ';
+      let selection = selectAll(selector, children[idx]);
+      if (selection.length === 0) {
+        // if there is just a single paragraph, it is just text, not in a <p>
+        const parentSelector = mode === 'blockItem' ? ':scope' : ':scope > div';
+        const containers = selectAll(parentSelector, children[idx]);
+        if (containers[0]?.children[0]?.type === 'text') {
+          selection = [{
+            type: 'element',
+            tagName: 'p',
+            properties: {},
+            children: containers[0].children,
+          }];
+        }
       }
+      properties[field.name] = encodeHtml(toHtml(selection).trim());
     } else {
+      const imageNode = select('img', children[idx]);
+      const linkNode = select('a', children[idx]);
       const headlineNode = select('h1, h2, h3, h4, h5, h6', children[idx]);
-      if (headlineNode) {
+      if (imageNode && isImageField(field, fields)) {
+        properties[field.name] = imageNode.properties?.src;
+        collapseField(field.name, fields, imageNode, properties);
+      } else if (linkNode && isLinkField(field, fields)) {
+        properties[field.name] = linkNode.properties?.href;
+        collapseField(field.name, fields, select('p', children[idx]), properties);
+      } else if (headlineNode) {
         properties[field.name] = toString(select(headlineNode.tagName, children[idx])).trim();
-        collapseField(field.name, fields, properties, headlineNode);
+        collapseField(field.name, fields, headlineNode, properties);
       } else {
         const selector = mode === 'keyValue' ? 'div > div:nth-last-child(1)' : 'div';
         let value = encodeHTMLEntities(toString(select(selector, children[idx])).trim());
         if (field.component === 'multiselect' || field.component === 'aem-tag') {
           value = `[${value.split(',').map((v) => v.trim()).join(',')}]`;
         }
-        properties[field.name] = value;
+        if (value) properties[field.name] = value;
       }
     }
   });
-  properties.model = id;
+  if (id) properties.model = id;
   return properties;
 }
 
-function getBlockItems(node, filter, ctx) {
-  if (!filter) {
+function getBlockItems(node, allowedComponents, ctx) {
+  if (!allowedComponents.length) {
     return undefined;
   }
-  const elements = [];
   const { pathMap, path, componentDefinition } = ctx;
-  const { name } = findNameFilterById(componentDefinition, filter);
   const rows = node.children.filter((child) => child.type === 'element' && child.tagName === 'div');
-  for (let i = 0; i < rows.length; i += 1) {
+  return rows.map((row, i) => {
     const itemPath = `${path}/item${i + 1}`;
     pathMap.set(rows[i], itemPath);
-    const properties = extractProperties(rows[i], filter, ctx, 'blockItem');
-    elements.push({
-      type: 'element',
-      name: i > 0 ? `item_${i - 1}` : 'item',
-      attributes: {
-        'jcr:primaryType': 'nt:unstructured',
-        'sling:resourceType': 'core/franklin/components/block/v1/block/item',
-        name,
-        ...properties,
-      },
+    const parsedComponents = allowedComponents.map((childComponentId) => {
+      const { name, model } = findNameFilterById(componentDefinition, childComponentId);
+      const properties = extractProperties(rows[i], model, ctx, 'blockItem');
+      return {
+        type: 'element',
+        name: i > 0 ? `item_${i - 1}` : 'item',
+        attributes: {
+          'jcr:primaryType': 'nt:unstructured',
+          'sling:resourceType': 'core/franklin/components/block/v1/block/item',
+          name,
+          ...properties,
+        },
+      };
     });
-  }
-  return elements;
+    return parsedComponents.sort((a, b) => Object.entries(b).length - Object.entries(a).length)[0];
+  });
 }
 
 function generateProperties(node, ctx) {
@@ -290,12 +346,12 @@ function generateProperties(node, ctx) {
   const {
     name, model, filterId, keyValue,
   } = findNameFilterById(componentDefinition, nameClass);
-  const filter = findFilterById(filters, filterId);
+  const allowedComponents = filters.find((item) => item.id === filterId)?.components || [];
   const attributes = extractProperties(node, model, ctx, keyValue ? 'keyValue' : 'simple');
-  const blockItems = getBlockItems(node, filter, ctx);
+  const blockItems = getBlockItems(node, allowedComponents, ctx);
   const properties = {
     name,
-    filter,
+    filter: filterId,
     ...attributes,
   };
 
@@ -312,7 +368,7 @@ function getAttributes(node, ctx) {
 }
 
 function use(node, parents) {
-  return node.tagName === 'div'
+  return node?.tagName === 'div'
     && parents.length > 2
     && parents[parents.length - 2].tagName === 'main'
     && node.properties?.className?.length > 0
@@ -324,6 +380,7 @@ function use(node, parents) {
 const block = {
   use,
   getAttributes,
+  leaf: true,
 };
 
 export default block;
