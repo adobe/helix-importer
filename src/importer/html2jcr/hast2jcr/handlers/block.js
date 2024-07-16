@@ -220,19 +220,21 @@ function extractGroupProperties(node, group, elements, properties, ctx) {
           // ignore heading and image fields. link field is too generic and cannot be skipped here
           return !isHeadlineField(field, groupFields) && !isImageField(field, groupFields);
         });
-        const isNextRichText = nextField.component === 'richtext';
-        const text = isNextRichText
-          ? encodeHtml(toHtml(element).trim())
-          : encodeHTMLEntities(toString(element).trim());
-        if (properties[nextField.name]) {
-          properties[nextField.name] += text;
-        } else {
-          properties[nextField.name] = text;
-        }
-        if (!isNextRichText) {
-          // update remaining fields only if not richtext.
-          // richtext is greedy
-          remainingFields = remainingFields.slice(1);
+        if (nextField) {
+          const isNextRichText = nextField.component === 'richtext';
+          const text = isNextRichText
+            ? encodeHtml(toHtml(element).trim())
+            : encodeHTMLEntities(toString(element).trim());
+          if (properties[nextField.name]) {
+            properties[nextField.name] += text;
+          } else {
+            properties[nextField.name] = text;
+          }
+          if (!isNextRichText) {
+            // update remaining fields only if not richtext.
+            // richtext is greedy
+            remainingFields = remainingFields.slice(1);
+          }
         }
       }
     }
