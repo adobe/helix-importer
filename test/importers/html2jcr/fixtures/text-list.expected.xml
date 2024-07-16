@@ -8,7 +8,7 @@
         &lt;li>One&lt;/li>
         &lt;li>Two&lt;/li>
         &lt;li>Three&lt;/li>
-      &lt;/ul>&lt;p>Pellentesque sit amet porttitor eget dolor morbi non arcu risus.&lt;/p>"/>
+      &lt;/ul>&lt;p>&lt;code>Pellentesque&lt;/code> sit amet porttitor eget dolor morbi non arcu risus.&lt;/p>"/>
             </section>
         </root>
     </jcr:content>
