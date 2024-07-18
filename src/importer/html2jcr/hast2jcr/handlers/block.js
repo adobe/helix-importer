@@ -223,9 +223,14 @@ function extractGroupProperties(node, group, elements, properties, ctx) {
         });
         if (nextField) {
           const isNextRichText = nextField.component === 'richtext';
-          const text = isNextRichText
+          let text = isNextRichText
             ? encodeHtml(toHtml(element).trim())
             : encodeHTMLEntities(toString(element).trim());
+
+          if (nextField.component === 'multiselect' || nextField.component === 'aem-tag') {
+            text = `[${text.split(',').map((v) => v.trim()).join(',')}]`;
+          }
+
           if (properties[nextField.name]) {
             properties[nextField.name] += text;
           } else {
