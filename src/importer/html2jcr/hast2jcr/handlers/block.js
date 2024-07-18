@@ -90,7 +90,8 @@ function collapseField(id, fields, node, properties = {}) {
 }
 
 function getMainFields(fields) {
-  const suffixes = ['Alt', 'Type', 'MimeType', 'Text', 'Title'];
+  // suffix must be sorted by length descending according to the logic below
+  const suffixes = ['MimeType', 'Title', 'Type', 'Text', 'Alt'];
   const itemNames = fields.map((item) => item.name);
 
   return fields.filter((item) => {
