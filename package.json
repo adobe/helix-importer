@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@adobe/eslint-config-helix": "2.0.6",
-    "@adobe/helix-docx2md": "1.6.4",
+    "@adobe/helix-docx2md": "1.6.5",
     "@adobe/helix-mediahandler": "2.5.17",
     "@esm-bundle/chai": "4.3.4-fix.0",
     "@semantic-release/changelog": "6.0.3",
