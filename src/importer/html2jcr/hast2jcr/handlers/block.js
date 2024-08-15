@@ -324,6 +324,7 @@ function getBlockItems(node, id, allowedComponents, ctx) {
   const { componentModels } = ctx;
   const fields = createComponentGroups(findFieldsById(componentModels, id));
   const fieldsWithoutClasses = fields.filter((field) => field.name !== 'classes');
+  // remove the first row if the block has fields as block properties are in the first row
   if (fieldsWithoutClasses.length > 0 && rows.length > 0) {
     rows.shift();
   }

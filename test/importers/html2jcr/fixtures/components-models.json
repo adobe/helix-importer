@@ -66,7 +66,7 @@
         "value": "",
         "valueType": "string"
       }
-    ]    
+    ]
   },
   {
     "id": "code",
@@ -271,25 +271,22 @@
     ]
   },
   {
+    "id": "accordion-without-fields",
+    "fields": []
+  },
+  {
     "id": "accordion-item",
     "fields": [
       {
-        "component": "reference",
-        "valueType": "string",
-        "name": "fileReference",
-        "label": "Image",
-        "multi": false
-      },
-      {
         "component": "text",
         "valueType": "string",
-        "name": "accordion_title",
+        "name": "title",
         "value": "",
         "label": "Text"
       },
       {
         "component": "select",
-        "name": "accordion_titleType",
+        "name": "titleType",
         "value": "h1",
         "label": "Type",
         "valueType": "string",
@@ -319,13 +316,6 @@
             "value": "h6"
           }
         ]
-      },
-      {
-        "component": "richtext",
-        "valueType": "string",
-        "name": "accordion_description",
-        "value": "",
-        "label": "Description"
       }
     ]
   },
