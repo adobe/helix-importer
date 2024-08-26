@@ -41,7 +41,7 @@
     "dirname-filename-esm": "1.1.2",
     "eslint": "8.57.0",
     "husky": "9.1.5",
-    "jsdom": "24.1.1",
+    "jsdom": "25.0.0",
     "lint-staged": "15.2.9",
     "mocha": "10.7.3",
     "mocha-multi-reporters": "1.5.1",
