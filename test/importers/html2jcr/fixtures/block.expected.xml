@@ -19,6 +19,20 @@
                     <item jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/block/v1/block/item" name="Styled Card" classes="[a,c]" image="/content/dam/test12/unmatched-speed.png" text="&lt;p>&lt;strong>Content at scale&lt;/strong>&lt;/p>&lt;p>AEM allows you to publish more content in shorter time with smaller teams&lt;/p>" model="styled-card"/>
                 </block>
             </section_0>
+            <section_1 sling:resourceType="core/franklin/components/section/v1/section" jcr:primaryType="nt:unstructured">
+                <block sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="accordion" filter="accordion" heading="my accordion" headingType="h2" model="accordion">
+                    <item jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/block/v1/block/item" name="accordion Item" title="item 1" titleType="h2" model="accordion-item"/>
+                    <item_0 jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/block/v1/block/item" name="accordion Item" title="item 2" titleType="h2" model="accordion-item"/>
+                </block>
+                <block_0 sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="accordion" filter="accordion" model="accordion">
+                    <item jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/block/v1/block/item" name="accordion Item" title="item 1" titleType="h2" model="accordion-item"/>
+                    <item_0 jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/block/v1/block/item" name="accordion Item" title="item 2" titleType="h2" model="accordion-item"/>
+                </block_0>
+                <block_1 sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="accordion-without-fields" filter="accordion-without-fields" model="accordion-without-fields">
+                    <item jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/block/v1/block/item" name="accordion Item" title="item 1" titleType="h2" model="accordion-item"/>
+                    <item_0 jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/block/v1/block/item" name="accordion Item" title="item 2" titleType="h2" model="accordion-item"/>
+                </block_1>
+            </section_1>
         </root>
     </jcr:content>
 </jcr:root>

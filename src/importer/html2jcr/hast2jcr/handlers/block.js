@@ -315,12 +315,19 @@ function extractProperties(node, id, ctx, mode) {
   return properties;
 }
 
-function getBlockItems(node, allowedComponents, ctx) {
+function getBlockItems(node, id, allowedComponents, ctx) {
   if (!allowedComponents.length) {
     return undefined;
   }
   const { pathMap, path, componentDefinition } = ctx;
   const rows = node.children.filter((child) => child.type === 'element' && child.tagName === 'div');
+  const { componentModels } = ctx;
+  const fields = createComponentGroups(findFieldsById(componentModels, id));
+  const fieldsWithoutClasses = fields.filter((field) => field.name !== 'classes');
+  // remove the first row if the block has fields as block properties are in the first row
+  if (fieldsWithoutClasses.length > 0 && rows.length > 0) {
+    rows.shift();
+  }
   return rows.map((row, i) => {
     const itemPath = `${path}/item${i + 1}`;
     pathMap.set(rows[i], itemPath);
@@ -359,7 +366,7 @@ function generateProperties(node, ctx) {
   } = findNameFilterById(componentDefinition, nameClass);
   const allowedComponents = filters.find((item) => item.id === filterId)?.components || [];
   const attributes = extractProperties(node, model, ctx, keyValue ? 'keyValue' : 'simple');
-  const blockItems = getBlockItems(node, allowedComponents, ctx);
+  const blockItems = getBlockItems(node, model, allowedComponents, ctx);
   const properties = {
     name,
     filter: filterId,

@@ -17,6 +17,18 @@
     ]
   },
   {
+    "id": "accordion",
+    "components": [
+      "accordion-item"
+    ]
+  },
+  {
+    "id": "accordion-without-fields",
+    "components": [
+      "accordion-item"
+    ]
+  },
+  {
     "id": "styled-cards",
     "components": [
       "styled-card"
