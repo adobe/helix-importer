@@ -39,7 +39,7 @@
     "c8": "10.1.2",
     "chai": "5.1.1",
     "dirname-filename-esm": "1.1.2",
-    "eslint": "8.57.0",
+    "eslint": "8.57.1",
     "husky": "9.1.6",
     "jsdom": "25.0.0",
     "lint-staged": "15.2.10",
