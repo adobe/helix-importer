@@ -1,3 +1,10 @@
+## [3.4.19](https://github.com/adobe/helix-importer/compare/v3.4.18...v3.4.19) (2024-09-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-markdown-support to v7.1.6 ([#413](https://github.com/adobe/helix-importer/issues/413)) ([d138f5f](https://github.com/adobe/helix-importer/commit/d138f5f75a2ad0c746bc281b4df21924cc7df3ee))
+
 ## [3.4.18](https://github.com/adobe/helix-importer/compare/v3.4.17...v3.4.18) (2024-09-22)
 
 
