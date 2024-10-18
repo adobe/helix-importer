@@ -229,6 +229,27 @@
     "id": "accordion",
     "fields": [
       {
+        "component": "select",
+        "label": "Options",
+        "name": "classes",
+        "value": "",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "default",
+            "value": ""
+          },
+          {
+            "name": "Advanced",
+            "value": "advanced"
+          },
+          {
+            "name": "Simple",
+            "value": "simple"
+          }
+        ]
+      },
+      {
         "component": "text",
         "valueType": "string",
         "name": "heading",

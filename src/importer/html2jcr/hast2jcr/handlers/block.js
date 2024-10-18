@@ -253,11 +253,13 @@ function extractProperties(node, id, ctx, mode) {
   const { componentModels } = ctx;
   const fields = createComponentGroups(findFieldsById(componentModels, id));
   const mainFields = getMainFields(fields);
+  let classesFieldHandled = false;
   mainFields.forEach((field, idx) => {
     if (children.length <= idx) return;
+    const childIdx = classesFieldHandled ? idx - 1 : idx;
     if (field.component === 'group') {
       const selector = mode === 'blockItem' ? ':scope' : 'div > div';
-      const containerNode = select(selector, children[idx]);
+      const containerNode = select(selector, children[childIdx]);
       const containerChildren = containerNode.children.filter((child) => child.type === 'element');
       extractGroupProperties(node, field, containerChildren, properties, ctx);
     } else if (field.name === 'classes' && mode !== 'blockItem') {
@@ -270,13 +272,14 @@ function extractProperties(node, id, ctx, mode) {
         }
         properties[field.name] = value;
       }
+      classesFieldHandled = true;
     } else if (field?.component === 'richtext') {
       const selector = mode === 'blockItem' ? ':scope > *' : ':scope > div > * ';
-      let selection = selectAll(selector, children[idx]);
+      let selection = selectAll(selector, children[childIdx]);
       if (selection.length === 0) {
         // if there is just a single paragraph, it is just text, not in a <p>
         const parentSelector = mode === 'blockItem' ? ':scope' : ':scope > div';
-        const containers = selectAll(parentSelector, children[idx]);
+        const containers = selectAll(parentSelector, children[childIdx]);
         if (containers[0]?.children[0]?.type === 'text') {
           selection = [{
             type: 'element',
@@ -288,22 +291,22 @@ function extractProperties(node, id, ctx, mode) {
       }
       properties[field.name] = encodeHtml(toHtml(selection).trim());
     } else {
-      const imageNode = select('img', children[idx]);
-      const linkNode = select('a', children[idx]);
-      const headlineNode = select('h1, h2, h3, h4, h5, h6', children[idx]);
+      const imageNode = select('img', children[childIdx]);
+      const linkNode = select('a', children[childIdx]);
+      const headlineNode = select('h1, h2, h3, h4, h5, h6', children[childIdx]);
       if (imageNode && isImageField(field, fields)) {
         properties[field.name] = encodeHTMLEntities(imageNode.properties?.src);
         collapseField(field.name, fields, imageNode, properties);
       } else if (linkNode && isLinkField(field, fields)) {
         properties[field.name] = encodeHTMLEntities(linkNode.properties?.href);
-        collapseField(field.name, fields, select('p', children[idx]), properties);
+        collapseField(field.name, fields, select('p', children[childIdx]), properties);
       } else if (headlineNode) {
-        const text = toString(select(headlineNode.tagName, children[idx])).trim();
+        const text = toString(select(headlineNode.tagName, children[childIdx])).trim();
         properties[field.name] = encodeHTMLEntities(text);
         collapseField(field.name, fields, headlineNode, properties);
       } else {
         const selector = mode === 'keyValue' ? 'div > div:nth-last-child(1)' : 'div';
-        let value = encodeHTMLEntities(toString(select(selector, children[idx])).trim());
+        let value = encodeHTMLEntities(toString(select(selector, children[childIdx])).trim());
         if (field.component === 'multiselect' || field.component === 'aem-tag') {
           value = `[${value.split(',').map((v) => v.trim()).join(',')}]`;
         }
