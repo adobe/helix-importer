@@ -43,9 +43,9 @@
     "husky": "9.1.6",
     "jsdom": "25.0.1",
     "lint-staged": "15.2.10",
-    "mocha": "10.7.3",
+    "mocha": "10.8.2",
     "mocha-multi-reporters": "1.5.1",
-    "mock-fs": "5.4.0",
+    "mock-fs": "5.4.1",
     "remark-parse": "11.0.0",
     "semantic-release": "24.2.0",
     "unist-util-inspect": "8.1.0"
