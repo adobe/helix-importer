@@ -255,7 +255,7 @@ function extractProperties(node, id, ctx, mode) {
   const mainFields = getMainFields(fields);
   let classesFieldHandled = false;
   mainFields.forEach((field, idx) => {
-    if (children.length <= idx) return;
+    if (children.length < idx) return;
     const childIdx = classesFieldHandled ? idx - 1 : idx;
     if (field.component === 'group') {
       const selector = mode === 'blockItem' ? ':scope' : 'div > div';
