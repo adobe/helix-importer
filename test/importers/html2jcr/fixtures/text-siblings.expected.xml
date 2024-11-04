@@ -9,5 +9,6 @@
                 <text_1 sling:resourceType="core/franklin/components/text/v1/text" jcr:primaryType="nt:unstructured" text="&lt;p>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...&lt;br>There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain...&lt;/p>"/>
             </section>
         </root>
+        <image jcr:primaryType="nt:unstructured" fileReference="https://main--xwalk-example--buuhuu.hlx.page/media_134b848c697e9152f269fa3b79696b855040912ba.png?width=1200&amp;format=pjpg&amp;optimize=medium"/>
     </jcr:content>
 </jcr:root>

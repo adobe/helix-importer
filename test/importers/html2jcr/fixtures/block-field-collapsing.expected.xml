@@ -6,5 +6,6 @@
                 <block sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="Teaser" image="/content/dam/teaser-background.png" imageAlt="A group of people sitting on a stage &amp; relaxing" title="Meet the Experts" titleType="h2" link="https://www.adobe.com" linkType="secondary" linkText="Secondary Button" linkTitle="This is a Secondary Button" model="teaser"/>
             </section>
         </root>
+        <image jcr:primaryType="nt:unstructured" fileReference="https://main--xwalk-example--buuhuu.hlx.page/media_134b848c697e9152f269fa3b79696b855040912ba.png?width=1200&amp;format=pjpg&amp;optimize=medium"/>
     </jcr:content>
 </jcr:root>

@@ -48,6 +48,13 @@
           },
           {
             "component": "text",
+            "name": "og:image",
+            "label": "Page Image",
+            "value": "",
+            "valueType": "string"
+          },
+          {
+            "component": "text",
             "name": "authorTitle",
             "value": "",
             "valueType": "string"

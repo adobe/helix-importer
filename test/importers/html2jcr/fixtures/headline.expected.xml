@@ -10,5 +10,6 @@
                 <title_3 sling:resourceType="core/franklin/components/title/v1/title" jcr:primaryType="nt:unstructured" jcr:title="Lorem ipsum" type="h5"/>
             </section>
         </root>
+        <image jcr:primaryType="nt:unstructured" fileReference="https://main--xwalk-example--buuhuu.hlx.page/media_134b848c697e9152f269fa3b79696b855040912ba.png?width=1200&amp;format=pjpg&amp;optimize=medium"/>
     </jcr:content>
 </jcr:root>

@@ -14,6 +14,8 @@ import { select } from 'hast-util-select';
 import { toString } from 'hast-util-to-string';
 import { encodeHTMLEntities, toMetaName } from '../utils.js';
 
+const IMAGE_URL_REGEX = /https?:\/\/.*\.(jpg|jpeg|png|gif|bmp|svg|webp|tiff|ico)(\?.*)?$/i;
+
 const metadataFields = ['description'];
 const aemMapping = {
   'jcr:description': 'description',
@@ -48,6 +50,17 @@ function addMetadataFields(componentModels) {
     metadataFields.push(...pageMetadata.fields.map((field) => field.name));
   }
 }
+
+function getImageAttribute(attributes) {
+  // iterate over all attributes and return the first one that is an image
+  for (const [key, value] of Object.entries(attributes)) {
+    if (key === 'image' || key.endsWith('_image') || key.endsWith(':image') || IMAGE_URL_REGEX.test(value)) {
+      return { key, value };
+    }
+  }
+  return null;
+}
+
 const metadata = {
   use: (node) => node.tagName === 'head',
   getAttributes: (node, ctx) => {
@@ -85,6 +98,20 @@ const metadata = {
     const content = parent.elements.find((element) => element.name === nodeName);
     if (content) {
       content.attributes = { ...content.attributes, ...component };
+      // if the metadata contains a page image, add it as a child node
+      const imageAttribute = getImageAttribute(content.attributes);
+      if (imageAttribute) {
+        const imageNode = {
+          type: 'element',
+          name: 'image',
+          attributes: {
+            'jcr:primaryType': 'nt:unstructured',
+            fileReference: imageAttribute.value,
+          },
+        };
+        content.elements.push(imageNode);
+        delete content.attributes[imageAttribute.key];
+      }
     }
   },
 };
