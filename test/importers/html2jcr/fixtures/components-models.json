@@ -674,6 +674,31 @@
     ]
   },
   {
+    "id": "richtext2",
+    "fields": [
+      {
+        "component": "richtext2",
+        "name": "myText",
+        "value": "",
+        "valueType": "string"
+      },
+      {
+        "component": "reference",
+        "name": "image",
+        "label": "Image",
+        "value": "",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "label": "Alt",
+        "name": "imageAlt",
+        "value": "",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "section",
     "fields": [
       {

@@ -57,4 +57,7 @@ describe('MD to JCR converter', () => {
   it('converts richtext', async () => {
     await test('richtext');
   });
+  it('converts richtext with image', async () => {
+    await test('richtext-withimage');
+  });
 });

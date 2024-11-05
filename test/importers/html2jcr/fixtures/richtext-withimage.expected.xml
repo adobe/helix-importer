@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:sling="http://sling.apache.org/jcr/sling/1.0" jcr:primaryType="cq:Page">
+    <jcr:content cq:template="/libs/core/franklin/templates/page" jcr:primaryType="cq:PageContent" sling:resourceType="core/franklin/components/page/v1/page">
+        <root jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/root/v1/root">
+            <section sling:resourceType="core/franklin/components/section/v1/section" jcr:primaryType="nt:unstructured">
+                <block sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="richtext" myText="&lt;p>Text with link &lt;/p>&lt;a href=&quot;htttps://www.adobe.com&quot;>CTA 1&lt;/a>&lt;p> becomes richtext as well Text with link &lt;/p>&lt;a href=&quot;htttps://www.google.com&quot;>CTA 2&lt;/a>&lt;p> as well&lt;/p>" model="richtext"/>
+                <block_0 sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="richtext" myText="&lt;a href=&quot;htttps://www.adobe.com&quot;>CTA 1&lt;/a>&lt;p> becomes richtext as well &lt;/p>&lt;a href=&quot;htttps://www.google.com&quot;>CTA 2&lt;/a>&lt;p> as well&lt;/p>" model="richtext"/>
+                <block_1 sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="richtext" myText="&lt;p>Just plain text becomes richtext as well&lt;/p>" model="richtext"/>
+                <block_2 sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="richtext" myText="&lt;pre>&lt;code>{&#xa;  &quot;type&quot;: &quot;pwa-node&quot;,&#xa;  &quot;name&quot;: &quot;Action:csvimportmagento-0.0.1/push-product&quot;,&#xa;  &quot;runtimeArgs&quot;: [&#xa;    &quot;csvimportmagento-0.0.1/push-product&quot;,&#xa;    &quot;${workspaceFolder}/actions/push-product/index.js&quot;,&#xa;    &quot;-v&quot;,&#xa;    &quot;—disable-concurrency&quot;,&#xa;    &quot;—kind&quot;,&#xa;    &quot;nodejs:12&quot;&#xa;  ]&#xa;},&#xa;...&#xa; &quot;compounds&quot;: [&#xa;     {&#xa;       &quot;name&quot;: &quot;Actions&quot;,&#xa;       &quot;configurations&quot;: [&#xa;         ......&#xa;         &quot;Action:csvimportmagento-0.0.1/push-product&quot;&#xa;       ]&#xa;     },&#xa;     {&#xa;       &quot;name&quot;: &quot;WebAndActions&quot;,&#xa;       &quot;configurations&quot;: [&#xa;         ......&#xa;         &quot;Action:csvimportmagento-0.0.1/push-product&quot;&#xa;       ]&#xa;     }&#xa;   ]&#xa;&lt;/code>&lt;/pre>" model="richtext"/>
+            </section>
+        </root>
+    </jcr:content>
+</jcr:root>
