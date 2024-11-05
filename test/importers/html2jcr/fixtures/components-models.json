@@ -677,7 +677,7 @@
     "id": "richtext2",
     "fields": [
       {
-        "component": "richtext2",
+        "component": "richtext",
         "name": "myText",
         "value": "",
         "valueType": "string"
