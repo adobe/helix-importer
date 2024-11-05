@@ -54,10 +54,13 @@ describe('MD to JCR converter', () => {
   it('converts a teaser block with grouping', async () => {
     await test('teaser-with-grouping');
   });
-  it('converts richtext', async () => {
+  it('converts a richtext block', async () => {
     await test('richtext');
   });
-  it('converts richtext with image', async () => {
+  it('converts a richtext block with image', async () => {
     await test('richtext-withimage');
+  });
+  it('converts a block item with link', async () => {
+    await test('links');
   });
 });

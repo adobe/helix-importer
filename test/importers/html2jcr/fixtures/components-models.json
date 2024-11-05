@@ -728,5 +728,32 @@
         ]
       }
     ]
+  },
+  {
+    "id": "block-links",
+    "fields": []
+  },
+  {
+    "id": "block-link",
+    "fields": [
+      {
+        "component": "aem-content",
+        "name": "link",
+        "label": "Link",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "linkTitle",
+        "label": "Link Title",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "linkText",
+        "label": "Link Text",
+        "valueType": "string"
+      }
+    ]
   }
 ]

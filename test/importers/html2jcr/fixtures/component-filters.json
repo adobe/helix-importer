@@ -39,5 +39,11 @@
     "components": [
       "teaser-grouping-item"
     ]
+  },
+  {
+    "id": "block-links",
+    "components": [
+      "block-link"
+    ]
   }
 ]

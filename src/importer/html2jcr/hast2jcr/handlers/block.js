@@ -302,7 +302,7 @@ function extractProperties(node, id, ctx, mode) {
         collapseField(field.name, fields, imageNode, properties);
       } else if (linkNode && isLinkField(field, fields)) {
         properties[field.name] = encodeHTMLEntities(linkNode.properties?.href);
-        collapseField(field.name, fields, select('p', children[childIdx]), properties);
+        collapseField(field.name, fields, linkNode, properties);
       } else if (headlineNode) {
         const text = toString(select(headlineNode.tagName, children[childIdx])).trim();
         properties[field.name] = encodeHTMLEntities(text);
