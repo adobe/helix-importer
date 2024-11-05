@@ -309,9 +309,14 @@ function extractProperties(node, id, ctx, mode) {
         collapseField(field.name, fields, headlineNode, properties);
       } else {
         const selector = mode === 'keyValue' ? 'div > div:nth-last-child(1)' : 'div';
-        let value = encodeHTMLEntities(toString(select(selector, children[childIdx])).trim());
+        let value = children[childIdx]
+          ? encodeHTMLEntities(toString(select(selector, children[childIdx])).trim())
+          : undefined;
         if (field.component === 'multiselect' || field.component === 'aem-tag') {
-          value = `[${value.split(',').map((v) => v.trim()).join(',')}]`;
+          value = `[${value
+            .split(',')
+            .map((v) => v.trim())
+            .join(',')}]`;
         }
         if (value) properties[field.name] = value;
       }
