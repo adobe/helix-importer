@@ -662,6 +662,18 @@
     ]
   },
   {
+    "id": "richtext",
+    "fields": [
+      {
+        "component": "richtext",
+        "label": "Alt",
+        "name": "myText",
+        "value": "",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "section",
     "fields": [
       {

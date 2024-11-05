@@ -274,21 +274,24 @@ function extractProperties(node, id, ctx, mode) {
       }
       classesFieldHandled = true;
     } else if (field?.component === 'richtext') {
-      const selector = mode === 'blockItem' ? ':scope > *' : ':scope > div > * ';
-      let selection = selectAll(selector, children[childIdx]);
-      if (selection.length === 0) {
-        // if there is just a single paragraph, it is just text, not in a <p>
-        const parentSelector = mode === 'blockItem' ? ':scope' : ':scope > div';
-        const containers = selectAll(parentSelector, children[childIdx]);
-        if (containers[0]?.children[0]?.type === 'text') {
-          selection = [{
+      const parentSelector = mode === 'blockItem' ? ':scope' : ':scope > div';
+      const containers = selectAll(parentSelector, children[childIdx]);
+      // for each node of the richtext, we need to check if it is a text node or a tag
+      const selection = [];
+      containers[0]?.children.forEach((child) => {
+        // if it is a text node and does not start with a new line, wrap it in a paragraph
+        if (child.type === 'text' && !child.value.startsWith('\n')) {
+          const textTag = {
             type: 'element',
             tagName: 'p',
             properties: {},
-            children: containers[0].children,
-          }];
+            children: [child],
+          };
+          selection.push(textTag);
+        } else {
+          selection.push(child);
         }
-      }
+      });
       properties[field.name] = encodeHtml(toHtml(selection).trim());
     } else {
       const imageNode = select('img', children[childIdx]);
