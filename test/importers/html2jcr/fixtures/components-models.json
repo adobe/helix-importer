@@ -674,7 +674,7 @@
     ]
   },
   {
-    "id": "richtext2",
+    "id": "richtext-withimage",
     "fields": [
       {
         "component": "richtext",
