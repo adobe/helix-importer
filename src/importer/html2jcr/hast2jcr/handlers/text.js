@@ -44,9 +44,13 @@ const text = {
     // Ignore paragraphs that only contain a single button or single image
     if (node?.tagName === 'p' || isList(node) || isBlockquote(node) || isCode(node)) {
       if (hasSingleChildElement(node)) {
-        if (matchStructure(node, h('p', [h('strong', [h('a')])]))
-          || matchStructure(node, h('p', [h('a')]))
-          || matchStructure(node, h('p', [h('em', [h('a')])]))) {
+        if (node.children[0].tagName === 'em' || node.children[0].tagName === 'strong') {
+          if (node.children[0].children.length === 1 && node.children[0].children[0].tagName === 'a') {
+            return false;
+          }
+        }
+
+        if (matchStructure(node, h('p', [h('a')]))) {
           return false;
         }
         if (matchStructure(node, h('p', [h('picture', [h('img')])]))

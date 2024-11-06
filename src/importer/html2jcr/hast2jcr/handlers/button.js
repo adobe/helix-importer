@@ -50,9 +50,15 @@ const button = {
   use: (node) => {
     if (node?.tagName === 'p') {
       if (hasSingleChildElement(node)) {
-        if (matchStructure(node, h('p', [h('strong', [h('a')])]))
-          || matchStructure(node, h('p', [h('a')]))
-          || matchStructure(node, h('p', [h('em', [h('a')])]))) {
+        // a paragraph is a button with a single link only
+        // a paragraph is a button with strong or em tag with a single link only
+        if (node.children[0].tagName === 'em' || node.children[0].tagName === 'strong') {
+          if (node.children[0].children.length === 1 && node.children[0].children[0].tagName === 'a') {
+            return true;
+          }
+        }
+
+        if (matchStructure(node, h('p', [h('a')]))) {
           return true;
         }
       }
