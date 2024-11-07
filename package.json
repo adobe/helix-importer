@@ -53,7 +53,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@adobe/helix-markdown-support": "7.1.6",
-    "@adobe/helix-md2docx": "2.1.80",
+    "@adobe/helix-md2docx": "2.1.81",
     "@adobe/mdast-util-gridtables": "4.0.7",
     "@adobe/remark-gridtables": "3.0.7",
     "form-data": "4.0.1",
