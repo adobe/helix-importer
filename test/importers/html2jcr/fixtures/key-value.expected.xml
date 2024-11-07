@@ -3,9 +3,9 @@
     <jcr:content cq:template="/libs/core/franklin/templates/page" jcr:primaryType="cq:PageContent" sling:resourceType="core/franklin/components/page/v1/page">
         <root jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/root/v1/root">
             <section sling:resourceType="core/franklin/components/section/v1/section" jcr:primaryType="nt:unstructured">
-                <block sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="Relatedposts" title="Related Articles" category="[ADOBE EXPERIENCE MANAGER,ADOBE COMMERCE]" maxItems="14" sortOrder="descending" model="relatedposts"/>
-                <block_0 sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="Relatedposts with classes" classes="foo,bar" title="Related Articles" category="[ADOBE EXPERIENCE MANAGER,ADOBE COMMERCE]" maxItems="14" sortOrder="descending" model="relatedposts-with-classes"/>
-                <block_1 sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="Relatedposts with classes" title="Related Articles" category="[ADOBE EXPERIENCE MANAGER,ADOBE COMMERCE]" maxItems="14" sortOrder="descending" model="relatedposts-with-classes"/>
+                <block sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="Relatedposts" title="Related Articles" category="[ADOBE EXPERIENCE MANAGER,ADOBE COMMERCE]" maxItems="14" sortOrder="descending" key-value="true" model="relatedposts"/>
+                <block_0 sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="Relatedposts with classes" classes="foo,bar" title="Related Articles" category="[ADOBE EXPERIENCE MANAGER,ADOBE COMMERCE]" maxItems="14" sortOrder="descending" key-value="true" model="relatedposts-with-classes"/>
+                <block_1 sling:resourceType="core/franklin/components/block/v1/block" jcr:primaryType="nt:unstructured" name="Relatedposts with classes" title="Related Articles" category="[ADOBE EXPERIENCE MANAGER,ADOBE COMMERCE]" maxItems="14" sortOrder="descending" key-value="true" model="relatedposts-with-classes"/>
             </section>
         </root>
     </jcr:content>
