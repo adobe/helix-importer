@@ -63,4 +63,7 @@ describe('MD to JCR converter', () => {
   it('converts a block item with link', async () => {
     await test('links');
   });
+  it('converts a link without a text in the UE model', async () => {
+    await test('link-without-text');
+  });
 });

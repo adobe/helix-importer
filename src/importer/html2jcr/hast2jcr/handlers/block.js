@@ -140,7 +140,9 @@ function isHeadlineField(field, fields) {
 function isLinkField(field, fields) {
   // any text field or a any field that has a Text subfield can be a link
   // TODO: actually any field can be a link but we have to start somewhere
-  return field.component === 'text' || fields.find((f) => f.name === `${field.name}Text`);
+  return field.component === 'text'
+    || field.component === 'aem-content'
+    || fields.find((f) => f.name === `${field.name}Text`);
 }
 
 function isImageField(field, fields) {

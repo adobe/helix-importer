@@ -755,5 +755,16 @@
         "valueType": "string"
       }
     ]
+  },
+  {
+    "id": "link-without-text",
+    "fields": [
+      {
+        "component": "aem-content",
+        "name": "link",
+        "label": "Link",
+        "valueType": "string"
+      }
+    ]
   }
 ]

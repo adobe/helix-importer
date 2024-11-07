@@ -317,6 +317,21 @@
               }
             }
           }
+        },
+        {
+          "title": "link-without-text",
+          "id": "link-without-text",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "link-without-text",
+                  "model": "link-without-text"
+                }
+              }
+            }
+          }
         }
       ]
     }
