@@ -14,7 +14,7 @@
     "test:web:watch": "web-test-runner test/browser/*.test.js --node-resolve --watch",
     "test": "c8 mocha && npm run test:web",
     "semantic-release": "semantic-release",
-    "prepare": "npx husky install"
+    "prepare": "husky"
   },
   "mocha": {
     "recursive": "true",
@@ -52,6 +52,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
+    "@adobe/aem-upload": "2.0.3",
     "@adobe/helix-markdown-support": "7.1.7",
     "@adobe/helix-md2docx": "2.1.84",
     "@adobe/mdast-util-gridtables": "4.0.8",
@@ -63,6 +64,7 @@
     "rehype-parse": "9.0.1",
     "rehype-remark": "10.0.0",
     "remark-stringify": "11.0.0",
+    "sinon": "^19.0.2",
     "unified": "11.0.5"
   }
 }
