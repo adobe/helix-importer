@@ -73,6 +73,7 @@ function buildFileSystemUploadOptions(opts) {
     .withUrl(buildAEMUrl(targetAEMUrl))
     .withConcurrent(true)
     .withMaxConcurrent(10)
+    .withHttpRetryDelay(5000) // retry delay in milliseconds; default retry count = 3
     .withDeepUpload(true) // include all descendent folders and files
     .withHttpOptions({
       headers: {

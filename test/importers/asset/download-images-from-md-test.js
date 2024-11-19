@@ -21,7 +21,8 @@ import downloadImagesInMarkdown from '../../../src/importer/asset/download-image
 
 // eslint-disable-next-line func-names
 describe('downloadImagesInMarkdown', function () {
-  this.timeout(10000); // Increase timeout to 10 seconds
+  // Increase timeout to 100 seconds (to account for exponential backoff during retries)
+  this.timeout(100000);
 
   const markdownFilePath = 'test.md';
   const downloadLocation = path.join(process.cwd(), 'mySite');

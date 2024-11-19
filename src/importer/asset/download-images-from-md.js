@@ -106,6 +106,8 @@ function getPathSegments(url) {
 // eslint-disable-next-line consistent-return
 async function downloadImage(url, opts) {
   const { log, retries, downloadLocation } = opts;
+  const baseDelay = 5000; // base delay in milliseconds
+
   // eslint-disable-next-line no-plusplus
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
@@ -132,9 +134,17 @@ async function downloadImage(url, opts) {
       });
     } catch (error) {
       if (attempt === retries) {
+        log.error(`Failed to download ${url} after ${retries} attempts.`);
         throw error;
       } else {
         log.info(`Retrying download (${attempt}/${retries})...`);
+
+        // Exponential backoff
+        const delay = baseDelay * 2 ** (attempt - 1);
+        // eslint-disable-next-line no-await-in-loop
+        await new Promise((resolve) => {
+          setTimeout(resolve, delay);
+        });
       }
     }
   }
@@ -148,21 +158,11 @@ async function downloadImage(url, opts) {
  * @returns {Promise<void>}
  */
 async function downloadImages(imageUrls, opts) {
-  const { log } = opts;
   // Map over the imageUrls array and create a promise for each image download.
-  // eslint-disable-next-line consistent-return
-  const downloadPromises = imageUrls.map(async (url) => {
-    try {
-      await downloadImage(url, opts);
-    } catch (error) {
-      log.error(`Failed to download ${url} after ${opts.retries} attempts.`);
-      return null;
-    }
-  });
-
+  const downloadPromises = imageUrls.map((url) => downloadImage(url, opts));
   // Wait for all downloads to complete
-  // The promises are passed to Promise.all, which runs them in parallel
-  await Promise.all(downloadPromises);
+  // The promises are passed to Promise.allSettled, which runs them in parallel
+  await Promise.allSettled(downloadPromises);
 }
 
 /**
