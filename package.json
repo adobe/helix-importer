@@ -1,6 +1,6 @@
 {
   "name": "@adobe/helix-importer",
-  "version": "3.4.41",
+  "version": "3.4.42",
   "description": "Helix Importer tool: create md / docx from html",
   "main": "src/index.js",
   "type": "module",
@@ -53,7 +53,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@adobe/helix-markdown-support": "7.1.10",
-    "@adobe/helix-md2docx": "2.1.98",
+    "@adobe/helix-md2docx": "2.1.99",
     "@adobe/helix-md2jcr": "1.0.3",
     "@adobe/mdast-util-gridtables": "4.0.9",
     "@adobe/remark-gridtables": "3.0.9",
