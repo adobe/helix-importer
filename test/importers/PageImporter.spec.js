@@ -176,6 +176,7 @@ describe('PageImporter tests - fixtures', () => {
     const config = {
       storageHandler,
       skipDocxConversion: true,
+      skipJcrFileCreation: true,
       logger,
       createDocumentFromString,
     };
