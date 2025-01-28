@@ -1,3 +1,59 @@
+## [3.4.41](https://github.com/adobe/helix-importer/compare/v3.4.40...v3.4.41) (2025-01-26)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#469](https://github.com/adobe/helix-importer/issues/469)) ([1b0de81](https://github.com/adobe/helix-importer/commit/1b0de814e1255239121fddaad579117453bf0650))
+
+## [3.4.40](https://github.com/adobe/helix-importer/compare/v3.4.39...v3.4.40) (2025-01-21)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#467](https://github.com/adobe/helix-importer/issues/467)) ([189593b](https://github.com/adobe/helix-importer/commit/189593b1acd9d2b6191b0f4c9f3acc05c11e6ae4))
+
+## [3.4.39](https://github.com/adobe/helix-importer/compare/v3.4.38...v3.4.39) (2025-01-20)
+
+
+### Bug Fixes
+
+* **deps:** update external fixes ([#468](https://github.com/adobe/helix-importer/issues/468)) ([b6f3fb0](https://github.com/adobe/helix-importer/commit/b6f3fb0ff7d87b62962fdaff19979ee07778df33))
+
+## [3.4.38](https://github.com/adobe/helix-importer/compare/v3.4.37...v3.4.38) (2025-01-14)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#466](https://github.com/adobe/helix-importer/issues/466)) ([9ce0783](https://github.com/adobe/helix-importer/commit/9ce0783f8514fe3df92a16443e435623b1dc3ef4))
+
+## [3.4.37](https://github.com/adobe/helix-importer/compare/v3.4.36...v3.4.37) (2024-12-28)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#461](https://github.com/adobe/helix-importer/issues/461)) ([376051f](https://github.com/adobe/helix-importer/commit/376051f5ca04c488f1c4b81f58b09ccf4118daa6))
+
+## [3.4.36](https://github.com/adobe/helix-importer/compare/v3.4.35...v3.4.36) (2024-12-21)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#459](https://github.com/adobe/helix-importer/issues/459)) ([c68da90](https://github.com/adobe/helix-importer/commit/c68da904dbfd45f63e629dadfd4fe0d746985b68))
+
+## [3.4.35](https://github.com/adobe/helix-importer/compare/v3.4.34...v3.4.35) (2024-12-15)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#458](https://github.com/adobe/helix-importer/issues/458)) ([f87b7b2](https://github.com/adobe/helix-importer/commit/f87b7b24522a3f36a7249fda2bb3960304b8a9c5))
+
+## [3.4.34](https://github.com/adobe/helix-importer/compare/v3.4.33...v3.4.34) (2024-12-15)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#457](https://github.com/adobe/helix-importer/issues/457)) ([d7a0060](https://github.com/adobe/helix-importer/commit/d7a0060dd6ad2121adcac5c78cb4e038aacd0953))
+
 ## [3.4.33](https://github.com/adobe/helix-importer/compare/v3.4.32...v3.4.33) (2024-12-08)
 
 
