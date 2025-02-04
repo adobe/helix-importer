@@ -54,7 +54,7 @@
   "dependencies": {
     "@adobe/helix-markdown-support": "7.1.10",
     "@adobe/helix-md2docx": "2.1.100",
-    "@adobe/helix-md2jcr": "1.0.7",
+    "@adobe/helix-md2jcr": "1.0.8",
     "@adobe/mdast-util-gridtables": "4.0.9",
     "@adobe/remark-gridtables": "3.0.9",
     "form-data": "4.0.1",
