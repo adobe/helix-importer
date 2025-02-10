@@ -45,9 +45,9 @@
     "lint-staged": "15.4.3",
     "mocha": "11.1.0",
     "mocha-multi-reporters": "1.5.1",
-    "mock-fs": "5.4.1",
+    "mock-fs": "5.5.0",
     "remark-parse": "11.0.0",
-    "semantic-release": "24.2.1",
+    "semantic-release": "24.2.2",
     "unist-util-inspect": "8.1.0"
   },
   "license": "Apache-2.0",
