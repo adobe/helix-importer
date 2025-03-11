@@ -161,6 +161,7 @@ async function html2x(
     mdast2docxOptions: {
       stylesXML: config.docxStylesXML,
       image2png: config.image2png,
+      customHeaders: params.customHeaders || {},
     },
     createDocumentFromString: config.createDocumentFromString,
     components: params.components,
