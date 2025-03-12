@@ -1,3 +1,10 @@
+## [3.4.70](https://github.com/adobe/helix-importer/compare/v3.4.69...v3.4.70) (2025-03-12)
+
+
+### Bug Fixes
+
+* **sites-29937:** send customHeaders into md2docx ([#506](https://github.com/adobe/helix-importer/issues/506)) ([05fe738](https://github.com/adobe/helix-importer/commit/05fe7384d90cf48833db1390745bd0bfd9ad5b92))
+
 ## [3.4.69](https://github.com/adobe/helix-importer/compare/v3.4.68...v3.4.69) (2025-03-11)
 
 
