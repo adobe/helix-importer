@@ -10,7 +10,19 @@
  * governing permissions and limitations under the License.
  */
 
-export default function convertIcons(main, document) {
+/**
+ * This function searches for all `img` elements within the `main` element that have a source
+ * ending with `.svg`. It then replaces each of these `img` elements with a `span` element
+ * containing the name of the SVG file in the :<name>: format. The name is derived from the
+ * filename of the SVG, converted to lowercase, trimmed, and non-alphanumeric characters
+ * are replaced with hyphens.
+ *
+ * @param {HTMLElement} main - The main element containing the `img` elements to be converted.
+ * @param {Document} document - The document object used to create new elements.
+ * @param {Function} callback - An optional callback function that is invoked with the original
+ * src of each converted SVG image and the name of the icon, when the conversion is complete.
+ */
+export default function convertIcons(main, document, callback = undefined) {
   [...main.querySelectorAll('img')].forEach((img) => {
     const src = img.getAttribute('src');
     if (src && src.endsWith('.svg')) {
@@ -19,6 +31,10 @@ export default function convertIcons(main, document) {
       if (name) {
         span.innerHTML = `:${name}:`;
         img.replaceWith(span);
+
+        if (callback && typeof callback === 'function') {
+          callback(src, name);
+        }
       }
     }
   });
