@@ -70,13 +70,18 @@ describe('convertIcons tests', () => {
   });
 
   it('callback', async () => {
-    const expected = ['icon1.svg', '/path/icon2.svg'];
+    const urlToIcon = [
+      ['icon1.svg', 'icon1'],
+      ['/path/icon2.svg', 'icon2'],
+    ];
 
     const { document } = dom.window;
     const main = document.querySelector('main');
 
-    const callback = (src) => {
-      strictEqual(src, expected.shift());
+    const callback = (src, name) => {
+      const expected = urlToIcon.shift();
+      strictEqual(src, expected[0]);
+      strictEqual(name, expected[1]);
     };
 
     convertIcons(main, document, callback);

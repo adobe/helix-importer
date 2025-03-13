@@ -20,7 +20,7 @@
  * @param {HTMLElement} main - The main element containing the `img` elements to be converted.
  * @param {Document} document - The document object used to create new elements.
  * @param {Function} callback - An optional callback function that is called with the original
- * source of each converted SVG image when the conversion is complete.
+ * source of each converted SVG image and the name of the icon, when the conversion is complete.
  */
 export default function convertIcons(main, document, callback = undefined) {
   [...main.querySelectorAll('img')].forEach((img) => {
@@ -33,7 +33,7 @@ export default function convertIcons(main, document, callback = undefined) {
         img.replaceWith(span);
 
         if (callback && typeof callback === 'function') {
-          callback(src);
+          callback(src, name);
         }
       }
     }
