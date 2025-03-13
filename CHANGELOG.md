@@ -1,3 +1,10 @@
+## [3.4.71](https://github.com/adobe/helix-importer/compare/v3.4.70...v3.4.71) (2025-03-13)
+
+
+### Bug Fixes
+
+* Provide the ability to know when a svg is being converted ([#508](https://github.com/adobe/helix-importer/issues/508)) ([f987b76](https://github.com/adobe/helix-importer/commit/f987b76ae544709a003926b2e38046c9c057f443)), closes [#507](https://github.com/adobe/helix-importer/issues/507)
+
 ## [3.4.70](https://github.com/adobe/helix-importer/compare/v3.4.69...v3.4.70) (2025-03-12)
 
 
