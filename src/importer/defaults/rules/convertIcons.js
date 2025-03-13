@@ -19,8 +19,8 @@
  *
  * @param {HTMLElement} main - The main element containing the `img` elements to be converted.
  * @param {Document} document - The document object used to create new elements.
- * @param {Function} callback - An optional callback function that is called with the original
- * source of each converted SVG image and the name of the icon, when the conversion is complete.
+ * @param {Function} callback - An optional callback function that is invoked with the original
+ * src of each converted SVG image and the name of the icon, when the conversion is complete.
  */
 export default function convertIcons(main, document, callback = undefined) {
   [...main.querySelectorAll('img')].forEach((img) => {
