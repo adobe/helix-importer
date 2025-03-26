@@ -242,6 +242,10 @@ describe('PageImporter tests - fixtures', () => {
     await featureTest('subsup');
   });
 
+  it('import - row and colspan in tables', async () => {
+    await featureTest('tables');
+  });
+
   it('import - images', async () => {
     await featureTest('img', (got, want) => {
       if (got.indexOf(want) !== 0) {
