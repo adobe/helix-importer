@@ -1,3 +1,10 @@
+## [3.4.78](https://github.com/adobe/helix-importer/compare/v3.4.77...v3.4.78) (2025-03-26)
+
+
+### Bug Fixes
+
+* ensure row- and colspans are numbers ([#517](https://github.com/adobe/helix-importer/issues/517)) ([a853ee9](https://github.com/adobe/helix-importer/commit/a853ee931ee70871fe0a35b17726b7fd7f81750b))
+
 ## [3.4.77](https://github.com/adobe/helix-importer/compare/v3.4.76...v3.4.77) (2025-03-25)
 
 
