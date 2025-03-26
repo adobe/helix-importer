@@ -97,6 +97,12 @@ function cell(state, node, parent) {
       }
     }
   }
+  if (typeof props.colSpan === 'string') {
+    props.colSpan = parseInt(props.colSpan, 10);
+  }
+  if (typeof props.rowSpan === 'string') {
+    props.rowSpan = parseInt(props.rowSpan, 10);
+  }
   return {
     type: TYPE_CELL,
     children: state.all(node),
