@@ -1,3 +1,10 @@
+## [3.4.79](https://github.com/adobe/helix-importer/compare/v3.4.78...v3.4.79) (2025-04-08)
+
+
+### Bug Fixes
+
+* **deps:** update dependency rehype-remark to v10.0.1 ([#520](https://github.com/adobe/helix-importer/issues/520)) ([c26569b](https://github.com/adobe/helix-importer/commit/c26569bb03d4e8b17c3f2716b9880804832e1f14))
+
 ## [3.4.78](https://github.com/adobe/helix-importer/compare/v3.4.77...v3.4.78) (2025-03-26)
 
 
