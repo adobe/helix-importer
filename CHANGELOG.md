@@ -1,3 +1,10 @@
+## [3.4.84](https://github.com/adobe/helix-importer/compare/v3.4.83...v3.4.84) (2025-04-25)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-md2jcr to v1.1.14 ([#529](https://github.com/adobe/helix-importer/issues/529)) ([45fd423](https://github.com/adobe/helix-importer/commit/45fd423839700a8dc87c3544c39d3522407714b7))
+
 ## [3.4.83](https://github.com/adobe/helix-importer/compare/v3.4.82...v3.4.83) (2025-04-22)
 
 
