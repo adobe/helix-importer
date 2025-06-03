@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  */
 
-/* global beforeEach, afterEach */
-
 import mockfs from 'mock-fs';
 
 import { strictEqual, ok } from 'assert';
