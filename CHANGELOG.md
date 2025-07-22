@@ -1,3 +1,10 @@
+## [3.4.100](https://github.com/adobe/helix-importer/compare/v3.4.99...v3.4.100) (2025-07-22)
+
+
+### Bug Fixes
+
+* **deps:** update dependency form-data to v4.0.4 ([#567](https://github.com/adobe/helix-importer/issues/567)) ([e416a2e](https://github.com/adobe/helix-importer/commit/e416a2e8e2fb294cc6c95b58d07998d4d5c7cf2c))
+
 ## [3.4.99](https://github.com/adobe/helix-importer/compare/v3.4.98...v3.4.99) (2025-07-16)
 
 
