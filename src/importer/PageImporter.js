@@ -110,7 +110,7 @@ export default class PageImporter {
     let md = await unified()
       .use(stringify, {
         strong: '*',
-        emphasis: '_',
+        emphasis: '*',
         bullet: '-',
         fence: '`',
         fences: true,
