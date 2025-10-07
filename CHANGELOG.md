@@ -1,3 +1,10 @@
+## [3.4.115](https://github.com/adobe/helix-importer/compare/v3.4.114...v3.4.115) (2025-10-07)
+
+
+### Bug Fixes
+
+* use * for emphasis ([#599](https://github.com/adobe/helix-importer/issues/599)) ([fbbded9](https://github.com/adobe/helix-importer/commit/fbbded9e6db782b9cc1f827c11d9107dd538144d))
+
 ## [3.4.114](https://github.com/adobe/helix-importer/compare/v3.4.113...v3.4.114) (2025-09-30)
 
 
