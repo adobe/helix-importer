@@ -24,8 +24,8 @@ root[5]
 │   │   └─0 text "linkcontent"
 │   └─1 text "."
 └─4 paragraph[4]
-    ├─0 strong[1]
-    │   └─0 emphasis[1]
+    ├─0 emphasis[1]
+    │   └─0 strong[1]
     │       └─0 text "Side shuffle"
     ├─1 text " "
     ├─2 emphasis[1]
