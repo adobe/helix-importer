@@ -1,3 +1,10 @@
+## [3.4.117](https://github.com/adobe/helix-importer/compare/v3.4.116...v3.4.117) (2025-10-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/mdast-util-gridtables to v4.0.14 ([#602](https://github.com/adobe/helix-importer/issues/602)) ([9e337c7](https://github.com/adobe/helix-importer/commit/9e337c7be7701f8a6de4373e842961f5f0eb9cd8))
+
 ## [3.4.116](https://github.com/adobe/helix-importer/compare/v3.4.115...v3.4.116) (2025-10-07)
 
 
