@@ -59,7 +59,7 @@
     "@adobe/mdast-util-gridtables": "4.0.15",
     "@adobe/remark-gridtables": "3.0.16",
     "form-data": "4.0.5",
-    "fs-extra": "11.3.2",
+    "fs-extra": "11.3.3",
     "hast-util-to-mdast": "10.1.2",
     "node-fetch": "3.3.2",
     "rehype-parse": "9.0.1",
