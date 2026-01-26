@@ -29,7 +29,7 @@
     "@adobe/eslint-config-helix": "3.0.16",
     "@adobe/helix-docx2md": "1.9.11",
     "@adobe/helix-mediahandler": "2.9.5",
-    "@eslint/config-helpers": "0.5.0",
+    "@eslint/config-helpers": "0.5.1",
     "@esm-bundle/chai": "4.3.4-fix.0",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/exec": "6.0.3",
