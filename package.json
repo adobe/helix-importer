@@ -29,7 +29,7 @@
     "@adobe/eslint-config-helix": "3.0.18",
     "@adobe/helix-docx2md": "1.9.13",
     "@adobe/helix-mediahandler": "2.10.1",
-    "@eslint/config-helpers": "0.5.1",
+    "@eslint/config-helpers": "0.5.2",
     "@esm-bundle/chai": "4.3.4-fix.0",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/exec": "6.0.3",
@@ -48,7 +48,7 @@
     "mocha-multi-reporters": "1.5.1",
     "mock-fs": "5.5.0",
     "remark-parse": "11.0.0",
-    "semantic-release": "25.0.2",
+    "semantic-release": "25.0.3",
     "unist-util-inspect": "8.1.0"
   },
   "license": "Apache-2.0",
