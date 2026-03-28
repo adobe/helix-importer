@@ -25,7 +25,12 @@ import Utils from './utils/Utils.js';
 
 import WPUtils from './wp/WPUtils.js';
 
-import { html2md, html2docx, md2jcr } from './importer/HTML2x.js';
+import {
+  html2md,
+  html2docx,
+  html2json,
+  md2jcr,
+} from './importer/HTML2x.js';
 
 import createMetadata from './importer/defaults/rules/createMetadata.js';
 import adjustImageUrls from './importer/defaults/rules/adjustImageUrls.js';
@@ -54,6 +59,7 @@ export {
   WPUtils,
   html2md,
   html2docx,
+  html2json,
   md2jcr,
   rules,
 };
