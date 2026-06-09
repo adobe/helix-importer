@@ -41,7 +41,13 @@ async function html2x(
   url,
   doc,
   transformCfg,
-  config = { toMd: true, toDocx: false, toJcr: false },
+  config = {
+    toMd: true,
+    toDocx: false,
+    toJcr: false,
+    toJson: false,
+    keepScripts: false,
+  },
   params = {},
 ) {
   const transformer = transformCfg || {};
@@ -102,6 +108,8 @@ async function html2x(
             extra.html = result.element.outerHTML;
           } else if (result.from) {
             extra.from = result.from;
+          } else if (result.json) {
+            extra.json = result.json;
           }
 
           if (result.report) {
@@ -157,6 +165,7 @@ async function html2x(
     skipDocxConversion: !config.toDocx,
     skipMDFileCreation: !config.toMd,
     skipJcrFileCreation: !config.toJcr,
+    keepScripts: config.keepScripts,
     logger,
     mdast2docxOptions: {
       stylesXML: config.docxStylesXML,
@@ -198,6 +207,9 @@ async function html2x(
       const jcr = await storageHandler.get(pir.jcr);
       res.jcr = jcr;
     }
+    if (config.toJson && pir.extra.json) {
+      res.json = pir.extra.json;
+    }
     return res;
   };
 
@@ -238,6 +250,29 @@ async function html2md(url, document, transformCfg, config, params = {}) {
 }
 
 /**
+ * Returns the result of the conversion from html to md.
+ * @param {string} url URL of the document to convert
+ * @param {Document} document Document to convert
+ * @param {Object} transformCfg Conversion configuration
+ * @param {Object} config Conversion configuration.
+ * @param {Object} params Conversion params. Object will be pass to the transformer functions.
+ * @returns {Object|Array} Result(s) of the conversion
+ */
+async function html2json(url, document, transformCfg, config, params = {}) {
+  let doc = document;
+  if (typeof doc === 'string') {
+    doc = parseStringDocument(document, config);
+  }
+  return html2x(url, doc, transformCfg, {
+    ...config,
+    toMd: false,
+    toDocx: false,
+    toJson: true,
+    keepScripts: true,
+  }, params);
+}
+
+/**
  * Returns the result of the conversion from html to docx.
  * @param {string} url URL of the document to convert
  * @param {HTMLElement|string} document Document to convert
@@ -268,6 +303,7 @@ export {
   md2jcr,
   html2md,
   html2docx,
+  html2json,
   defaultTransformDOM,
   defaultGenerateDocumentPath,
 };
