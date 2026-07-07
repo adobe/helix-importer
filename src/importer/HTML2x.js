@@ -85,7 +85,9 @@ async function html2x(
           html,
           params,
         });
-        if (!results) return null;
+        if (!results) {
+          return null;
+        }
         const pirs = [];
 
         if (!Array.isArray(results)) {
