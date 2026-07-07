@@ -12,7 +12,9 @@
 
 export default class FileUtils {
   static sanitizeFilename(name) {
-    if (!name) return '';
+    if (!name) {
+      return '';
+    }
     return decodeURIComponent(name).toLowerCase()
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
@@ -21,7 +23,9 @@ export default class FileUtils {
   }
 
   static sanitizePath(path) {
-    if (!path) return '';
+    if (!path) {
+      return '';
+    }
     const extension = path.split('.').pop();
     const pathname = extension !== path ? path.substring(0, path.lastIndexOf('.')) : path;
     let sanitizedPath = '';

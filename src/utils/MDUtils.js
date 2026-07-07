@@ -24,7 +24,9 @@ export default class MDUtils {
     if (ret) {
       for (let i = 0; i < 20; i += 1) {
         let x = `${i}`;
-        if (i < 10) x = `0${i}`;
+        if (i < 10) {
+          x = `0${i}`;
+        }
         const c = String.fromCodePoint(parseInt(`00${x}`, 16));
         const reg = new RegExp(`\\u00${x}`, 'g');
         const r = [c.length].map(() => ' ').join('');
