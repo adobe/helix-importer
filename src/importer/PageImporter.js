@@ -79,10 +79,19 @@ export default class PageImporter {
     return this.params.storageHandler.put(jcrPath, buffer);
   }
 
-  async createMarkdown(resource, url) {
+  getFileDescription(resource) {
     const { name } = resource;
     const { directory } = resource;
     const sanitizedName = FileUtils.sanitizeFilename(name);
+    return {
+      path: path.join(directory, sanitizedName),
+      directory,
+      sanitizedName,
+    };
+  }
+
+  async createMarkdown(resource, url) {
+    const { directory, sanitizedName } = this.getFileDescription(resource);
     this.logger.log(`Computing Markdown for ${directory}/${sanitizedName}`);
 
     const html = resource.document.innerHTML;
@@ -205,7 +214,10 @@ export default class PageImporter {
   }
 
   cleanup(document) {
-    DOMUtils.remove(document, ['script', 'hr']);
+    if (this.params.keepScripts !== true) {
+      DOMUtils.remove(document, ['script']);
+    }
+    DOMUtils.remove(document, ['hr']);
     DOMUtils.removeComments(document);
     DOMUtils.removeSpans(document);
   }
@@ -341,35 +353,37 @@ export default class PageImporter {
       if (entries) {
         await Utils.asyncForEach(entries, async (entry) => {
           if (entry.document) {
-            const res = await this.createMarkdown(entry, url);
+            const { path: entryPath } = this.getFileDescription(entry);
             // eslint-disable-next-line no-param-reassign
             entry.source = url;
             // eslint-disable-next-line no-param-reassign
-            entry.path = res.path;
-            // eslint-disable-next-line no-param-reassign
-            entry.markdown = res.content;
+            entry.path = entryPath;
 
             if (!this.params.skipMDFileCreation) {
+              const res = await this.createMarkdown(entry, url);
+              // eslint-disable-next-line no-param-reassign
+              entry.markdown = res.content;
+
               const mdPath = `${res.path}.md`;
               await this.params.storageHandler.put(mdPath, res.content);
               this.logger.log(`MD file created: ${mdPath}`);
 
               // eslint-disable-next-line no-param-reassign
               entry.md = mdPath;
-            }
 
-            if (!this.params.skipDocxConversion) {
-              const docxPath = `${res.path}.docx`;
-              await this.convertToDocx(docxPath, res.content);
-              // eslint-disable-next-line no-param-reassign
-              entry.docx = docxPath;
-            }
+              if (!this.params.skipDocxConversion) {
+                const docxPath = `${entryPath}.docx`;
+                await this.convertToDocx(docxPath, res.content);
+                // eslint-disable-next-line no-param-reassign
+                entry.docx = docxPath;
+              }
 
-            if (!this.params.skipJcrFileCreation) {
-              const jcrPath = `${res.path}.xml`;
-              await this.convertToJcr(jcrPath, res.content);
-              // eslint-disable-next-line no-param-reassign
-              entry.jcr = jcrPath;
+              if (!this.params.skipJcrFileCreation) {
+                const jcrPath = `${entryPath}.xml`;
+                await this.convertToJcr(jcrPath, res.content);
+                // eslint-disable-next-line no-param-reassign
+                entry.jcr = jcrPath;
+              }
             }
           }
 
