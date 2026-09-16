@@ -1,3 +1,17 @@
+## [3.4.147](https://github.com/adobe/helix-importer/compare/v3.4.146...v3.4.147) (2026-09-16)
+
+
+### Bug Fixes
+
+* **deps:** update adobe fixes ([#673](https://github.com/adobe/helix-importer/issues/673)) ([21024c0](https://github.com/adobe/helix-importer/commit/21024c0b78b6673feb8895897cf88554b8c69d6b))
+* **deps:** update adobe fixes ([#675](https://github.com/adobe/helix-importer/issues/675)) ([f3286a1](https://github.com/adobe/helix-importer/commit/f3286a14d899954e7839cedb4cbf69b777e2be66))
+* **deps:** update adobe fixes ([#677](https://github.com/adobe/helix-importer/issues/677)) ([276effd](https://github.com/adobe/helix-importer/commit/276effdb220a7063bc01df4ba56138b3d6c73bc5))
+* **deps:** update adobe fixes ([#682](https://github.com/adobe/helix-importer/issues/682)) ([585e630](https://github.com/adobe/helix-importer/commit/585e63082efa107770a606b8d28faed913e154db))
+* **deps:** update adobe fixes ([#683](https://github.com/adobe/helix-importer/issues/683)) ([544ca4a](https://github.com/adobe/helix-importer/commit/544ca4a519cf55b23d1b8ae26b282bf5b4dbee25))
+* **deps:** update adobe fixes ([#684](https://github.com/adobe/helix-importer/issues/684)) ([4095a68](https://github.com/adobe/helix-importer/commit/4095a68db4b47f1b9c64ca3c827a7c5ce4e12782))
+* **deps:** update dependency @adobe/helix-md2docx to v2.2.70 ([#678](https://github.com/adobe/helix-importer/issues/678)) ([5ffbd09](https://github.com/adobe/helix-importer/commit/5ffbd09585ede58d433066a3bedf94d76bbca614))
+* **deps:** update external fixes ([#674](https://github.com/adobe/helix-importer/issues/674)) ([e284dfd](https://github.com/adobe/helix-importer/commit/e284dfd6d7d6bd6c5dfca21cb7ba69d13a8adf5a))
+
 ## [3.4.146](https://github.com/adobe/helix-importer/compare/v3.4.145...v3.4.146) (2026-07-28)
 
 
