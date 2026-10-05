@@ -45,7 +45,7 @@
     "jsdom": "26.1.0",
     "lint-staged": "15.5.2",
     "mocha": "11.8.0",
-    "mocha-multi-reporters": "1.5.1",
+    "mocha-multi-reporters": "1.5.2",
     "mock-fs": "5.5.0",
     "remark-parse": "11.0.0",
     "semantic-release": "25.0.9",
