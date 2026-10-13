@@ -1,3 +1,10 @@
+## [3.4.155](https://github.com/adobe/helix-importer/compare/v3.4.154...v3.4.155) (2026-10-13)
+
+
+### Bug Fixes
+
+* **deps:** update dependency fs-extra to v11.4.1 ([#694](https://github.com/adobe/helix-importer/issues/694)) ([bfb18bb](https://github.com/adobe/helix-importer/commit/bfb18bb6de4d0db8bb18a72fc69bcae1532f7943))
+
 ## [3.4.154](https://github.com/adobe/helix-importer/compare/v3.4.153...v3.4.154) (2026-10-12)
 
 
