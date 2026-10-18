@@ -57,7 +57,7 @@
     "@adobe/helix-md2docx": "2.2.82",
     "@adobe/helix-md2jcr": "1.5.15",
     "@adobe/mdast-util-gridtables": "4.0.20",
-    "@adobe/remark-gridtables": "3.0.21",
+    "@adobe/remark-gridtables": "3.0.22",
     "form-data": "4.0.6",
     "fs-extra": "11.4.1",
     "hast-util-to-mdast": "10.1.2",
