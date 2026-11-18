@@ -206,6 +206,7 @@ describe('DOMUtils#removeSpans tests', () => {
     test('<p>Spacing<span> should</span> remain the same</p>', '<p>Spacing should remain the same</p>');
     test('<p>Spacing<span> should</span> remain the <span>same even</span> with<span> multiple spans</span></p>', '<p>Spacing should remain the same even with multiple spans</p>');
     test('<span><div><img src="animage.jpg"></div></span>', '<span><div><img src="animage.jpg"></div></span>');
+    test('<span><div><svg class="test"><rect width="200" height="100" x="10" y="10" rx="20" ry="20" fill="blue"></rect></svg></div></span>', '<span><div><svg class="test"><rect width="200" height="100" x="10" y="10" rx="20" ry="20" fill="blue"></rect></svg></div></span>');
     test('<span>Some image here: <div><img src="animage.jpg"></div></span>', '<span>Some image here: <div><img src="animage.jpg"></div></span>');
     test('<div>Spans potentially used to do layouting: <span class="tab1">tab1</span><span class="tab2">tab2</span></div>', '<div>Spans potentially used to do layouting: <span class="tab1">tab1</span><span class="tab2">tab2</span></div>');
     test('<div>Spans potentially used to do layouting: <span id="tab1">tab1</span><span id="tab2">tab2</span></div>', '<div>Spans potentially used to do layouting: <span id="tab1">tab1</span><span id="tab2">tab2</span></div>');
