@@ -188,6 +188,9 @@ export default class PageImporter {
 
     // adjust assets url (from relative to absolute)
     assets.forEach((asset) => {
+      if (/^(?:data|blob):/i.test(asset.url)) {
+        return;
+      }
       const u = new URL(decodeURI(asset.url), url);
       md = MDUtils.replaceSrcInMarkdown(md, asset.url, u.toString());
     });
