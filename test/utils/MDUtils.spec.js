@@ -68,6 +68,20 @@ describe('MDUtils#replaceSrcInMarkdown tests', () => {
       'encoded to replacement',
     );
   });
+
+  it('MDUtils#replaceSrcInMarkdown skips data and blob URLs cleanly', () => {
+    const bigDataUri = `data:image/png;base64,${'A+/='.repeat(50000)}`;
+    const md = `# Title\n![](${bigDataUri})`;
+    strictEqual(MDUtils.replaceSrcInMarkdown(md, bigDataUri, bigDataUri), md);
+
+    const blobUri = 'blob:https://example.com/123e4567-e89b-12d3-a456-426614174000';
+    const blobMd = `![](${blobUri})`;
+    strictEqual(MDUtils.replaceSrcInMarkdown(blobMd, blobUri, 'https://example.com/img.png'), blobMd);
+
+    const unescapedSvgData = 'data:image/svg+xml;utf8,%100(foo)+bar?baz';
+    const svgMd = `![](${unescapedSvgData})`;
+    strictEqual(MDUtils.replaceSrcInMarkdown(svgMd, unescapedSvgData, unescapedSvgData), svgMd);
+  });
 });
 
 describe('MDUtils#cleanupMarkdown tests', () => {
